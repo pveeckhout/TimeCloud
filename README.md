@@ -6,7 +6,7 @@ TimeCloud is a time registrationa and analysis program being created for a maste
 Time registration
 -----------------
 
-The be decided.
+To be decided.
 
 Import data
 -----------
