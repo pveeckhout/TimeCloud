@@ -7,15 +7,24 @@
  *  written permission of Pieter Van Eeckhout and Anne Charlotte Van de Velde
  *******************************************************/
 
-package com.pietervaneeckhout.timecloud;
+package com.pietervaneeckhout.timecloud.controller;
+
+import com.pietervaneeckhout.timecloud.model.Triage;
+import java.util.List;
 
 /**
  *
  * @author Pieter Van Eeckhout
  */
-public class TimeCloud {
+public interface TriageRepository {
     
-    public static void main(String[] args) {
-        
-    }
+    List<Triage> getAll();
+    
+    int getTriageCodeByName(String triageName);
+    
+    String getTriageNameByCode(int triageCode);
+    
+    void addTriage(Triage triage);
+    
+    boolean contains(Triage triage);
 }

@@ -6,16 +6,20 @@
  * TimeCloud can not be copied, edited and/or distributed without the express
  *  written permission of Pieter Van Eeckhout and Anne Charlotte Van de Velde
  *******************************************************/
-
-package com.pietervaneeckhout.timecloud;
+package com.pietervaneeckhout.timecloud.model;
 
 /**
  *
  * @author Pieter Van Eeckhout
  */
-public class TimeCloud {
+public interface Triage {
+
+    int getTriageCode();
+
+    String getTriageName();
+
+    void setTriageCode(int triageCode);
+
+    void setTriageName(String triageName);
     
-    public static void main(String[] args) {
-        
-    }
 }

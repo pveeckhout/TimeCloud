@@ -7,15 +7,20 @@
  *  written permission of Pieter Van Eeckhout and Anne Charlotte Van de Velde
  *******************************************************/
 
-package com.pietervaneeckhout.timecloud;
+package com.pietervaneeckhout.timecloud.model;
 
 /**
  *
  * @author Pieter Van Eeckhout
  */
-public class TimeCloud {
+public interface Department {
+
+    int getDepartmentCode();
+
+    String getDepartmentName();
+
+    void setDepartmentCode(int departmentCode);
+
+    void setDepartmentName(String departmentName);
     
-    public static void main(String[] args) {
-        
-    }
 }
