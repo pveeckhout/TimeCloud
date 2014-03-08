@@ -23,6 +23,7 @@
 
 package timecloud.dao;
 
+import timecloud.dao.episode.EpisodeDaoImpl;
 import java.util.Collection;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -30,7 +31,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import timecloud.dto.EpisodeDTO;
+import timecloud.dto.episode.EpisodeDTO;
 import timecloud.model.episode.Episode;
 
 /**

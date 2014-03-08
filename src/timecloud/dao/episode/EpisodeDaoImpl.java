@@ -20,19 +20,40 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.dto;
+package timecloud.dao.episode;
+
+import java.util.Collection;
+import timecloud.model.episode.Episode;
+import timecloud.dto.episode.EpisodeDTO;
 
 /**
  *
- * Marker interface to signify that the data cannot be changed once set. This
- * can and should be achieved by making deep hard copies of all the attributes
- * and by implementing the setters to return an UnsupportedOperationException
- * when called.
+ * Implementation of EpisodeDAO
  *
- * Ideally these objects should be created with the builder paradigm.
+ * @see EpisodeDAO
  *
  * @author Pieter Van Eeckhout
  */
-public interface Immutable {
+public class EpisodeDaoImpl implements EpisodeDAO {
+
+    @Override
+    public Episode create(EpisodeDTO episodeDTO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Episode update(EpisodeDTO episodeDTO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Episode> readAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void delete(long episodeID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

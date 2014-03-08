@@ -20,29 +20,55 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud;
+package timecloud.dao.episode;
 
-import timecloud.controller.main.MainController;
-import timecloud.view.SwingController;
+import java.util.Collection;
+import timecloud.model.episode.Episode;
+import timecloud.dto.episode.EpisodeDTO;
 
 /**
- * This is the startup class for the TimeCloud program
+ *
+ * DAO interface defining the available CRUD operations on Episodes
  *
  * @author Pieter Van Eeckhout
  */
-public class TimeCloud {
+public interface EpisodeDAO {
 
-    private MainController mainController;
-    private SwingController swingController;
+    /**
+     * Save a new episode to the database
+     *
+     * @param episodeDTO The data of the episode to be saved.
+     * @return The episode object created by saving the EpisodeDTO to the
+     * database
+     * @see Episode
+     * @see EpisodeDTO
+     */
+    Episode create(EpisodeDTO episodeDTO);
 
     /**
      *
-     * Startup method of TimeCloud
+     * Update an existing Episode in the database
      *
-     * @param args the command line arguments (not used)
+     * @param episodeDTO The data of the episode to be updated.
+     * @return The episode object created by saving the EpisodeDTO to the
+     * database
+     * @see Episode
+     * @see EpisodeDTO
      */
-    public static void main(String[] args) {
+    Episode update(EpisodeDTO episodeDTO);
 
-    }
+    /**
+     * Returns a collection of all the episodes stored in the database.
+     *
+     * @return Collection containing the Episodes.
+     * @see Episode
+     */
+    Collection<Episode> readAll();
 
+    /**
+     * Deletes the episode with the supplied ID from the database.
+     *
+     * @param episodeID The ID of the episode to delete.
+     */
+    void delete(long episodeID);
 }

@@ -20,29 +20,55 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud;
+package timecloud.dao.transfer;
 
-import timecloud.controller.main.MainController;
-import timecloud.view.SwingController;
+import java.util.Collection;
+import timecloud.dto.transfer.TransferDTO;
+import timecloud.model.transfer.Transfer;
 
 /**
- * This is the startup class for the TimeCloud program
  *
+ * DAO interface defining the available CRUD operations on Transfers
+ * 
  * @author Pieter Van Eeckhout
  */
-public class TimeCloud {
-
-    private MainController mainController;
-    private SwingController swingController;
+public interface TransferDAO {
+    
+    /**
+     * Save a new episode to the database
+     *
+     * @param transferDTO The data of the episode to be saved.
+     * @return The episode object created by saving the TransferDTO to the
+     * database
+     * @see Transfer
+     * @see TransferDTO
+     */
+    Transfer create(TransferDTO transferDTO);
 
     /**
      *
-     * Startup method of TimeCloud
+     * Update an existing Episode in the database
      *
-     * @param args the command line arguments (not used)
+     * @param transferDTO The data of the transfer to be updated.
+     * @return The episode object created by saving the TransferDTO to the
+     * database
+     * @see Transfer
+     * @see TransferDTO
      */
-    public static void main(String[] args) {
+    Transfer update(TransferDTO transferDTO);
 
-    }
+    /**
+     * Returns a collection of all the transfers stored in the database.
+     *
+     * @return Collection containing the Transfer.
+     * @see Transfer
+     */
+    Collection<Transfer> readAll();
 
+    /**
+     * Deletes the transfer with the supplied ID from the database.
+     *
+     * @param transferID The ID of the episode to delete.
+     */
+    void delete(long transferID);
 }

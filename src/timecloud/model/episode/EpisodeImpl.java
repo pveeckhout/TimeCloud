@@ -1,60 +1,90 @@
 /*
-*   The MIT License (MIT)
-*
-*   Copyright (c) 2014 Pieter Van Eeckhout
-*
-*   Permission is hereby granted, free of charge, to any person obtaining a copy of
-*   this software and associated documentation files (the "Software"), to deal in
-*   the Software without restriction, including without limitation the rights to
-*   use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-*   the Software, and to permit persons to whom the Software is furnished to do so,
-*   subject to the following conditions:
-*
-*   The above copyright notice and this permission notice shall be included in all
-*   copies or substantial portions of the Software.
-*
-*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-*   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-*   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-*   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-*   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
+ *   The MIT License (MIT)
+ *
+ *   Copyright (c) 2014 Pieter Van Eeckhout
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy of
+ *   this software and associated documentation files (the "Software"), to deal in
+ *   the Software without restriction, including without limitation the rights to
+ *   use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ *   the Software, and to permit persons to whom the Software is furnished to do so,
+ *   subject to the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be included in all
+ *   copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ *   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ *   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package timecloud.model.episode;
 
 import java.util.Collection;
 import java.util.Objects;
 import org.joda.time.DateTime;
-import timecloud.dto.EpisodeDTO;
+import timecloud.dto.episode.EpisodeDTO;
 import timecloud.enums.TriageLevel;
 import timecloud.model.transfer.Transfer;
 
 /**
  *
  * Implementation of Episode
- * 
+ *
  * @see Episode
- * 
+ *
  * @author Pieter Van Eeckhout
  */
-public final class EpisodeImpl implements Episode {   
-   
+public final class EpisodeImpl implements Episode {
+
     public static final long serialVersionUID = 54154515L;
-    
+
     long episodeID;
     String patientID;
     DateTime intakeTimestamp;
     boolean meg;
     DateTime triageTimestamp;
     TriageLevel triageLevel;
-    
+
     Collection<Transfer> transfers;
-    
+
     /**
-     * 
+     *
+     * Default constructor
+     *
+     */
+    public EpisodeImpl() {
+    }
+
+    /**
+     *
      * Constructor
-     * 
+     *
+     * @param episodeID the episodeID value
+     * @param patientID the patientID value
+     * @param intakeTimestamp the intake timestamp value
+     * @param meg whether or not the MEG/MUG was used
+     * @param triageTimestamp the triage timestamp value
+     * @param triageLevel the triage level
+     * @param transfers collection of all the transfers associated with this
+     * episode
+     */
+    EpisodeImpl(long episodeID, String patientID, DateTime intakeTimestamp, boolean meg, DateTime triageTimestamp, TriageLevel triageLevel, Collection<Transfer> transfers) {
+        this.episodeID = episodeID;
+        this.patientID = patientID;
+        this.intakeTimestamp = intakeTimestamp;
+        this.meg = meg;
+        this.triageTimestamp = triageTimestamp;
+        this.triageLevel = triageLevel;
+        this.transfers = transfers;
+    }
+
+    /**
+     *
+     * Constructor
+     *
      * @param episodeDTO The data from which this episode will be made
      * @see EpisodeDTO
      */
@@ -66,7 +96,7 @@ public final class EpisodeImpl implements Episode {
         this.setTriageTimestamp(episodeDTO.getTriageTimestamp());
         this.setTriageLevel(episodeDTO.getTriageLevel());
     }
-   
+
     @Override
     public void setEpisodeID(long episodeID) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -126,7 +156,7 @@ public final class EpisodeImpl implements Episode {
     public TriageLevel getTriageLevel() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Collection<Transfer> getTransfers() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -20,19 +20,14 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.dto;
+package timecloud.controller.main;
 
 /**
  *
- * Marker interface to signify that the data cannot be changed once set. This
- * can and should be achieved by making deep hard copies of all the attributes
- * and by implementing the setters to return an UnsupportedOperationException
- * when called.
- *
- * Ideally these objects should be created with the builder paradigm.
+ * Controller interface defining the available operations for Main
  *
  * @author Pieter Van Eeckhout
  */
-public interface Immutable {
+public interface MainController {
 
 }

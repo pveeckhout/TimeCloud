@@ -23,6 +23,7 @@
 
 package timecloud.dto;
 
+import timecloud.dto.episode.EpisodeDtoImpl;
 import java.util.Collection;
 import org.joda.time.DateTime;
 import static org.testng.Assert.*;

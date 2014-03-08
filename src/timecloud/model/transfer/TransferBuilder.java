@@ -27,43 +27,25 @@ import timecloud.model.episode.Episode;
 
 /**
  *
- * Model interface defining the available getters, setters, constructors and
- * operations for Transfer
- *
  * @author Pieter Van Eeckhout
  */
-public interface Transfer {
+public interface TransferBuilder {
 
-    String getEndBed();
+    TransferImpl createTransfer();
 
-    String getEndDepartment();
+    TransferBuilderImpl setEndBed(String endBed);
 
-    String getEndMedicalDepartment();
+    TransferBuilderImpl setEndDepartment(String endDepartment);
 
-    Episode getEpisode();
+    TransferBuilderImpl setEndMedicalDepartment(String endMedicalDepartment);
 
-    String getStartBed();
+    TransferBuilderImpl setEpisode(Episode episode);
 
-    String getStartDepartment();
+    TransferBuilderImpl setStartBed(String startBed);
 
-    String getStartMedicalDeparment();
+    TransferBuilderImpl setStartDepartment(String startDepartment);
 
-    DateTime getTransferTimestamp();
+    TransferBuilderImpl setStartMedicalDeparment(String StartMedicalDeparment);
 
-    void setEndBed(String endBed);
-
-    void setEndDepartment(String endDepartment);
-
-    void setEndMedicalDepartment(String endMedicalDepartment);
-
-    void setEpisode(Episode episode);
-
-    void setStartBed(String startBed);
-
-    void setStartDepartment(String startDepartment);
-
-    void setStartMedicalDeparment(String StartMedicalDeparment);
-
-    void setTransferTimestamp(DateTime transferTimestamp);
-
+    TransferBuilderImpl setTransferTimestamp(DateTime transferTimestamp);
 }

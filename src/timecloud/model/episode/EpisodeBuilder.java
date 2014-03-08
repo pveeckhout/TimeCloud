@@ -20,19 +20,35 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.dto;
+package timecloud.model.episode;
+
+import java.util.Collection;
+import org.joda.time.DateTime;
+import timecloud.enums.TriageLevel;
+import timecloud.model.transfer.Transfer;
 
 /**
- *
- * Marker interface to signify that the data cannot be changed once set. This
- * can and should be achieved by making deep hard copies of all the attributes
- * and by implementing the setters to return an UnsupportedOperationException
- * when called.
- *
- * Ideally these objects should be created with the builder paradigm.
- *
+ * 
+ * Interface for the Builder paradigm on the episode model
+ * 
  * @author Pieter Van Eeckhout
  */
-public interface Immutable {
+public interface EpisodeBuilder {
 
+    EpisodeBuilder setEpisodeID(long episodeID);
+    
+    EpisodeBuilder setPatientID(String patientID);
+
+    EpisodeBuilder setIntakeTimestamp(DateTime intakeTimestamp);
+
+    EpisodeBuilder setMeg(boolean meg);
+
+    EpisodeBuilder setTriageTimestamp(DateTime triageTimestamp);
+
+    EpisodeBuilderImpl setTriageLevel(TriageLevel triageLevel);
+
+    EpisodeBuilderImpl setTransfers(Collection<Transfer> transfers);
+
+    EpisodeImpl createEpisode();
+    
 }

@@ -20,19 +20,29 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.dto;
+package timecloud.util.excelreaders;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * Marker interface to signify that the data cannot be changed once set. This
- * can and should be achieved by making deep hard copies of all the attributes
- * and by implementing the setters to return an UnsupportedOperationException
- * when called.
- *
- * Ideally these objects should be created with the builder paradigm.
+ * Implementation of ExcelFileReader
  *
  * @author Pieter Van Eeckhout
  */
-public interface Immutable {
+public class EmergencyExcelFileReader extends ExcelFileReader {
 
+    public void readEmergencyData(File file) {
+        try {
+            setExcelFile(file);
+            processStoredData();
+
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        } catch (IOException ex) {
+            Logger.getLogger(EmergencyExcelFileReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

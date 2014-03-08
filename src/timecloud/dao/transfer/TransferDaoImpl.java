@@ -20,50 +20,33 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.model.transfer;
+package timecloud.dao.transfer;
 
-import org.joda.time.DateTime;
-import timecloud.model.episode.Episode;
+import java.util.Collection;
+import timecloud.dto.transfer.TransferDTO;
+import timecloud.model.transfer.Transfer;
 
-/**
- *
- * Model interface defining the available getters, setters, constructors and
- * operations for Transfer
- *
- * @author Pieter Van Eeckhout
- */
-public interface Transfer {
 
-    String getEndBed();
+public class TransferDaoImpl implements TransferDAO {
 
-    String getEndDepartment();
+    @Override
+    public Transfer create(TransferDTO transferDTO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-    String getEndMedicalDepartment();
+    @Override
+    public Transfer update(TransferDTO transferDTO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-    Episode getEpisode();
+    @Override
+    public Collection<Transfer> readAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-    String getStartBed();
-
-    String getStartDepartment();
-
-    String getStartMedicalDeparment();
-
-    DateTime getTransferTimestamp();
-
-    void setEndBed(String endBed);
-
-    void setEndDepartment(String endDepartment);
-
-    void setEndMedicalDepartment(String endMedicalDepartment);
-
-    void setEpisode(Episode episode);
-
-    void setStartBed(String startBed);
-
-    void setStartDepartment(String startDepartment);
-
-    void setStartMedicalDeparment(String StartMedicalDeparment);
-
-    void setTransferTimestamp(DateTime transferTimestamp);
-
+    @Override
+    public void delete(long transferID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
