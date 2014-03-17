@@ -33,6 +33,10 @@ import timecloud.model.episode.Episode;
  * @author Pieter Van Eeckhout
  */
 public interface Transfer {
+    
+    long getTransferID();
+    
+    void setTransferID(long transferID);
 
     String getEndBed();
 

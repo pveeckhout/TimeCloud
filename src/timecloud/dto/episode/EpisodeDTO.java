@@ -22,14 +22,12 @@
  */
 package timecloud.dto.episode;
 
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joda.time.DateTime;
 import timecloud.dto.Immutable;
 import timecloud.enums.TriageLevel;
 import timecloud.model.episode.Episode;
-import timecloud.model.transfer.Transfer;
 
 /**
  *

@@ -22,11 +22,14 @@
  */
 package timecloud.dto.episode;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import org.joda.time.DateTime;
+import timecloud.dto.transfer.TransferDtoImpl;
 import timecloud.enums.TriageLevel;
 import timecloud.model.episode.Episode;
 import timecloud.model.transfer.Transfer;
+import timecloud.model.transfer.TransferImpl;
 
 /**
  *
@@ -51,37 +54,41 @@ public class EpisodeDtoImpl extends EpisodeDTO {
 
     @Override
     public long getEpisodeID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episode.getEpisodeID();
     }
 
     @Override
     public String getpatientID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episode.getpatientID();
     }
 
     @Override
     public DateTime getIntakeTimestamp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episode.getIntakeTimestamp();
     }
 
     @Override
     public boolean getMeg() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episode.getMeg();
     }
 
     @Override
     public DateTime getTriageTimestamp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episode.getTriageTimestamp();
     }
 
     @Override
     public TriageLevel getTriageLevel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episode.getTriageLevel();
     }
 
     @Override
     public Collection<Transfer> getTransfers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Collection<Transfer> transfers = new ArrayList<>(episode.getTransfers().size());
+        for (Transfer transfer : episode.getTransfers()) {
+            transfers.add(new TransferImpl(new TransferDtoImpl(transfer)));
+        }
+        return transfers;
     }
 
 }

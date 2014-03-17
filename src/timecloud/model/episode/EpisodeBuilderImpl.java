@@ -90,6 +90,7 @@ public class EpisodeBuilderImpl implements EpisodeBuilder {
         return this;
     }
 
+    @Override
     public EpisodeImpl createEpisode() {
         return new EpisodeImpl(episodeID, patientID, intakeTimestamp, meg, triageTimestamp, triageLevel, transfers);
     }

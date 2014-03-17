@@ -22,9 +22,10 @@
  */
 package timecloud.dao.episode;
 
+import java.sql.SQLException;
 import java.util.Collection;
-import timecloud.model.episode.Episode;
 import timecloud.dto.episode.EpisodeDTO;
+import timecloud.model.episode.Episode;
 
 /**
  *
@@ -40,10 +41,22 @@ public interface EpisodeDAO {
      * @param episodeDTO The data of the episode to be saved.
      * @return The episode object created by saving the EpisodeDTO to the
      * database
+     * @throws java.sql.SQLException
      * @see Episode
      * @see EpisodeDTO
      */
-    Episode create(EpisodeDTO episodeDTO);
+    Episode create(EpisodeDTO episodeDTO) throws SQLException;
+    
+    /**
+     *
+     * gets a single Episode from the database
+     *
+     * @param episodeID The data of the episode to be updated.
+     * @return The episode object linked to the ID
+     * @throws java.sql.SQLException
+     * @see Episode
+     */
+    Episode find(long episodeID) throws SQLException;
 
     /**
      *
@@ -52,23 +65,26 @@ public interface EpisodeDAO {
      * @param episodeDTO The data of the episode to be updated.
      * @return The episode object created by saving the EpisodeDTO to the
      * database
+     * @throws java.sql.SQLException
      * @see Episode
      * @see EpisodeDTO
      */
-    Episode update(EpisodeDTO episodeDTO);
+    Episode update(EpisodeDTO episodeDTO) throws SQLException;
 
     /**
      * Returns a collection of all the episodes stored in the database.
      *
      * @return Collection containing the Episodes.
+     * @throws java.sql.SQLException
      * @see Episode
      */
-    Collection<Episode> readAll();
+    Collection<Episode> readAll() throws SQLException;
 
     /**
      * Deletes the episode with the supplied ID from the database.
      *
      * @param episodeID The ID of the episode to delete.
+     * @throws java.sql.SQLException
      */
-    void delete(long episodeID);
+    void delete(long episodeID) throws SQLException;
 }

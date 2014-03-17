@@ -131,5 +131,15 @@ public abstract class TransferDTO implements Transfer, Immutable {
         Logger.getLogger(TransferDTO.class.getName()).log(Level.SEVERE, null, ex);
         throw ex;
     }
+    
+    @Override
+    /**
+     * DO NOT USE, setters are disabled in the DTO paradigm
+     */
+    public void setTransferID(long transferID) {
+        UnsupportedOperationException ex = new UnsupportedOperationException("Immutable Object. Setter setTransferID is disabled");
+        Logger.getLogger(TransferDTO.class.getName()).log(Level.SEVERE, null, ex);
+        throw ex;
+    }
 
 }
