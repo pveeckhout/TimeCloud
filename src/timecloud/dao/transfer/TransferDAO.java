@@ -22,8 +22,10 @@
  */
 package timecloud.dao.transfer;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import timecloud.dto.transfer.TransferDTO;
+import timecloud.model.episode.Episode;
 import timecloud.model.transfer.Transfer;
 
 /**
@@ -40,10 +42,22 @@ public interface TransferDAO {
      * @param transferDTO The data of the episode to be saved.
      * @return The episode object created by saving the TransferDTO to the
      * database
+     * @throws java.sql.SQLException
      * @see Transfer
      * @see TransferDTO
      */
-    Transfer create(TransferDTO transferDTO);
+    Transfer create(TransferDTO transferDTO) throws SQLException;
+    
+    /**
+     *
+     * gets a single Episode from the database
+     *
+     * @param transferID The data of the transfer to be updated.
+     * @return The transfer object linked to the ID
+     * @throws java.sql.SQLException
+     * @see Transfer
+     */
+    Transfer find(long transferID) throws SQLException;
 
     /**
      *
@@ -52,23 +66,26 @@ public interface TransferDAO {
      * @param transferDTO The data of the transfer to be updated.
      * @return The episode object created by saving the TransferDTO to the
      * database
+     * @throws java.sql.SQLException
      * @see Transfer
      * @see TransferDTO
      */
-    Transfer update(TransferDTO transferDTO);
+    Transfer update(TransferDTO transferDTO) throws SQLException;
 
     /**
      * Returns a collection of all the transfers stored in the database.
      *
      * @return Collection containing the Transfer.
+     * @throws java.sql.SQLException
      * @see Transfer
      */
-    Collection<Transfer> readAll();
+    Collection<Transfer> readAll() throws SQLException;
 
     /**
      * Deletes the transfer with the supplied ID from the database.
      *
      * @param transferID The ID of the episode to delete.
+     * @throws java.sql.SQLException
      */
-    void delete(long transferID);
+    void delete(long transferID) throws SQLException;
 }

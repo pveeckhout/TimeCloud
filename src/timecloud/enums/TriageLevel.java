@@ -30,6 +30,7 @@ package timecloud.enums;
  */
 public enum TriageLevel {
 
+    UNDEFINED(-1, "WHITE"),
     DECEASED(0, "BLACK"),
     NOT_URGENT(1, "GREEN"),
     URGENT(2, "ORANGE"),
@@ -59,5 +60,25 @@ public enum TriageLevel {
      */
     public String getTriageColor() {
         return triageColor;
+    }
+
+    /**
+     * returns the TriageLevel associated with the level code
+     *
+     * @return the TriageLevel.
+     */
+    public static TriageLevel fromInteger(int level) {
+        switch (level) {
+            case 0:
+                return DECEASED;
+            case 1:
+                return NOT_URGENT;
+            case 2:
+                return URGENT;
+            case 3:
+                return VERY_URGENT;
+            default:
+                return UNDEFINED;
+        }
     }
 }

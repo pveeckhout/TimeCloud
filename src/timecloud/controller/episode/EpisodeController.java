@@ -22,6 +22,7 @@
  */
 package timecloud.controller.episode;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
 import timecloud.model.episode.Episode;
@@ -41,19 +42,20 @@ public interface EpisodeController {
      *
      * @param episodeDTO The data of the episode to be saved. If the episodeID
      * is set, the episode will be updated. Else it will be created.
+     * @throws java.sql.SQLException
      * @see Episode
      * @see EpisodeDTO
      */
-    void save(EpisodeDTO episodeDTO);
+    void save(EpisodeDTO episodeDTO) throws SQLException;
 
     /**
      *
-     * Returns map of all the episodes stored in the database.
+     * Fills the episode collection with all the episodes stored in the database.
      *
-     * @return Map containing the Episodes, with the episodeIDs as key values.
+     * @throws java.sql.SQLException
      * @see Episode
      */
-    Map<Long, Episode> getAllFromDB();
+    void getAllFromDB() throws SQLException;
 
     /**
      *
@@ -61,24 +63,27 @@ public interface EpisodeController {
      *
      * @param episodeNumber the ID of the requested episode.
      * @return An Episode object.
+     * @throws java.sql.SQLException
      * @see Episode
      */
-    public Episode getEpisode(long episodeNumber);
+    public Episode getEpisode(long episodeNumber) throws SQLException;
 
     /**
      *
      * Returns a collection of all the episodes stored in the database.
      *
      * @return Collection containing the Episodes.
+     * @throws java.sql.SQLException
      * @see Episode
      */
-    public Collection<Episode> getAllEpisodes();
+    public Collection<Episode> getAllEpisodes() throws SQLException;
 
     /**
      *
      * Deletes the episode with the supplied ID.
      *
      * @param episodeID The ID of the episode to delete.
+     * @throws java.sql.SQLException
      */
-    public void delete(long episodeID);
+    public void delete(long episodeID) throws SQLException;
 }

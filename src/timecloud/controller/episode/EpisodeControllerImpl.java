@@ -22,12 +22,15 @@
  */
 package timecloud.controller.episode;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import timecloud.dao.episode.EpisodeDAO;
-import timecloud.model.episode.Episode;
 import timecloud.dto.episode.EpisodeDTO;
+import timecloud.model.episode.Episode;
 
 /**
  *
@@ -40,7 +43,7 @@ import timecloud.dto.episode.EpisodeDTO;
 public final class EpisodeControllerImpl implements EpisodeController {
 
     private final EpisodeDAO episodeDAO;
-    private final Map<Long, Episode> episodes;
+    private Map<Long, Episode> episodes;
 
     /**
      *
@@ -50,49 +53,71 @@ public final class EpisodeControllerImpl implements EpisodeController {
      */
     public EpisodeControllerImpl(EpisodeDAO episodeDAO) {
         this.episodeDAO = episodeDAO;
-        episodes = new TreeMap<>();
-        episodes.putAll(getAllFromDB());
     }
 
     @Override
-    public void save(EpisodeDTO episodeDTO) {
-        Episode episode;
-        if (!episodes.containsKey(episodeDTO.getEpisodeID())) {
-            episode = episodeDAO.create(episodeDTO);
-        } else {
-            episode = episodeDAO.update(episodeDTO);
+    public void save(EpisodeDTO episodeDTO) throws SQLException {
+        try {
+            if (episodes == null) {
+                getAllFromDB();
+            }
+            Episode episode;
+            if (!episodes.containsKey(episodeDTO.getEpisodeID())) {
+                episode = episodeDAO.create(episodeDTO);
+            } else {
+                episode = episodeDAO.update(episodeDTO);
+            }
+            if (episode != null) {
+                episodes.put(episode.getEpisodeID(), episode);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        if (episode != null) {
+    }
+
+    @Override
+    public void getAllFromDB() throws SQLException {
+        episodes = new TreeMap<>();
+        Collection<Episode> result = episodeDAO.readAll();
+
+        for (Episode episode : result) {
             episodes.put(episode.getEpisodeID(), episode);
         }
     }
 
     @Override
-    public Map<Long, Episode> getAllFromDB() {
-        Collection<Episode> result = episodeDAO.readAll();
-
-        Map<Long, Episode> resultEpisodes = new TreeMap<>();
-
-        for (Episode episode : result) {
-            resultEpisodes.put(episode.getEpisodeID(), episode);
+    public Episode getEpisode(long episodeNumber) throws SQLException {
+        try {
+            if (episodes == null) {
+                getAllFromDB();
+            }
+            return episodes.get(episodeNumber);
+        } catch (SQLException ex) {
+            Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-
-        return resultEpisodes;
     }
 
     @Override
-    public Episode getEpisode(long episodeNumber) {
-        return episodes.get(episodeNumber);
-    }
-
-    @Override
-    public Collection<Episode> getAllEpisodes() {
+    public Collection<Episode> getAllEpisodes() throws SQLException {
+        if (episodes == null) {
+            getAllFromDB();
+        }
         return episodes.values();
     }
 
     @Override
-    public void delete(long episodeID) {
-        episodeDAO.delete(episodeID);
-        episodes.remove(episodeID);
+    public void delete(long episodeID) throws SQLException {
+        try {
+            if (episodes == null) {
+                getAllFromDB();
+            }
+            episodeDAO.delete(episodeID);
+            episodes.remove(episodeID);
+        } catch (SQLException ex) {
+            Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 }

@@ -47,6 +47,7 @@ public class TransferImpl implements Transfer {
     private String endDepartment;
     private String endBed;
     private String endMedicalDepartment;
+    private long transferID;
 
     /**
      *
@@ -69,7 +70,8 @@ public class TransferImpl implements Transfer {
      * @param endBed the end bed
      * @param endMedicalDepartment the end medical department
      */
-    TransferImpl(Episode episode, DateTime transferTimestamp, String startDepartment, String startBed, String StartMedicalDeparment, String endDepartment, String endBed, String endMedicalDepartment) {
+    TransferImpl(long transferID, Episode episode, DateTime transferTimestamp, String startDepartment, String startBed, String StartMedicalDeparment, String endDepartment, String endBed, String endMedicalDepartment) {
+        this.transferID = transferID;
         this.episode = episode;
         this.transferTimestamp = transferTimestamp;
         this.startDepartment = startDepartment;
@@ -89,6 +91,16 @@ public class TransferImpl implements Transfer {
      */
     public TransferImpl(TransferDTO transferDTO) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public long getTransferID() {
+        return transferID;
+    }
+    
+    @Override
+    public void setTransferID(long transferID) {
+        this.transferID = transferID;
     }
 
     @Override

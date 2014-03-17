@@ -49,6 +49,7 @@ import timecloud.model.episode.Episode;
 public class TransferBuilderImpl implements TransferBuilder {
 
     private Episode episode;
+    private long transferID;
     private DateTime transferTimestamp;
     private String startDepartment;
     private String startBed;
@@ -57,6 +58,12 @@ public class TransferBuilderImpl implements TransferBuilder {
     private String endBed;
     private String endMedicalDepartment;
 
+    @Override
+    public TransferBuilderImpl setTransferID(long transferID) {
+        this.transferID = transferID;
+        return this;
+    }
+    
     @Override
     public TransferBuilderImpl setEpisode(Episode episode) {
         this.episode = episode;
@@ -82,7 +89,7 @@ public class TransferBuilderImpl implements TransferBuilder {
     }
 
     @Override
-    public TransferBuilderImpl setStartMedicalDeparment(String StartMedicalDeparment) {
+    public TransferBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment) {
         this.StartMedicalDeparment = StartMedicalDeparment;
         return this;
     }
@@ -107,7 +114,7 @@ public class TransferBuilderImpl implements TransferBuilder {
 
     @Override
     public TransferImpl createTransfer() {
-        return new TransferImpl(episode, transferTimestamp, startDepartment, startBed, StartMedicalDeparment, endDepartment, endBed, endMedicalDepartment);
+        return new TransferImpl(transferID, episode, transferTimestamp, startDepartment, startBed, StartMedicalDeparment, endDepartment, endBed, endMedicalDepartment);
     }
 
 }

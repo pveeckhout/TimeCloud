@@ -23,7 +23,9 @@
 package timecloud.dto.transfer;
 
 import org.joda.time.DateTime;
+import timecloud.dto.episode.EpisodeDtoImpl;
 import timecloud.model.episode.Episode;
+import timecloud.model.episode.EpisodeImpl;
 import timecloud.model.transfer.Transfer;
 
 public class TransferDtoImpl extends TransferDTO {
@@ -41,42 +43,46 @@ public class TransferDtoImpl extends TransferDTO {
     
     @Override
     public String getEndBed() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transfer.getEndBed();
     }
 
     @Override
     public String getEndDepartment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transfer.getEndDepartment();
     }
 
     @Override
     public String getEndMedicalDepartment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transfer.getEndMedicalDepartment();
     }
 
     @Override
     public Episode getEpisode() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new EpisodeImpl(new EpisodeDtoImpl(transfer.getEpisode()));
     }
 
     @Override
     public String getStartBed() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transfer.getStartBed();
     }
 
     @Override
     public String getStartDepartment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return transfer.getStartDepartment();
     }
 
     @Override
     public String getStartMedicalDeparment() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return transfer.getStartMedicalDeparment();
     }
 
     @Override
     public DateTime getTransferTimestamp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return transfer.getTransferTimestamp();
     }
 
+    @Override
+    public long getTransferID() {
+        return transfer.getTransferID();
+    }
 }
