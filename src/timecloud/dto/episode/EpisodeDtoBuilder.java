@@ -20,50 +20,29 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.model.transfer;
+package timecloud.dto.episode;
 
 import org.joda.time.DateTime;
-import timecloud.model.episode.Episode;
+import timecloud.enums.TriageLevel;
 
 /**
  *
- * Model interface defining the available getters, setters, constructors and
- * operations for Transfer
- *
  * @author Pieter Van Eeckhout
  */
-public interface Transfer {
-    
-    long getTransferID();
-    
-    void setTransferID(long transferID);
+public interface EpisodeDtoBuilder {
 
-    String getEndBed();
+    EpisodeDtoImpl createEpisodeDto();
 
-    String getEndDepartment();
+    EpisodeDtoBuilderImpl setEpisodeID(long episodeID);
 
-    String getEndMedicalDepartment();
+    EpisodeDtoBuilderImpl setIntakeTimestamp(DateTime intakeTimestamp);
 
-    String getStartBed();
+    EpisodeDtoBuilderImpl setMeg(boolean meg);
 
-    String getStartDepartment();
+    EpisodeDtoBuilderImpl setPatientID(String patientID);
 
-    String getStartMedicalDeparment();
+    EpisodeDtoBuilderImpl setTriageLevel(TriageLevel triageLevel);
 
-    DateTime getTransferTimestamp();
-
-    void setEndBed(String endBed);
-
-    void setEndDepartment(String endDepartment);
-
-    void setEndMedicalDepartment(String endMedicalDepartment);
-
-    void setStartBed(String startBed);
-
-    void setStartDepartment(String startDepartment);
-
-    void setStartMedicalDeparment(String StartMedicalDeparment);
-
-    void setTransferTimestamp(DateTime transferTimestamp);
+    EpisodeDtoBuilderImpl setTriageTimestamp(DateTime triageTimestamp);
 
 }

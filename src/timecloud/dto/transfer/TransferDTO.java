@@ -86,16 +86,6 @@ public abstract class TransferDTO implements Transfer, Immutable {
     /**
      * DO NOT USE, setters are disabled in the DTO paradigm
      */
-    public void setEpisode(Episode episode) {
-        UnsupportedOperationException ex = new UnsupportedOperationException("Immutable Object. Setter setEpisode is disabled");
-        Logger.getLogger(TransferDTO.class.getName()).log(Level.SEVERE, null, ex);
-        throw ex;
-    }
-
-    @Override
-    /**
-     * DO NOT USE, setters are disabled in the DTO paradigm
-     */
     public void setStartBed(String startBed) {
         UnsupportedOperationException ex = new UnsupportedOperationException("Immutable Object. Setter setStartBed is disabled");
         Logger.getLogger(TransferDTO.class.getName()).log(Level.SEVERE, null, ex);

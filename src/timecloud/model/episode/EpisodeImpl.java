@@ -22,6 +22,7 @@
  */
 package timecloud.model.episode;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import org.joda.time.DateTime;
@@ -56,6 +57,7 @@ public final class EpisodeImpl implements Episode {
      *
      */
     public EpisodeImpl() {
+        this.transfers = new ArrayList<>();
     }
 
     /**
@@ -71,14 +73,14 @@ public final class EpisodeImpl implements Episode {
      * @param transfers collection of all the transfers associated with this
      * episode
      */
-    EpisodeImpl(long episodeID, String patientID, DateTime intakeTimestamp, boolean meg, DateTime triageTimestamp, TriageLevel triageLevel, Collection<Transfer> transfers) {
+    EpisodeImpl(long episodeID, String patientID, DateTime intakeTimestamp, boolean meg, DateTime triageTimestamp, TriageLevel triageLevel) {
         this.episodeID = episodeID;
         this.patientID = patientID;
         this.intakeTimestamp = intakeTimestamp;
         this.meg = meg;
         this.triageTimestamp = triageTimestamp;
         this.triageLevel = triageLevel;
-        this.transfers = transfers;
+        this.transfers = new ArrayList<>();
     }
 
     /**
@@ -95,71 +97,72 @@ public final class EpisodeImpl implements Episode {
         this.setMeg(episodeDTO.getMeg());
         this.setTriageTimestamp(episodeDTO.getTriageTimestamp());
         this.setTriageLevel(episodeDTO.getTriageLevel());
+        this.transfers = new ArrayList<>();
     }
 
     @Override
     public void setEpisodeID(long episodeID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.episodeID = episodeID;
     }
 
     @Override
     public long getEpisodeID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return episodeID;
     }
 
     @Override
     public void setPatientID(String patientID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.patientID = patientID;
     }
 
     @Override
     public String getpatientID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return patientID;
     }
 
     @Override
     public void setIntakeTimestamp(DateTime intakeTimestamp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.intakeTimestamp = intakeTimestamp;
     }
 
     @Override
     public DateTime getIntakeTimestamp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return intakeTimestamp;
     }
 
     @Override
     public void setMeg(boolean meg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.meg = meg;
     }
 
     @Override
     public boolean getMeg() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return meg;
     }
 
     @Override
     public void setTriageTimestamp(DateTime triageTimestamp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.triageTimestamp = triageTimestamp;
     }
 
     @Override
     public DateTime getTriageTimestamp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return triageTimestamp;
     }
 
     @Override
     public void setTriageLevel(TriageLevel triageLevel) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.triageLevel = triageLevel;
     }
 
     @Override
     public TriageLevel getTriageLevel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return triageLevel;
     }
 
     @Override
     public Collection<Transfer> getTransfers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transfers;
     }
 
     @Override
@@ -202,5 +205,21 @@ public final class EpisodeImpl implements Episode {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void addTransfer(Transfer transfer) {
+        if (transfers == null) {
+            transfers = new ArrayList<>();
+        }
+        transfers.add(transfer);
+    }
+
+    @Override
+    public void addTransfers(Collection<Transfer> transfers) {
+        if (transfers == null) {
+            transfers = new ArrayList<>();
+        }
+        this.transfers.addAll(transfers);
     }
 }

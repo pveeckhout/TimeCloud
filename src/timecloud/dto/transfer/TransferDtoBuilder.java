@@ -41,7 +41,7 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.model.transfer;
+package timecloud.dto.transfer;
 
 import org.joda.time.DateTime;
 import timecloud.model.episode.Episode;
@@ -50,23 +50,24 @@ import timecloud.model.episode.Episode;
  *
  * @author Pieter Van Eeckhout
  */
-public interface TransferBuilder {
+public interface TransferDtoBuilder {
 
-    TransferImpl createTransfer();
-    
-    TransferBuilderImpl setTransferID(long transferID);
+    TransferDtoImpl createTransferDto();
 
-    TransferBuilderImpl setEndBed(String endBed);
+    TransferDtoBuilderImpl setEndBed(String endBed);
 
-    TransferBuilderImpl setEndDepartment(String endDepartment);
+    TransferDtoBuilderImpl setEndDepartment(String endDepartment);
 
-    TransferBuilderImpl setEndMedicalDepartment(String endMedicalDepartment);
+    TransferDtoBuilderImpl setEndMedicalDepartment(String endMedicalDepartment);
 
-    TransferBuilderImpl setStartBed(String startBed);
+    TransferDtoBuilderImpl setStartBed(String startBed);
 
-    TransferBuilderImpl setStartDepartment(String startDepartment);
+    TransferDtoBuilderImpl setStartDepartment(String startDepartment);
 
-    TransferBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment);
+    TransferDtoBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment);
 
-    TransferBuilderImpl setTransferTimestamp(DateTime transferTimestamp);
+    TransferDtoBuilderImpl setTransferID(long transferID);
+
+    TransferDtoBuilderImpl setTransferTimestamp(DateTime transferTimestamp);
+
 }

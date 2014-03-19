@@ -111,5 +111,5 @@ public abstract class EpisodeDTO implements Episode, Immutable {
         UnsupportedOperationException ex = new UnsupportedOperationException("Immutable Object. Setter setTriageLevel is disabled");
         Logger.getLogger(EpisodeDTO.class.getName()).log(Level.SEVERE, null, ex);
         throw ex;
-    }       
+    }
 }

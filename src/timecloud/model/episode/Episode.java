@@ -148,4 +148,20 @@ public interface Episode extends Serializable {
      * @see Transfer
      */
     Collection<Transfer> getTransfers();
+    
+    /**
+     *
+     * adds a transfer to the episode
+     * 
+     * @param transfer
+     */
+    void addTransfer(Transfer transfer);
+
+    /**
+     *
+     * adds a collection of transfers to the episode
+     * 
+     * @param transfers
+     */
+    void addTransfers(Collection<Transfer> transfers);
 }

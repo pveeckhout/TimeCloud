@@ -20,69 +20,70 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.controller.episode;
+package timecloud.controller.transfer;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import timecloud.model.episode.Episode;
-import timecloud.dto.episode.EpisodeDTO;
+import timecloud.dto.transfer.TransferDTO;
+import timecloud.model.transfer.Transfer;
 
 /**
  *
- * Controller interface defining the available operations on Episodes
+ * Controller interface defining the available operations on Transfers
  *
  * @author Pieter Van Eeckhout
  */
-public interface EpisodeController {
+public interface TransferController {
 
     /**
      *
-     * Save an episode to the DB and the repository
+     * Save an transfer to the DB and the repository
      *
-     * @param episodeDTO The data of the episode to be saved. If the episodeID
-     * is set, the episode will be updated. Else it will be created.
+     * @param transferDTO The data of the transfer to be saved. If the
+     * transferID is set, the transfer will be updated. Else it will be created.
      * @throws java.sql.SQLException
-     * @see Episode
-     * @see EpisodeDTO
+     * @see Transfer
+     * @see TransferDTO
      */
-    void save(EpisodeDTO episodeDTO) throws SQLException;
+    void save(TransferDTO transferDTO) throws SQLException;
 
     /**
      *
-     * Fills the episode collection with all the episodes stored in the database.
+     * Fills the transfer collection with all the transfers stored in the
+     * database.
      *
      * @throws java.sql.SQLException
-     * @see Episode
+     * @see Transfer
      */
     void getAllFromDB() throws SQLException;
 
     /**
      *
-     * Returns the episode with the supplied ID.
+     * Returns the transfer with the supplied ID.
      *
-     * @param episodeNumber the ID of the requested episode.
-     * @return An Episode object.
+     * @param transferNumber the ID of the requested transfer.
+     * @return An Transfer object.
      * @throws java.sql.SQLException
-     * @see Episode
+     * @see Transfer
      */
-    Episode getEpisode(long episodeNumber) throws SQLException;
+    Transfer getTransfer(long transferNumber) throws SQLException;
 
     /**
      *
-     * Returns a collection of all the episodes stored in the database.
+     * Returns a collection of all the transfers stored in the database.
      *
-     * @return Collection containing the Episodes.
+     * @return Collection containing the Transfers.
      * @throws java.sql.SQLException
-     * @see Episode
+     * @see Transfer
      */
-    Collection<Episode> getAllEpisodes() throws SQLException;
+    Collection<Transfer> getAllTransfers() throws SQLException;
 
     /**
      *
-     * Deletes the episode with the supplied ID.
+     * Deletes the transfer with the supplied ID.
      *
-     * @param episodeID The ID of the episode to delete.
+     * @param transferID The ID of the transfer to delete.
      * @throws java.sql.SQLException
      */
-    void delete(long episodeID) throws SQLException;
+    void delete(long transferID) throws SQLException;
 }
