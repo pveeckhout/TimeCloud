@@ -41,32 +41,71 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.model.transfer;
+package timecloud.dto.transfer;
 
 import org.joda.time.DateTime;
-import timecloud.model.episode.Episode;
+import timecloud.model.transfer.TransferBuilder;
+import timecloud.model.transfer.TransferBuilderImpl;
 
-/**
- *
- * @author Pieter Van Eeckhout
- */
-public interface TransferBuilder {
+public class TransferDtoBuilderImpl implements TransferDtoBuilder {
 
-    TransferImpl createTransfer();
-    
-    TransferBuilderImpl setTransferID(long transferID);
+    private TransferBuilder transferBuilder;
 
-    TransferBuilderImpl setEndBed(String endBed);
+    public TransferDtoBuilderImpl() {
+        transferBuilder = new TransferBuilderImpl();
+    }
 
-    TransferBuilderImpl setEndDepartment(String endDepartment);
+    @Override
+    public TransferDtoBuilderImpl setTransferID(long transferID) {
+        this.transferBuilder.setTransferID(transferID);
+        return this;
+    }
 
-    TransferBuilderImpl setEndMedicalDepartment(String endMedicalDepartment);
+    @Override
+    public TransferDtoBuilderImpl setTransferTimestamp(DateTime transferTimestamp) {
+         this.transferBuilder.setTransferTimestamp(transferTimestamp);
+        return this;
+    }
 
-    TransferBuilderImpl setStartBed(String startBed);
+    @Override
+    public TransferDtoBuilderImpl setStartDepartment(String startDepartment) {
+         this.transferBuilder.setStartDepartment(startDepartment);
+        return this;
+    }
 
-    TransferBuilderImpl setStartDepartment(String startDepartment);
+    @Override
+    public TransferDtoBuilderImpl setStartBed(String startBed) {
+         this.transferBuilder.setStartBed(startBed);
+        return this;
+    }
 
-    TransferBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment);
+    @Override
+    public TransferDtoBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment) {
+         this.transferBuilder.setStartMedicalDepartment(StartMedicalDeparment);
+        return this;
+    }
 
-    TransferBuilderImpl setTransferTimestamp(DateTime transferTimestamp);
+    @Override
+    public TransferDtoBuilderImpl setEndDepartment(String endDepartment) {
+         this.transferBuilder.setEndDepartment(endDepartment);
+        return this;
+    }
+
+    @Override
+    public TransferDtoBuilderImpl setEndBed(String endBed) {
+         this.transferBuilder.setEndBed(endBed);
+        return this;
+    }
+
+    @Override
+    public TransferDtoBuilderImpl setEndMedicalDepartment(String endMedicalDepartment) {
+         this.transferBuilder.setEndMedicalDepartment(endMedicalDepartment);
+        return this;
+    }
+
+    @Override
+    public TransferDtoImpl createTransferDto() {
+        return new TransferDtoImpl(transferBuilder.createTransfer());
+    }
+
 }

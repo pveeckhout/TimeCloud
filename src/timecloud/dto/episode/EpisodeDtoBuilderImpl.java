@@ -20,68 +20,62 @@
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package timecloud.model.episode;
+package timecloud.dto.episode;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import org.joda.time.DateTime;
+import timecloud.dto.transfer.TransferDTO;
 import timecloud.enums.TriageLevel;
-import timecloud.model.transfer.Transfer;
+import timecloud.model.episode.EpisodeBuilder;
+import timecloud.model.episode.EpisodeBuilderImpl;
 
-/**
- *
- * Implementation for the Builder paradigm on the episode model
- *
- * @author Pieter Van Eeckhout
- */
-public class EpisodeBuilderImpl implements EpisodeBuilder {
+public class EpisodeDtoBuilderImpl implements EpisodeDtoBuilder {
 
-    private long episodeID;
-    private String patientID;
-    private DateTime intakeTimestamp;
-    private boolean meg;
-    private DateTime triageTimestamp;
-    private TriageLevel triageLevel;
+    private final EpisodeBuilder episodeBuilder;
+
+    public EpisodeDtoBuilderImpl() {
+        episodeBuilder = new EpisodeBuilderImpl();
+    }
 
     @Override
-    public EpisodeBuilderImpl setEpisodeID(long episodeID) {
-        this.episodeID = episodeID;
+    public EpisodeDtoBuilderImpl setEpisodeID(long episodeID) {
+        this.episodeBuilder.setEpisodeID(episodeID);
         return this;
     }
 
     @Override
-    public EpisodeBuilderImpl setPatientID(String patientID) {
-        this.patientID = patientID;
+    public EpisodeDtoBuilderImpl setPatientID(String patientID) {
+        this.episodeBuilder.setPatientID(patientID);
         return this;
     }
 
     @Override
-    public EpisodeBuilderImpl setIntakeTimestamp(DateTime intakeTimestamp) {
-        this.intakeTimestamp = intakeTimestamp;
+    public EpisodeDtoBuilderImpl setIntakeTimestamp(DateTime intakeTimestamp) {
+        this.episodeBuilder.setIntakeTimestamp(intakeTimestamp);
         return this;
     }
 
     @Override
-    public EpisodeBuilderImpl setMeg(boolean meg) {
-        this.meg = meg;
+    public EpisodeDtoBuilderImpl setMeg(boolean meg) {
+        this.episodeBuilder.setMeg(meg);
         return this;
     }
 
     @Override
-    public EpisodeBuilderImpl setTriageTimestamp(DateTime triageTimestamp) {
-        this.triageTimestamp = triageTimestamp;
+    public EpisodeDtoBuilderImpl setTriageTimestamp(DateTime triageTimestamp) {
+        this.episodeBuilder.setTriageTimestamp(triageTimestamp);
         return this;
     }
 
     @Override
-    public EpisodeBuilderImpl setTriageLevel(TriageLevel triageLevel) {
-        this.triageLevel = triageLevel;
+    public EpisodeDtoBuilderImpl setTriageLevel(TriageLevel triageLevel) {
+        this.episodeBuilder.setTriageLevel(triageLevel);
         return this;
     }
 
     @Override
-    public EpisodeImpl createEpisode() {
-        return new EpisodeImpl(episodeID, patientID, intakeTimestamp, meg, triageTimestamp, triageLevel);
+    public EpisodeDtoImpl createEpisodeDto() {
+        return new EpisodeDtoImpl(episodeBuilder.createEpisode());
     }
 
 }

@@ -39,7 +39,6 @@ public class TransferImpl implements Transfer {
 
     public static final long serialVersionUID = 84610981L;
 
-    private Episode episode;
     private DateTime transferTimestamp;
     private String startDepartment;
     private String startBed;
@@ -61,7 +60,6 @@ public class TransferImpl implements Transfer {
      *
      * Constructor
      *
-     * @param episode the episode in which the transfer took place
      * @param transferTimestamp the time when the transfer took place
      * @param startDepartment the start department
      * @param startBed the start bed
@@ -70,9 +68,8 @@ public class TransferImpl implements Transfer {
      * @param endBed the end bed
      * @param endMedicalDepartment the end medical department
      */
-    TransferImpl(long transferID, Episode episode, DateTime transferTimestamp, String startDepartment, String startBed, String StartMedicalDeparment, String endDepartment, String endBed, String endMedicalDepartment) {
+    TransferImpl(long transferID, DateTime transferTimestamp, String startDepartment, String startBed, String StartMedicalDeparment, String endDepartment, String endBed, String endMedicalDepartment) {
         this.transferID = transferID;
-        this.episode = episode;
         this.transferTimestamp = transferTimestamp;
         this.startDepartment = startDepartment;
         this.startBed = startBed;
@@ -101,16 +98,6 @@ public class TransferImpl implements Transfer {
     @Override
     public void setTransferID(long transferID) {
         this.transferID = transferID;
-    }
-
-    @Override
-    public Episode getEpisode() {
-        return episode;
-    }
-
-    @Override
-    public void setEpisode(Episode episode) {
-        this.episode = episode;
     }
 
     @Override
@@ -186,7 +173,6 @@ public class TransferImpl implements Transfer {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.episode);
         hash = 97 * hash + Objects.hashCode(this.transferTimestamp);
         hash = 97 * hash + Objects.hashCode(this.startDepartment);
         hash = 97 * hash + Objects.hashCode(this.startBed);
@@ -206,9 +192,6 @@ public class TransferImpl implements Transfer {
             return false;
         }
         final TransferImpl other = (TransferImpl) obj;
-        if (!Objects.equals(this.episode, other.episode)) {
-            return false;
-        }
         if (!Objects.equals(this.transferTimestamp, other.transferTimestamp)) {
             return false;
         }

@@ -48,7 +48,7 @@ public class EpisodeDtoImpl extends EpisodeDTO {
      * @param episode The episode from which to build this DTO
      * @see Episode
      */
-    public EpisodeDtoImpl(Episode episode) {
+    EpisodeDtoImpl(Episode episode) {
         super(episode);
     }
 
@@ -89,6 +89,16 @@ public class EpisodeDtoImpl extends EpisodeDTO {
             transfers.add(new TransferImpl(new TransferDtoImpl(transfer)));
         }
         return transfers;
+    }
+
+    @Override
+    public void addTransfer(Transfer transfer) {
+        episode.getTransfers().add(transfer);
+    }
+
+    @Override
+    public void addTransfers(Collection<Transfer> transfers) {
+        episode.getTransfers().addAll(transfers);
     }
 
 }

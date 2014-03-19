@@ -23,10 +23,13 @@
 package timecloud.dto.transfer;
 
 import org.joda.time.DateTime;
+import timecloud.dto.episode.EpisodeDTO;
+import timecloud.dto.episode.EpisodeDtoBuilderImpl;
 import timecloud.dto.episode.EpisodeDtoImpl;
 import timecloud.model.episode.Episode;
 import timecloud.model.episode.EpisodeImpl;
 import timecloud.model.transfer.Transfer;
+import timecloud.model.transfer.TransferBuilderImpl;
 
 public class TransferDtoImpl extends TransferDTO {
 
@@ -54,11 +57,6 @@ public class TransferDtoImpl extends TransferDTO {
     @Override
     public String getEndMedicalDepartment() {
         return transfer.getEndMedicalDepartment();
-    }
-
-    @Override
-    public Episode getEpisode() {
-        return new EpisodeImpl(new EpisodeDtoImpl(transfer.getEpisode()));
     }
 
     @Override

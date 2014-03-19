@@ -47,8 +47,6 @@ public interface EpisodeBuilder {
 
     EpisodeBuilderImpl setTriageLevel(TriageLevel triageLevel);
 
-    EpisodeBuilderImpl setTransfers(Collection<Transfer> transfers);
-
     EpisodeImpl createEpisode();
     
 }

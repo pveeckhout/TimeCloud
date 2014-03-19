@@ -60,7 +60,8 @@ public class TransferDaoImpl implements TransferDAO {
             //the transfer ID
             queryBuilder.append(transferDTO.getTransferID()).append(", ");
             //the episode foreign key
-            queryBuilder.append(transferDTO.getEpisode().getEpisodeID()).append(", ");
+            //queryBuilder.append(transferDTO.getEpisode().getEpisodeID()).append(", ");
+            queryBuilder.append("-1, ");
             //the transfer time
             //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
             queryBuilder.append("\"").append(transferDTO.getTransferTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");

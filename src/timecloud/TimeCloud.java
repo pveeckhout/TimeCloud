@@ -22,8 +22,18 @@
  */
 package timecloud;
 
-import timecloud.controller.main.MainController;
-import timecloud.view.SwingController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import timecloud.controller.database.DatabaseController;
+import timecloud.controller.database.DatabaseControllerSQLiteImpl;
+import timecloud.controller.episode.EpisodeController;
+import timecloud.controller.episode.EpisodeControllerImpl;
+import timecloud.controller.transfer.TransferController;
+import timecloud.controller.transfer.TransferControllerImpl;
+import timecloud.dao.episode.EpisodeDAO;
+import timecloud.dao.episode.EpisodeDaoImpl;
+import timecloud.dao.transfer.TransferDAO;
+import timecloud.dao.transfer.TransferDaoImpl;
 
 /**
  * This is the startup class for the TimeCloud program
@@ -31,10 +41,7 @@ import timecloud.view.SwingController;
  * @author Pieter Van Eeckhout
  */
 public class TimeCloud {
-
-    private MainController mainController;
-    private SwingController swingController;
-
+    
     /**
      *
      * Startup method of TimeCloud
@@ -42,7 +49,16 @@ public class TimeCloud {
      * @param args the command line arguments (not used)
      */
     public static void main(String[] args) {
-
+        try {
+            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("D:\\Users\\Pieter Van Eeckhout\\Code\\TimeCloud\\database\\TimeCloud.sqlite");
+            EpisodeDAO episodeDao = new EpisodeDaoImpl(databaseController);
+            TransferDAO transferDao = new TransferDaoImpl(databaseController);
+            EpisodeController episodeController = new EpisodeControllerImpl(episodeDao);
+            TransferController transferController = new TransferControllerImpl(transferDao);
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TimeCloud.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

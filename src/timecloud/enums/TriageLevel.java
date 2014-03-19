@@ -65,6 +65,7 @@ public enum TriageLevel {
     /**
      * returns the TriageLevel associated with the level code
      *
+     * @param level the level number
      * @return the TriageLevel.
      */
     public static TriageLevel fromInteger(int level) {
@@ -76,6 +77,27 @@ public enum TriageLevel {
             case 2:
                 return URGENT;
             case 3:
+                return VERY_URGENT;
+            default:
+                return UNDEFINED;
+        }
+    }
+    
+     /**
+     * returns the TriageLevel associated with the Dutch level name
+     *
+     * @param level the level name
+     * @return the TriageLevel.
+     */
+    public static TriageLevel fromString(String level) {
+        switch (level) {
+            case "overleden":
+                return DECEASED;
+            case "weinig dringend":
+                return NOT_URGENT;
+            case "dringend":
+                return URGENT;
+            case "zeer dringend":
                 return VERY_URGENT;
             default:
                 return UNDEFINED;
