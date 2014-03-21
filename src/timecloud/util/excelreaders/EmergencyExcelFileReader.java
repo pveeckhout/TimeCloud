@@ -24,18 +24,17 @@ package timecloud.util.excelreaders;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
+import java.util.TreeMap;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Row;
 import org.joda.time.DateTime;
+import timecloud.dto.episode.EpisodeDTO;
 import timecloud.dto.episode.EpisodeDtoBuilder;
 import timecloud.dto.episode.EpisodeDtoBuilderImpl;
-import timecloud.dto.transfer.TransferDtoBuilder;
-import timecloud.dto.transfer.TransferDtoBuilderImpl;
+import timecloud.dto.transfer.TransferDTO;
 import timecloud.enums.TriageLevel;
-import timecloud.model.transfer.Transfer;
 
 /**
  *
@@ -45,105 +44,81 @@ import timecloud.model.transfer.Transfer;
  */
 public class EmergencyExcelFileReader extends ExcelFileReader {
 
-    public void readEmergencyData(File file) throws IOException {
-        try {
-            setExcelFile(file);
-            processStoredData();
+    public static final Integer PATIENTID_ROW = 0;
+    public static final Integer EPISODEID_ROW = 3;
+    public static final Integer INTAKETIME_ROW = 8;
+    public static final Integer MEG_ROW = 10;
+    public static final Integer TRIAGETIME_ROW = 14;
+    public static final Integer TRIAGELEVEL_ROW = 16;
 
-            EpisodeDtoBuilder episodeDtoBuilder = new EpisodeDtoBuilderImpl();
-            TransferDtoBuilder transferDtoBuilder = new TransferDtoBuilderImpl();
+    private void primeData(File file) throws IOException {
+        setExcelFile(file);
+        processStoredData();
+    }
+//            DateTime transferTimestamp;
+//            String startDepartment;
+//            String startBed;
+//            String StartMedicalDeparment;
+//            String endDepartment;
+//            String endBed;
+//            String endMedicalDepartment;
+//            long transferID;
 
-            Collection<Transfer> transfers = new ArrayList<>();
-
-            int x = 0, y = 0;
-            for (HSSFCell[] cellRow : sheetData) {
-                if (cellRow != null) {
-                    y++;
-                    x = 0;
-                    for (HSSFCell cell : cellRow) {
-                        x++;
-                        if (y == 1) {
-                            if (cell != null && cell.getCellType() != HSSFCell.CELL_TYPE_BLANK) {
-                                System.out.println(cell.getStringCellValue());
-                            }
-                        } else {
-                            if (cell != null && cell.getCellType() != HSSFCell.CELL_TYPE_BLANK) {
-                                System.out.println(cell.toString());
-                                switch (x) {
-                                    case 1:
-                                        episodeDtoBuilder.setPatientID(cell.getStringCellValue());
-                                        break;
-                                    case 2:
-                                        break;
-                                    case 3:
-                                        break;
-                                    case 4:
-                                        episodeDtoBuilder.setEpisodeID((long) Math.floor(cell.getNumericCellValue()));
-                                        break;
-                                    case 5:
-                                        break;
-                                    case 6:
-                                        break;
-                                    case 7:
-                                        break;
-                                    case 8:
-                                        break;
-                                    case 9:
-                                        episodeDtoBuilder.setIntakeTimestamp(new DateTime(cell.getDateCellValue().getTime()));
-                                        break;
-                                    case 10:
-                                        break;
-                                    case 11:
-                                        episodeDtoBuilder.setMeg(cell.getStringCellValue().equalsIgnoreCase("ja"));
-                                        break;
-                                    case 12:
-                                        break;
-                                    case 13:
-                                        break;
-                                    case 14:
-                                        break;
-                                    case 15:
-                                        episodeDtoBuilder.setTriageTimestamp(new DateTime(cell.getDateCellValue().getTime()));
-                                        break;
-                                    case 16:
-                                        break;
-                                    case 17:
-                                        episodeDtoBuilder.setTriageLevel(TriageLevel.fromString(cell.getStringCellValue()));
-                                        break;
-                                    case 18:
-                                        transferDtoBuilder.setTransferTimestamp(new DateTime(cell.getDateCellValue().getTime()));
-                                        break;
-                                    case 19:
-                                        transferDtoBuilder.setStartDepartment(cell.getStringCellValue());
-                                        break;
-                                    case 20:
-                                        transferDtoBuilder.setStartBed(cell.getStringCellValue());
-                                        break;
-                                    case 21:
-                                        transferDtoBuilder.setStartMedicalDepartment(cell.getStringCellValue());
-                                        break;
-                                    case 22:
-                                        transferDtoBuilder.setEndDepartment(cell.getStringCellValue());
-                                        break;
-                                    case 23:
-                                        transferDtoBuilder.setEndBed(cell.getStringCellValue());
-                                        break;
-                                    case 24:
-                                        transferDtoBuilder.setEndMedicalDepartment(cell.getStringCellValue());
-                                        break;
-                                    default:
-                                        throw new IOException("could not consolidate column number");
-                                }
-
-                                transfers.add(transferDtoBuilder.createTransferDto());
-                            }
-                        }
-                    }
-                }
+//                            case 18:
+//                                transferDtoBuilder.setTransferTimestamp(new DateTime(items[i][j].getDateCellValue().getTime()));
+//                                break;
+//                            case 19:
+//                                transferDtoBuilder.setStartDepartment(items[i][j].getStringCellValue());
+//                                break;
+//                            case 20:
+//                                transferDtoBuilder.setStartBed(items[i][j].getStringCellValue());
+//                                break;
+//                            case 21:
+//                                transferDtoBuilder.setStartMedicalDepartment(items[i][j].getStringCellValue());
+//                                break;
+//                            case 22:
+//                                transferDtoBuilder.setEndDepartment(items[i][j].getStringCellValue());
+//                                break;
+//                            case 23:
+//                                transferDtoBuilder.setEndBed(items[i][j].getStringCellValue());
+//                                break;
+//                            case 24:
+//                                transferDtoBuilder.setEndMedicalDepartment(items[i][j].getStringCellValue());
+//                                break;
+    public Collection<EpisodeDTO> getEpisodes(File file) throws IOException {
+        primeData(file);
+        Map<Long, EpisodeDTO> episodes = new TreeMap<>();
+        for (Row row : sheet) {
+            if (row.getCell(EPISODEID_ROW).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
+                continue;
             }
-        } catch (IOException ex) {
-            Logger.getLogger(EmergencyExcelFileReader.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+            EpisodeDTO episodeDto = getEpisodeData(row);
+            episodes.put(episodeDto.getEpisodeID(), episodeDto);
         }
+        return episodes.values();
+    }
+
+    private EpisodeDTO getEpisodeData(Row row) {
+        EpisodeDtoBuilder episodeDtoBuilder = new EpisodeDtoBuilderImpl();
+        episodeDtoBuilder.setEpisodeID((long) row.getCell(EPISODEID_ROW).getNumericCellValue()); //casting simply truncates, which is what we want.
+        episodeDtoBuilder.setPatientID(row.getCell(PATIENTID_ROW).getStringCellValue());
+        episodeDtoBuilder.setIntakeTimestamp(new DateTime(row.getCell(INTAKETIME_ROW).getDateCellValue().getTime()));
+        //this can be empty or null
+        if (row.getCell(MEG_ROW) != null) {
+            episodeDtoBuilder.setMeg(row.getCell(MEG_ROW).getStringCellValue().equalsIgnoreCase("ja"));
+        }
+        //this can be empty or null
+        if (row.getCell(TRIAGETIME_ROW) != null) {
+            episodeDtoBuilder.setTriageTimestamp(new DateTime(row.getCell(TRIAGETIME_ROW).getDateCellValue().getTime()));
+        }
+        TriageLevel triageLevel = (row.getCell(TRIAGELEVEL_ROW) == null || row.getCell(TRIAGELEVEL_ROW).getCellType() == HSSFCell.CELL_TYPE_BLANK) ? TriageLevel.UNDEFINED : TriageLevel.fromString(row.getCell(TRIAGELEVEL_ROW).getStringCellValue());
+        episodeDtoBuilder.setTriageLevel(triageLevel);
+        
+        return episodeDtoBuilder.createEpisodeDto();
+    }
+
+    public Map<Long, Collection<TransferDTO>> getTransfers(File file) throws IOException {
+        primeData(file);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

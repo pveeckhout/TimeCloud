@@ -140,6 +140,9 @@ public abstract class ExcelFileReader {
      * @return a two-dimensional HSSFCell array of the
      */
     public HSSFCell[][] getSheetData() {
+        if (sheetData == null) {
+            processStoredData();
+        }
         return sheetData;
     }
 }

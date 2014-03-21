@@ -22,6 +22,8 @@
  */
 package timecloud.controller.transfer;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import timecloud.dto.transfer.TransferDTO;
@@ -39,13 +41,14 @@ public interface TransferController {
      *
      * Save an transfer to the DB and the repository
      *
+     * @param episodeID the id of the episode of the transfer
      * @param transferDTO The data of the transfer to be saved. If the
      * transferID is set, the transfer will be updated. Else it will be created.
      * @throws java.sql.SQLException
      * @see Transfer
      * @see TransferDTO
      */
-    void save(TransferDTO transferDTO) throws SQLException;
+    void save(long episodeID, TransferDTO transferDTO) throws SQLException;
 
     /**
      *
@@ -70,13 +73,14 @@ public interface TransferController {
 
     /**
      *
-     * Returns a collection of all the transfers stored in the database.
+     * Returns a collection of all the transfers stored in the database the episode.
      *
+     * @param episodeID the id of the episode of the transfers
      * @return Collection containing the Transfers.
      * @throws java.sql.SQLException
      * @see Transfer
      */
-    Collection<Transfer> getAllTransfers() throws SQLException;
+    Collection<Transfer> getAllTransfers(long episodeID) throws SQLException;
 
     /**
      *
@@ -86,4 +90,15 @@ public interface TransferController {
      * @throws java.sql.SQLException
      */
     void delete(long transferID) throws SQLException;
+    
+    /**
+     * 
+     * Adds the transfers contained in the supplied file
+     * 
+     * @param file the file to be processed
+     * @throws java.io.IOException
+     * @throws java.sql.SQLException
+     * @see file
+     */
+    void addFromFile(File file) throws IOException, SQLException;
 }

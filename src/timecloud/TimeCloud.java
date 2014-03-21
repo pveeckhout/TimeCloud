@@ -22,6 +22,8 @@
  */
 package timecloud;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
@@ -34,6 +36,7 @@ import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dao.episode.EpisodeDaoImpl;
 import timecloud.dao.transfer.TransferDAO;
 import timecloud.dao.transfer.TransferDaoImpl;
+import timecloud.util.excelreaders.EmergencyExcelFileReader;
 
 /**
  * This is the startup class for the TimeCloud program
@@ -56,7 +59,12 @@ public class TimeCloud {
             EpisodeController episodeController = new EpisodeControllerImpl(episodeDao);
             TransferController transferController = new TransferControllerImpl(transferDao);
             
-        } catch (ClassNotFoundException ex) {
+            File excelFile = new File("D:\\Users\\Pieter Van Eeckhout\\Downloads\\Opnames op periode 17_02 -03_04.xls");
+            
+            episodeController.addFromFile(excelFile);
+            transferController.addFromFile(excelFile);
+            
+        } catch (Exception ex) {//here we do want to catch the all
             Logger.getLogger(TimeCloud.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -23,7 +23,6 @@
 package timecloud.model.transfer;
 
 import org.joda.time.DateTime;
-import timecloud.model.episode.Episode;
 
 /**
  *
