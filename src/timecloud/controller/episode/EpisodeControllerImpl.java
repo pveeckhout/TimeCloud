@@ -22,6 +22,8 @@
  */
 package timecloud.controller.episode;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
@@ -31,6 +33,7 @@ import java.util.logging.Logger;
 import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dto.episode.EpisodeDTO;
 import timecloud.model.episode.Episode;
+import timecloud.util.excelreaders.EmergencyExcelFileReader;
 
 /**
  *
@@ -116,6 +119,21 @@ public final class EpisodeControllerImpl implements EpisodeController {
             episodeDAO.delete(episodeID);
             episodes.remove(episodeID);
         } catch (SQLException ex) {
+            Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void addFromFile(File file) throws IOException, SQLException {
+        try {
+            EmergencyExcelFileReader fileReader = new EmergencyExcelFileReader();
+            Collection<EpisodeDTO> episodeDtos = fileReader.getEpisodes(file);
+            
+            for (EpisodeDTO episodeDTO : episodeDtos) {
+                this.save(episodeDTO);
+            }
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }

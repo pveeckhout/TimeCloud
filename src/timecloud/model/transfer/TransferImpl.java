@@ -25,7 +25,6 @@ package timecloud.model.transfer;
 import java.util.Objects;
 import org.joda.time.DateTime;
 import timecloud.dto.transfer.TransferDTO;
-import timecloud.model.episode.Episode;
 
 /**
  *

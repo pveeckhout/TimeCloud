@@ -71,15 +71,23 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             queryBuilder.append(episodeDTO.getEpisodeID()).append(", ");
             //the patient ID
             //string values so surrounded by quotes
-            queryBuilder.append("\"").append(episodeDTO.getpatientID()).append("\", ");
+            queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
             //the intake time
             //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("\"").append(episodeDTO.getIntakeTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");
+            queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
             //whether or not the MEG was used
-            queryBuilder.append(episodeDTO.getMeg()).append(", ");
+            if (episodeDTO.getMeg()) {
+                queryBuilder.append(1).append(", ");
+            } else {
+                queryBuilder.append(0).append(", ");
+            }
             //the triage time
             //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("\"").append(episodeDTO.getTriageTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");
+            if (episodeDTO.getTriageTimestamp() != null) {
+                queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
+            } else {
+                queryBuilder.append("'', ");
+            }
             //the triage level
             queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel());
 
@@ -90,7 +98,7 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             statement.executeUpdate(queryBuilder.toString());
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
-                return find(rs.getLong("episode_id"));
+                return find(rs.getLong(1));
             }
             throw new SQLException("inserted Episode could not be retrieved, generated keys returned empty");
         } catch (SQLException ex) {
@@ -156,18 +164,26 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             //the patient ID
             //string values so surrounded by quotes
             queryBuilder.append("patient_id").append(" = ");
-            queryBuilder.append("\"").append(episodeDTO.getpatientID()).append("\", ");
+            queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
             //the intake time
             //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
             queryBuilder.append("intake_time").append(" = ");
-            queryBuilder.append("\"").append(episodeDTO.getIntakeTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");
+            queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
             //whether or not the MEG was used
             queryBuilder.append("meg").append(" = ");
-            queryBuilder.append(episodeDTO.getMeg()).append(", ");
+            if (episodeDTO.getMeg()) {
+                queryBuilder.append(1).append(", ");
+            } else {
+                queryBuilder.append(0).append(", ");
+            }
             //the triage time
             //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
             queryBuilder.append("triage_time").append(" = ");
-            queryBuilder.append("\"").append(episodeDTO.getTriageTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");
+            if (episodeDTO.getTriageTimestamp() != null) {
+                queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
+            } else {
+                queryBuilder.append("'', ");
+            }
             //the triage level
             queryBuilder.append("triage_level").append(" = ");
             queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel()).append(" ");
@@ -224,7 +240,7 @@ public class EpisodeDaoImpl implements EpisodeDAO {
 
     @Override
     public void delete(long episodeID) throws SQLException {
-         try {
+        try {
             //build the statement SQL string
             StringBuilder queryBuilder = new StringBuilder();
             //insert new item

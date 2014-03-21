@@ -24,18 +24,18 @@ package timecloud.dao.transfer;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Map;
 import timecloud.dto.transfer.TransferDTO;
-import timecloud.model.episode.Episode;
 import timecloud.model.transfer.Transfer;
 
 /**
  *
  * DAO interface defining the available CRUD operations on Transfers
- * 
+ *
  * @author Pieter Van Eeckhout
  */
 public interface TransferDAO {
-    
+
     /**
      * Save a new episode to the database
      *
@@ -47,7 +47,7 @@ public interface TransferDAO {
      * @see TransferDTO
      */
     Transfer create(TransferDTO transferDTO) throws SQLException;
-    
+
     /**
      *
      * gets a single Episode from the database
@@ -73,13 +73,14 @@ public interface TransferDAO {
     Transfer update(TransferDTO transferDTO) throws SQLException;
 
     /**
-     * Returns a collection of all the transfers stored in the database.
+     * Returns a collection of all the transfers stored in the database, grouped
+     * by episodeID.
      *
      * @return Collection containing the Transfer.
      * @throws java.sql.SQLException
      * @see Transfer
      */
-    Collection<Transfer> readAll() throws SQLException;
+    Map<Long, Collection<Transfer>> readAll() throws SQLException;
 
     /**
      * Deletes the transfer with the supplied ID from the database.

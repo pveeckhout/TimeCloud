@@ -31,15 +31,18 @@ import org.joda.time.DateTime;
 public class StringDateTimeConverter {
 
     public static DateTime stringToDateTime(String dateString) {
-        String split[] = dateString.split(" ");
+        if (!dateString.isEmpty()) {
+            String split[] = dateString.split(" ");
 
-        String datePart = split[0];
-        String timePart = split[1];
+            String datePart = split[0];
+            String timePart = split[1];
 
-        String dateSplit[] = datePart.split("-");
-        String timeSplit[] = timePart.split(":");
+            String dateSplit[] = datePart.split("-");
+            String timeSplit[] = timePart.split(":");
 
-        return new DateTime(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]), Integer.parseInt(timeSplit[0]), Integer.parseInt(timeSplit[1]), Integer.parseInt(timeSplit[2]));
-
+            return new DateTime(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]), Integer.parseInt(timeSplit[0]), Integer.parseInt(timeSplit[1]), Integer.parseInt(timeSplit[2]));
+        } else {
+            return null;
+        }
     }
 }

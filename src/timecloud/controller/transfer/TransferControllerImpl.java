@@ -22,6 +22,8 @@
  */
 package timecloud.controller.transfer;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
@@ -31,6 +33,8 @@ import java.util.logging.Logger;
 import timecloud.dao.transfer.TransferDAO;
 import timecloud.dto.transfer.TransferDTO;
 import timecloud.model.transfer.Transfer;
+import timecloud.model.transfer.TransferImpl;
+import timecloud.util.excelreaders.EmergencyExcelFileReader;
 
 /**
  *
@@ -43,7 +47,7 @@ import timecloud.model.transfer.Transfer;
 public final class TransferControllerImpl implements TransferController {
 
     private final TransferDAO transferDAO;
-    private Map<Long, Transfer> transfers;
+    private Map<Long, Map<Long, Transfer>> transfers;
 
     /**
      *
@@ -56,19 +60,22 @@ public final class TransferControllerImpl implements TransferController {
     }
 
     @Override
-    public void save(TransferDTO transferDTO) throws SQLException {
+    public void save(long episodeID, TransferDTO transferDTO) throws SQLException {
         try {
             if (transfers == null) {
                 getAllFromDB();
             }
             Transfer transfer;
-            if (!transfers.containsKey(transferDTO.getTransferID())) {
+            if (!existsTransfer(transferDTO.getTransferID()) && !existsTransfer(new TransferImpl(transferDTO))) {
                 transfer = transferDAO.create(transferDTO);
             } else {
                 transfer = transferDAO.update(transferDTO);
             }
             if (transfer != null) {
-                transfers.put(transfer.getTransferID(), transfer);
+                if (!transfers.containsKey(episodeID)) {
+                    transfers.put(episodeID, new TreeMap<Long, Transfer>());
+                }
+                transfers.get(episodeID).put(transfer.getTransferID(), transfer);
             }
         } catch (SQLException ex) {
             Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,32 +86,64 @@ public final class TransferControllerImpl implements TransferController {
     @Override
     public void getAllFromDB() throws SQLException {
         transfers = new TreeMap<>();
-        Collection<Transfer> result = transferDAO.readAll();
+        Map<Long, Collection<Transfer>> result = transferDAO.readAll();
 
-        for (Transfer transfer : result) {
-            transfers.put(transfer.getTransferID(), transfer);
+        for (Map.Entry<Long, Collection<Transfer>> entry : result.entrySet()) {
+            Long episodeID = entry.getKey();
+            Collection<Transfer> transferCollection = entry.getValue();
+            transfers.put(episodeID, new TreeMap<Long, Transfer>());
+            for (Transfer transfer : transferCollection) {
+                transfers.get(episodeID).put(transfer.getTransferID(), transfer);
+            }
         }
     }
 
     @Override
-    public Transfer getTransfer(long transferNumber) throws SQLException {
+    public Transfer getTransfer(long transferNumber) throws SQLException, IllegalArgumentException {
         try {
             if (transfers == null) {
                 getAllFromDB();
             }
-            return transfers.get(transferNumber);
+            for (Map<Long, Transfer> transferMap : transfers.values()) {
+                if (transferMap.containsKey(transferNumber)) {
+                    return transferMap.get(transferNumber);
+                }
+            }
+            throw new IllegalArgumentException("transfer not found");
         } catch (SQLException ex) {
             Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }
 
+    private boolean existsTransfer(long transferNumber) throws SQLException {
+        try {
+            getTransfer(transferNumber);
+            return true;
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+    }
+
+    private boolean existsTransfer(Transfer transfer) {
+        for (Map.Entry<Long, Map<Long, Transfer>> entry : transfers.entrySet()) {
+            Map<Long, Transfer> map = entry.getValue();
+            for (Map.Entry<Long, Transfer> entry1 : map.entrySet()) {
+                Transfer transfer1 = entry1.getValue();
+                if (transfer.equals(transfer1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
-    public Collection<Transfer> getAllTransfers() throws SQLException {
+    public Collection<Transfer> getAllTransfers(long episodeID) throws SQLException {
         if (transfers == null) {
             getAllFromDB();
         }
-        return transfers.values();
+        return transfers.get(episodeID).values();
     }
 
     @Override
@@ -116,6 +155,24 @@ public final class TransferControllerImpl implements TransferController {
             transferDAO.delete(transferID);
             transfers.remove(transferID);
         } catch (SQLException ex) {
+            Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public void addFromFile(File file) throws IOException, SQLException {
+        try {
+            EmergencyExcelFileReader fileReader = new EmergencyExcelFileReader();
+            Map<Long, Collection<TransferDTO>> transferDtoMap = fileReader.getTransfers(file);
+            for (Map.Entry<Long, Collection<TransferDTO>> entry : transferDtoMap.entrySet()) {
+                Long episodeID = entry.getKey();
+                Collection<TransferDTO> transferDtos = entry.getValue();
+                for (TransferDTO transferDto : transferDtos) {
+                    this.save(episodeID, transferDto);
+                }
+            }
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }

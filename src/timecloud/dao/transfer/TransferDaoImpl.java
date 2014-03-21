@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
@@ -146,7 +147,7 @@ public class TransferDaoImpl implements TransferDAO {
     }
 
     @Override
-    public Collection<Transfer> readAll() throws SQLException {
+    public Map<Long, Collection<Transfer>> readAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
