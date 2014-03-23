@@ -1,4 +1,5 @@
-CREATE TABLE "Transfer" (
+DROP TABLE IF EXISTS Transfers;
+CREATE TABLE "Transfers" (
     "transfer_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     "episode_id" INTEGER REFERENCES "Episode" ("episode_id"),
     "transfer_time" DATE,
@@ -10,4 +11,4 @@ CREATE TABLE "Transfer" (
     "end_medical_department" TEXT,
     UNIQUE("episode_id","transfer_time","start_department", "end_department")
         ON CONFLICT REPLACE
-)
+);

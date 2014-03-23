@@ -86,7 +86,14 @@ public class TransferImpl implements Transfer {
      * @see EpisodeDTO
      */
     public TransferImpl(TransferDTO transferDTO) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.transferID = transferDTO.getTransferID();
+        this.transferTimestamp = transferDTO.getTransferTimestamp();
+        this.startDepartment = transferDTO.getStartDepartment();
+        this.startBed = transferDTO.getStartBed();
+        this.StartMedicalDeparment = transferDTO.getStartMedicalDepartment();
+        this.endDepartment = transferDTO.getEndDepartment();
+        this.endBed = transferDTO.getEndBed();
+        this.endMedicalDepartment = transferDTO.getEndMedicalDepartment();
     }
     
     @Override
@@ -130,7 +137,7 @@ public class TransferImpl implements Transfer {
     }
 
     @Override
-    public String getStartMedicalDeparment() {
+    public String getStartMedicalDepartment() {
         return StartMedicalDeparment;
     }
 

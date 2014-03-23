@@ -39,6 +39,7 @@ public interface TransferDAO {
     /**
      * Save a new episode to the database
      *
+     * @param episodeID the ID of the episode of this transfer
      * @param transferDTO The data of the episode to be saved.
      * @return The episode object created by saving the TransferDTO to the
      * database
@@ -46,7 +47,7 @@ public interface TransferDAO {
      * @see Transfer
      * @see TransferDTO
      */
-    Transfer create(TransferDTO transferDTO) throws SQLException;
+    Transfer create(long episodeID, TransferDTO transferDTO) throws SQLException;
 
     /**
      *
@@ -89,4 +90,12 @@ public interface TransferDAO {
      * @throws java.sql.SQLException
      */
     void delete(long transferID) throws SQLException;
+    
+    /**
+     *
+     * @param episodeID  the ID of the episode of the transfers
+     * @return
+     * @throws java.sql.SQLException
+     */
+    Collection<Transfer> getFromEpisode(long episodeID) throws SQLException;
 }

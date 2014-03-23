@@ -59,7 +59,6 @@ public abstract class ExcelFileReader {
     void setExcelFile(File file) throws FileNotFoundException, IOException {
         try {
             this.ExcelWorkbook = new HSSFWorkbook(new POIFSFileSystem(new FileInputStream(file)));
-            Logger.getLogger(ExcelFileReader.class.getName()).log(Level.INFO, null, "ExcelFile: " + file.getName() + " loaded.");
             this.sheetNumber = 0;
             this.sheet = ExcelWorkbook.getSheetAt(sheetNumber);
         } catch (FileNotFoundException ex) {
@@ -115,13 +114,11 @@ public abstract class ExcelFileReader {
     void processStoredData() {
         int rows = sheet.getPhysicalNumberOfRows();
         sheetData = new HSSFCell[rows][];
-        Logger.getLogger(ExcelFileReader.class.getName()).log(Level.INFO, null, "Processing excel: found " + rows + " rows.");
 
         for (int r = 0; r < 10 || r < rows; r++) {
             HSSFRow row = sheet.getRow(r);
             if (row != null) {
                 int collumns = sheet.getRow(r).getPhysicalNumberOfCells();
-                Logger.getLogger(ExcelFileReader.class.getName()).log(Level.INFO, null, "Processing excel: found " + collumns + " collumns on row " + r + ".");
                 sheetData[r] = new HSSFCell[collumns];
                 for (int c = 0; c < collumns; c++) {
                     HSSFCell cell = row.getCell(c);
@@ -135,7 +132,7 @@ public abstract class ExcelFileReader {
 
     /**
      *
-     * Retuns the data contained in the current sheet in a two-dimensional
+     * Returns the data contained in the current sheet in a two-dimensional
      *
      * @return a two-dimensional HSSFCell array of the
      */
