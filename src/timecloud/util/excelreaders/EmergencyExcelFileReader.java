@@ -24,6 +24,7 @@ package timecloud.util.excelreaders;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,6 +35,8 @@ import timecloud.dto.episode.EpisodeDTO;
 import timecloud.dto.episode.EpisodeDtoBuilder;
 import timecloud.dto.episode.EpisodeDtoBuilderImpl;
 import timecloud.dto.transfer.TransferDTO;
+import timecloud.dto.transfer.TransferDtoBuilder;
+import timecloud.dto.transfer.TransferDtoBuilderImpl;
 import timecloud.enums.TriageLevel;
 
 /**
@@ -50,41 +53,19 @@ public class EmergencyExcelFileReader extends ExcelFileReader {
     public static final Integer MEG_ROW = 10;
     public static final Integer TRIAGETIME_ROW = 14;
     public static final Integer TRIAGELEVEL_ROW = 16;
+    public static final Integer TRANSFERTIME_ROW = 17;
+    public static final Integer STARTDEPARTMENT_ROW = 18;
+    public static final Integer STARTBED_ROW = 19;
+    public static final Integer STARTMEDICALDEPARTMENT_ROW = 20;
+    public static final Integer ENDDEPARTMENT_ROW = 21;
+    public static final Integer ENDBED_ROW = 22;
+    public static final Integer ENDMEDICALDEPARTMENT_ROW = 23;
 
     private void primeData(File file) throws IOException {
         setExcelFile(file);
         processStoredData();
     }
-//            DateTime transferTimestamp;
-//            String startDepartment;
-//            String startBed;
-//            String StartMedicalDeparment;
-//            String endDepartment;
-//            String endBed;
-//            String endMedicalDepartment;
-//            long transferID;
 
-//                            case 18:
-//                                transferDtoBuilder.setTransferTimestamp(new DateTime(items[i][j].getDateCellValue().getTime()));
-//                                break;
-//                            case 19:
-//                                transferDtoBuilder.setStartDepartment(items[i][j].getStringCellValue());
-//                                break;
-//                            case 20:
-//                                transferDtoBuilder.setStartBed(items[i][j].getStringCellValue());
-//                                break;
-//                            case 21:
-//                                transferDtoBuilder.setStartMedicalDepartment(items[i][j].getStringCellValue());
-//                                break;
-//                            case 22:
-//                                transferDtoBuilder.setEndDepartment(items[i][j].getStringCellValue());
-//                                break;
-//                            case 23:
-//                                transferDtoBuilder.setEndBed(items[i][j].getStringCellValue());
-//                                break;
-//                            case 24:
-//                                transferDtoBuilder.setEndMedicalDepartment(items[i][j].getStringCellValue());
-//                                break;
     public Collection<EpisodeDTO> getEpisodes(File file) throws IOException {
         primeData(file);
         Map<Long, EpisodeDTO> episodes = new TreeMap<>();
@@ -113,12 +94,45 @@ public class EmergencyExcelFileReader extends ExcelFileReader {
         }
         TriageLevel triageLevel = (row.getCell(TRIAGELEVEL_ROW) == null || row.getCell(TRIAGELEVEL_ROW).getCellType() == HSSFCell.CELL_TYPE_BLANK) ? TriageLevel.UNDEFINED : TriageLevel.fromString(row.getCell(TRIAGELEVEL_ROW).getStringCellValue());
         episodeDtoBuilder.setTriageLevel(triageLevel);
-        
+
         return episodeDtoBuilder.createEpisodeDto();
     }
 
     public Map<Long, Collection<TransferDTO>> getTransfers(File file) throws IOException {
         primeData(file);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<Long, Collection<TransferDTO>> transfers = new TreeMap<>();
+        for (Row row : sheet) {
+            if (row.getCell(EPISODEID_ROW).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
+                continue;
+            }
+            long episodeID = (long) row.getCell(EPISODEID_ROW).getNumericCellValue();
+            if (transfers.get(episodeID) == null) {
+                transfers.put(episodeID, new ArrayList<TransferDTO>());
+            }
+            transfers.get(episodeID).add(getTransfersData(row));
+        }
+
+        return transfers;
+    }
+
+    private TransferDTO getTransfersData(Row row) {
+        TransferDtoBuilder transferDtoBuilder = new TransferDtoBuilderImpl();
+        transferDtoBuilder.setTransferTimestamp(new DateTime(row.getCell(TRANSFERTIME_ROW).getDateCellValue().getTime()));
+        transferDtoBuilder.setStartDepartment(row.getCell(STARTDEPARTMENT_ROW).getStringCellValue());
+        if (row.getCell(STARTBED_ROW).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+            transferDtoBuilder.setStartBed(row.getCell(STARTBED_ROW).getNumericCellValue() + "");
+        } else {
+            transferDtoBuilder.setStartBed(row.getCell(STARTBED_ROW).getStringCellValue());
+        }
+        transferDtoBuilder.setStartMedicalDepartment(row.getCell(STARTMEDICALDEPARTMENT_ROW).getStringCellValue());
+        transferDtoBuilder.setEndDepartment(row.getCell(ENDDEPARTMENT_ROW).getStringCellValue());
+        if (row.getCell(ENDBED_ROW).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+            transferDtoBuilder.setEndBed(row.getCell(ENDBED_ROW).getNumericCellValue() + "");
+        } else {
+            transferDtoBuilder.setEndBed(row.getCell(ENDBED_ROW).getStringCellValue());
+        }
+        transferDtoBuilder.setEndMedicalDepartment(row.getCell(ENDMEDICALDEPARTMENT_ROW).getStringCellValue());
+
+        return transferDtoBuilder.createTransferDto();
     }
 }

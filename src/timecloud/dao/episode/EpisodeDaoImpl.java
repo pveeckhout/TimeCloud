@@ -62,7 +62,7 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             //insert new item
             queryBuilder.append("INSERT INTO").append(" ");
             //table name
-            queryBuilder.append("Episode").append(" ");
+            queryBuilder.append("Episodes").append(" ");
             //values keyword
             queryBuilder.append("VALUES(");
 
@@ -115,7 +115,7 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             //insert new item
             queryBuilder.append("SELECT * FROM").append(" ");
             //table name
-            queryBuilder.append("Episode").append(" ");
+            queryBuilder.append("Episodes").append(" ");
             //WHERE keyword
             queryBuilder.append("WHERE 1 = 1").append(" ");
 
@@ -153,14 +153,11 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             //insert new item
             queryBuilder.append("UPDATE").append(" ");
             //table name
-            queryBuilder.append("Episode").append(" ");
+            queryBuilder.append("Episodes").append(" ");
             //values keyword
             queryBuilder.append("SET").append(" ");
 
             //the object values
-            //the episode ID
-            queryBuilder.append("episode_id").append(" = ");
-            queryBuilder.append(episodeDTO.getEpisodeID()).append(", ");
             //the patient ID
             //string values so surrounded by quotes
             queryBuilder.append("patient_id").append(" = ");
@@ -214,7 +211,7 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             //insert new item
             queryBuilder.append("SELECT * FROM").append(" ");
             //table name
-            queryBuilder.append("Episode");
+            queryBuilder.append("Episodes");
 
             Statement statement = databaseController.createStatement();
             ResultSet rs = statement.executeQuery(queryBuilder.toString());
@@ -246,7 +243,7 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             //insert new item
             queryBuilder.append("DELETE * FROM").append(" ");
             //table name
-            queryBuilder.append("Episode").append(" ");
+            queryBuilder.append("Episodes").append(" ");
             //WHERE keyword
             queryBuilder.append("WHERE 1 = 1").append(" ");
 
@@ -262,5 +259,4 @@ public class EpisodeDaoImpl implements EpisodeDAO {
             throw ex;
         }
     }
-
 }

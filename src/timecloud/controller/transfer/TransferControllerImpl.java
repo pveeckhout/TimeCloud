@@ -66,8 +66,8 @@ public final class TransferControllerImpl implements TransferController {
                 getAllFromDB();
             }
             Transfer transfer;
-            if (!existsTransfer(transferDTO.getTransferID()) && !existsTransfer(new TransferImpl(transferDTO))) {
-                transfer = transferDAO.create(transferDTO);
+            if (transferDTO.getTransferID() == 0L && !existsTransfer(transferDTO.getTransferID()) && !existsTransfer(new TransferImpl(transferDTO))) {
+                transfer = transferDAO.create(episodeID, transferDTO);
             } else {
                 transfer = transferDAO.update(transferDTO);
             }

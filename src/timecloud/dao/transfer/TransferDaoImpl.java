@@ -25,8 +25,10 @@ package timecloud.dao.transfer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
@@ -46,23 +48,22 @@ public class TransferDaoImpl implements TransferDAO {
     }
 
     @Override
-    public Transfer create(TransferDTO transferDTO) throws SQLException {
+    public Transfer create(long episodeID, TransferDTO transferDTO) throws SQLException {
         try {
             //build the statement SQL string
             StringBuilder queryBuilder = new StringBuilder();
             //insert new item
             queryBuilder.append("INSERT INTO").append(" ");
             //table name
-            queryBuilder.append("Episode").append(" ");
+            queryBuilder.append("Transfers").append(" ");
+            //table collumns
+            queryBuilder.append("(episode_id, transfer_time, start_department, start_bed, start_medical_department, end_department, end_bed, end_medical_department) ");
             //values keyword
             queryBuilder.append("VALUES(");
 
             //the object values
-            //the transfer ID
-            queryBuilder.append(transferDTO.getTransferID()).append(", ");
             //the episode foreign key
-            //queryBuilder.append(transferDTO.getEpisode().getEpisodeID()).append(", ");
-            queryBuilder.append("-1, ");
+            queryBuilder.append(episodeID).append(", ");
             //the transfer time
             //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
             queryBuilder.append("\"").append(transferDTO.getTransferTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");
@@ -74,7 +75,7 @@ public class TransferDaoImpl implements TransferDAO {
             queryBuilder.append("\"").append(transferDTO.getStartBed()).append("\", ");
             //the start medical department
             //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getStartMedicalDeparment()).append("\", ");
+            queryBuilder.append("\"").append(transferDTO.getStartMedicalDepartment()).append("\", ");
             //the end department
             //string values so surrounded by quotes
             queryBuilder.append("\"").append(transferDTO.getEndDepartment()).append("\", ");
@@ -83,7 +84,7 @@ public class TransferDaoImpl implements TransferDAO {
             queryBuilder.append("\"").append(transferDTO.getEndBed()).append("\", ");
             //the end medical department
             //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getEndMedicalDepartment()).append("\", ");
+            queryBuilder.append("\"").append(transferDTO.getEndMedicalDepartment()).append("\"");
 
             //closing th values tag
             queryBuilder.append(")");
@@ -92,11 +93,11 @@ public class TransferDaoImpl implements TransferDAO {
             statement.executeUpdate(queryBuilder.toString());
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
-                return find(rs.getLong("transfer_id"));
+                return find(rs.getLong(1));
             }
             throw new SQLException("inserted transfer could not be retrieved, generated keys returned empty");
         } catch (SQLException ex) {
-            Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransferDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }
@@ -109,7 +110,7 @@ public class TransferDaoImpl implements TransferDAO {
             //insert new item
             queryBuilder.append("SELECT * FROM").append(" ");
             //table name
-            queryBuilder.append("Transfer").append(" ");
+            queryBuilder.append("Transfers").append(" ");
             //WHERE keyword
             queryBuilder.append("WHERE 1 = 1").append(" ");
 
@@ -124,17 +125,68 @@ public class TransferDaoImpl implements TransferDAO {
                 TransferBuilder transferBuilder = new TransferBuilderImpl();
 
                 transferBuilder.setTransferID(rs.getLong("transfer_id"));
-                transferBuilder.setTransferTimestamp(StringDateTimeConverter.stringToDateTime("transfer_time"));
+                transferBuilder.setTransferTimestamp(StringDateTimeConverter.stringToDateTime(rs.getString("transfer_time")));
                 transferBuilder.setStartDepartment(rs.getString("start_department"));
                 transferBuilder.setStartBed(rs.getString("start_bed"));
                 transferBuilder.setStartMedicalDepartment(rs.getString("start_medical_department"));
                 transferBuilder.setEndDepartment(rs.getString("end_department"));
                 transferBuilder.setEndBed(rs.getString("end_bed"));
                 transferBuilder.setEndMedicalDepartment(rs.getString("end_medical_department"));
-                
+
                 return transferBuilder.createTransfer();
             }
-            throw new SQLException("Episode with id (" + transferID + ") could not be found");
+            throw new SQLException("Transfer with id (" + transferID + ") could not be found");
+        } catch (SQLException ex) {
+            Logger.getLogger(TransferDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public Transfer update(TransferDTO transferDTO) throws SQLException {
+        try {
+            //build the statement SQL string
+            StringBuilder queryBuilder = new StringBuilder();
+            //insert new item
+            queryBuilder.append("UPDATE").append(" ");
+            //table name
+            queryBuilder.append("Transfers").append(" ");
+            //values keyword
+            queryBuilder.append("SET").append(" ");
+
+            //the object values
+            //the intake time
+            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+            queryBuilder.append("transfer_time").append(" = ");
+            queryBuilder.append("'").append(transferDTO.getTransferTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
+            //the start department
+            queryBuilder.append("start_department").append(" = ");
+            queryBuilder.append("'").append(transferDTO.getStartDepartment()).append("', ");
+            //the start bed
+            queryBuilder.append("start_bed").append(" = ");
+            queryBuilder.append("'").append(transferDTO.getStartBed()).append("', ");
+            //the start medical department
+            queryBuilder.append("start_medical_department").append(" = ");
+            queryBuilder.append("'").append(transferDTO.getStartMedicalDepartment()).append("', ");
+            //the end bed
+            queryBuilder.append("end_bed").append(" = ");
+            queryBuilder.append("'").append(transferDTO.getEndBed()).append("', ");
+            //the end medical department
+            queryBuilder.append("end_medical_department").append(" = ");
+            queryBuilder.append("'").append(transferDTO.getEndMedicalDepartment()).append("', ");
+
+            //WEHER keyword
+            queryBuilder.append("WHERE 1 = 1").append(" ");
+
+            //the values to filter on
+            //the episode ID
+            queryBuilder.append("AND ");
+            queryBuilder.append("transfer_id").append(" = ").append(transferDTO.getTransferID());
+
+            Statement statement = databaseController.createStatement();
+            statement.executeUpdate(queryBuilder.toString());
+
+            return find(transferDTO.getTransferID());
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -142,18 +194,109 @@ public class TransferDaoImpl implements TransferDAO {
     }
 
     @Override
-    public Transfer update(TransferDTO transferDTO) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Map<Long, Collection<Transfer>> readAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            //build the statement SQL string
+            StringBuilder queryBuilder = new StringBuilder();
+            //insert new item
+            queryBuilder.append("SELECT * FROM").append(" ");
+            //table name
+            queryBuilder.append("Transfers");
+
+            Statement statement = databaseController.createStatement();
+            ResultSet rs = statement.executeQuery(queryBuilder.toString());
+            Map<Long, Collection<Transfer>> transfers = new TreeMap<>();
+            while (rs.next()) {
+                long episodeID = rs.getLong("episode_id");
+
+                if (transfers.get(episodeID) == null) {
+                    transfers.put(episodeID, new ArrayList<Transfer>());
+                }
+
+                TransferBuilder transferBuilder = new TransferBuilderImpl();
+
+                transferBuilder.setTransferID(rs.getLong("transfer_id"));
+                transferBuilder.setTransferTimestamp(StringDateTimeConverter.stringToDateTime(rs.getString("transfer_time")));
+                transferBuilder.setStartDepartment(rs.getString("start_department"));
+                transferBuilder.setStartBed(rs.getString("start_bed"));
+                transferBuilder.setStartMedicalDepartment(rs.getString("start_medical_department"));
+                transferBuilder.setEndDepartment(rs.getString("end_department"));
+                transferBuilder.setEndBed(rs.getString("end_bed"));
+                transferBuilder.setEndMedicalDepartment(rs.getString("end_medical_department"));
+
+                transfers.get(episodeID).add(transferBuilder.createTransfer());
+            }
+            return transfers;
+        } catch (SQLException ex) {
+            Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 
     @Override
     public void delete(long transferID) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            //build the statement SQL string
+            StringBuilder queryBuilder = new StringBuilder();
+            //insert new item
+            queryBuilder.append("DELETE * FROM").append(" ");
+            //table name
+            queryBuilder.append("Transfers").append(" ");
+            //WHERE keyword
+            queryBuilder.append("WHERE 1 = 1").append(" ");
+
+            //the values to filter on
+            //the episode ID
+            queryBuilder.append("AND ");
+            queryBuilder.append("transfer_id").append(" = ").append(transferID);
+
+            Statement statement = databaseController.createStatement();
+            statement.executeUpdate(queryBuilder.toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public Collection<Transfer> getFromEpisode(long episodeID) throws SQLException {
+        try {
+            //build the statement SQL string
+            StringBuilder queryBuilder = new StringBuilder();
+            //insert new item
+            queryBuilder.append("SELECT * FROM").append(" ");
+            //table name
+            queryBuilder.append("Transfers").append(" ");
+            //WHERE keyword
+            queryBuilder.append("WHERE 1 = 1").append(" ");
+
+            //the values to filter on
+            //the episode ID
+            queryBuilder.append("AND ");
+            queryBuilder.append("episode_id").append(" = ").append(episodeID);
+
+            Statement statement = databaseController.createStatement();
+            ResultSet rs = statement.executeQuery(queryBuilder.toString());
+            ArrayList<Transfer> transfers = new ArrayList<>();
+            while (rs.next()) {
+                TransferBuilder transferBuilder = new TransferBuilderImpl();
+
+                transferBuilder.setTransferID(rs.getLong("transfer_id"));
+                transferBuilder.setTransferTimestamp(StringDateTimeConverter.stringToDateTime("transfer_time"));
+                transferBuilder.setStartDepartment(rs.getString("start_department"));
+                transferBuilder.setStartBed(rs.getString("start_bed"));
+                transferBuilder.setStartMedicalDepartment(rs.getString("start_medical_department"));
+                transferBuilder.setEndDepartment(rs.getString("end_department"));
+                transferBuilder.setEndBed(rs.getString("end_bed"));
+                transferBuilder.setEndMedicalDepartment(rs.getString("end_medical_department"));
+
+                transfers.add(transferBuilder.createTransfer());
+            }
+            return transfers;
+        } catch (SQLException ex) {
+            Logger.getLogger(TransferDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
     }
 
 }
