@@ -57,45 +57,9 @@ public class EpisodeDaoImpl implements EpisodeDAO {
     @Override
     public Episode create(EpisodeDTO episodeDTO) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("INSERT INTO").append(" ");
-            //table name
-            queryBuilder.append("Episodes").append(" ");
-            //values keyword
-            queryBuilder.append("VALUES(");
-
-            //the object values
-            //the episode ID
-            queryBuilder.append(episodeDTO.getEpisodeID()).append(", ");
-            //the patient ID
-            //string values so surrounded by quotes
-            queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
-            //the intake time
-            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
-            //whether or not the MEG was used
-            if (episodeDTO.getMeg()) {
-                queryBuilder.append(1).append(", ");
-            } else {
-                queryBuilder.append(0).append(", ");
-            }
-            //the triage time
-            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            if (episodeDTO.getTriageTimestamp() != null) {
-                queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
-            } else {
-                queryBuilder.append("'', ");
-            }
-            //the triage level
-            queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel());
-
-            //closing th values tag
-            queryBuilder.append(")");
-
+            String query = buildCreateQuery(episodeDTO);
             Statement statement = databaseController.createStatement();
-            statement.executeUpdate(queryBuilder.toString());
+            statement.executeUpdate(query);
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 return find(rs.getLong(1));
@@ -148,53 +112,9 @@ public class EpisodeDaoImpl implements EpisodeDAO {
     @Override
     public Episode update(EpisodeDTO episodeDTO) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("UPDATE").append(" ");
-            //table name
-            queryBuilder.append("Episodes").append(" ");
-            //values keyword
-            queryBuilder.append("SET").append(" ");
-
-            //the object values
-            //the patient ID
-            //string values so surrounded by quotes
-            queryBuilder.append("patient_id").append(" = ");
-            queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
-            //the intake time
-            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("intake_time").append(" = ");
-            queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
-            //whether or not the MEG was used
-            queryBuilder.append("meg").append(" = ");
-            if (episodeDTO.getMeg()) {
-                queryBuilder.append(1).append(", ");
-            } else {
-                queryBuilder.append(0).append(", ");
-            }
-            //the triage time
-            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("triage_time").append(" = ");
-            if (episodeDTO.getTriageTimestamp() != null) {
-                queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
-            } else {
-                queryBuilder.append("'', ");
-            }
-            //the triage level
-            queryBuilder.append("triage_level").append(" = ");
-            queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel()).append(" ");
-
-            //WEHER keyword
-            queryBuilder.append("WHERE 1 = 1").append(" ");
-
-            //the values to filter on
-            //the episode ID
-            queryBuilder.append("AND ");
-            queryBuilder.append("episode_id").append(" = ").append(episodeDTO.getEpisodeID());
-
+            String query = buildUpdateQuery(episodeDTO);
             Statement statement = databaseController.createStatement();
-            statement.executeUpdate(queryBuilder.toString());
+            statement.executeUpdate(query);
 
             return find(episodeDTO.getEpisodeID());
         } catch (SQLException ex) {
@@ -238,25 +158,133 @@ public class EpisodeDaoImpl implements EpisodeDAO {
     @Override
     public void delete(long episodeID) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("DELETE * FROM").append(" ");
-            //table name
-            queryBuilder.append("Episodes").append(" ");
-            //WHERE keyword
-            queryBuilder.append("WHERE 1 = 1").append(" ");
-
-            //the values to filter on
-            //the episode ID
-            queryBuilder.append("AND ");
-            queryBuilder.append("episode_id").append(" = ").append(episodeID);
-
+            String query = buildDeleteQuery(episodeID);
             Statement statement = databaseController.createStatement();
-            statement.executeUpdate(queryBuilder.toString());
+            statement.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }
+
+    private String buildCreateQuery(EpisodeDTO episodeDTO) {
+        //build the statement SQL string
+        StringBuilder queryBuilder = new StringBuilder();
+        //insert new item
+        queryBuilder.append("INSERT INTO").append(" ");
+        //table name
+        queryBuilder.append("Episodes").append(" ");
+        //values keyword
+        queryBuilder.append("VALUES(");
+
+        //the object values
+        //the episode ID
+        queryBuilder.append(episodeDTO.getEpisodeID()).append(", ");
+        //the patient ID
+        //string values so surrounded by quotes
+        queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
+        //the intake time
+        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+        queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
+        //whether or not the MEG was used
+        if (episodeDTO.getMeg()) {
+            queryBuilder.append(1).append(", ");
+        } else {
+            queryBuilder.append(0).append(", ");
+        }
+        //the triage time
+        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+        if (episodeDTO.getTriageTimestamp() != null) {
+            queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
+        } else {
+            queryBuilder.append("'', ");
+        }
+        //the triage level
+        queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel());
+
+        //closing th values tag
+        queryBuilder.append(")");
+
+        return queryBuilder.toString();
+    }
+
+    private String buildUpdateQuery(EpisodeDTO episodeDTO) {
+        //build the statement SQL string
+        StringBuilder queryBuilder = new StringBuilder();
+        //insert new item
+        queryBuilder.append("UPDATE").append(" ");
+        //table name
+        queryBuilder.append("Episodes").append(" ");
+        //values keyword
+        queryBuilder.append("SET").append(" ");
+
+        //the object values
+        //the patient ID
+        //string values so surrounded by quotes
+        queryBuilder.append("patient_id").append(" = ");
+        queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
+        //the intake time
+        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+        queryBuilder.append("intake_time").append(" = ");
+        queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
+        //whether or not the MEG was used
+        queryBuilder.append("meg").append(" = ");
+        if (episodeDTO.getMeg()) {
+            queryBuilder.append(1).append(", ");
+        } else {
+            queryBuilder.append(0).append(", ");
+        }
+        //the triage time
+        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+        queryBuilder.append("triage_time").append(" = ");
+        if (episodeDTO.getTriageTimestamp() != null) {
+            queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
+        } else {
+            queryBuilder.append("'', ");
+        }
+        //the triage level
+        queryBuilder.append("triage_level").append(" = ");
+        queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel()).append(" ");
+
+        //WEHER keyword
+        queryBuilder.append("WHERE 1 = 1").append(" ");
+
+        //the values to filter on
+        //the episode ID
+        queryBuilder.append("AND ");
+        queryBuilder.append("episode_id").append(" = ").append(episodeDTO.getEpisodeID());
+
+        return queryBuilder.toString();
+    }
+
+    private String buildDeleteQuery(long episodeID) {
+        //build the statement SQL string
+        StringBuilder queryBuilder = new StringBuilder();
+        //insert new item
+        queryBuilder.append("DELETE * FROM").append(" ");
+        //table name
+        queryBuilder.append("Episodes").append(" ");
+        //WHERE keyword
+        queryBuilder.append("WHERE 1 = 1").append(" ");
+
+            //the values to filter on
+        //the episode ID
+        queryBuilder.append("AND ");
+        queryBuilder.append("episode_id").append(" = ").append(episodeID);
+
+        return queryBuilder.toString();
+    }
+
+    @Override
+    public Collection<Episode> batchProcess(Collection<EpisodeDTO> episodes) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private final class PreparedStatments {
+        static final String INSERT = "INSERT INTO Episodes (episode_id,patient_id,intake_time,meg,triage_time,triage_level) values (?,?,?,?,?,?);";
+        static final String UPDATE = "UPDATE Episodes SET episode_id = ?,patient_id = ?,intake_time = ?,meg = ?,triage_time = ?,triage_level = ? WHERE 1 = 1 AND episode_id = ?;";
+        static final String DELETE = "DELETE * FROM Episodes WHERE 1 = 1 AND episode_id = ?;";
+        static final String FIND = "SELECT * FROM Episodes WHERE 1 = 1 AND episode_id = ?;";
+        static final String FINDALL = "SELECT * FROM Episodes;";
+    } 
 }

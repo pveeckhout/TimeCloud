@@ -22,11 +22,10 @@
  */
 package timecloud.controller.transfer;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Observable;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +33,6 @@ import timecloud.dao.transfer.TransferDAO;
 import timecloud.dto.transfer.TransferDTO;
 import timecloud.model.transfer.Transfer;
 import timecloud.model.transfer.TransferImpl;
-import timecloud.util.excelreaders.EmergencyExcelFileReader;
 
 /**
  *
@@ -66,10 +64,15 @@ public final class TransferControllerImpl implements TransferController {
                 getAllFromDB();
             }
             Transfer transfer;
-            if (transferDTO.getTransferID() == 0L && !existsTransfer(transferDTO.getTransferID()) && !existsTransfer(new TransferImpl(transferDTO))) {
+            if (transferDTO.getTransferID() == 0L && !existsTransfer(transferDTO.getTransferID())) {
                 transfer = transferDAO.create(episodeID, transferDTO);
             } else {
-                transfer = transferDAO.update(transferDTO);
+                if (existsTransfer(new TransferImpl(transferDTO))) {
+                    transfer = transferDAO.update(episodeID, transferDTO);
+                    System.out.println("update a transfer");
+                } else {
+                    throw new SQLException("how could this happen???");
+                }
             }
             if (transfer != null) {
                 if (!transfers.containsKey(episodeID)) {
@@ -161,20 +164,7 @@ public final class TransferControllerImpl implements TransferController {
     }
 
     @Override
-    public void addFromFile(File file) throws IOException, SQLException {
-        try {
-            EmergencyExcelFileReader fileReader = new EmergencyExcelFileReader();
-            Map<Long, Collection<TransferDTO>> transferDtoMap = fileReader.getTransfers(file);
-            for (Map.Entry<Long, Collection<TransferDTO>> entry : transferDtoMap.entrySet()) {
-                Long episodeID = entry.getKey();
-                Collection<TransferDTO> transferDtos = entry.getValue();
-                for (TransferDTO transferDto : transferDtos) {
-                    this.save(episodeID, transferDto);
-                }
-            }
-        } catch (IOException | SQLException ex) {
-            Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
-        }
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

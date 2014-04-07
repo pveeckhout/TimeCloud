@@ -19,14 +19,36 @@
  *   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *//*
+ *   The MIT License (MIT)
+ *
+ *   Copyright (c) 2014 Pieter Van Eeckhout
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining a copy of
+ *   this software and associated documentation files (the "Software"), to deal in
+ *   the Software without restriction, including without limitation the rights to
+ *   use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ *   the Software, and to permit persons to whom the Software is furnished to do so,
+ *   subject to the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be included in all
+ *   copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ *   FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ *   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ *   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package timecloud.dao.transfer;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -50,48 +72,64 @@ public class TransferDaoImpl implements TransferDAO {
     @Override
     public Transfer create(long episodeID, TransferDTO transferDTO) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("INSERT INTO").append(" ");
-            //table name
-            queryBuilder.append("Transfers").append(" ");
-            //table collumns
-            queryBuilder.append("(episode_id, transfer_time, start_department, start_bed, start_medical_department, end_department, end_bed, end_medical_department) ");
-            //values keyword
-            queryBuilder.append("VALUES(");
+//            //build the statement SQL string
+//            StringBuilder queryBuilder = new StringBuilder();
+//            //insert new item
+//            queryBuilder.append("INSERT INTO").append(" ");
+//            //table name
+//            queryBuilder.append("Transfers").append(" ");
+//            //table collumns
+//            queryBuilder.append("(episode_id, transfer_time, start_department, start_bed, start_medical_department, end_department, end_bed, end_medical_department) ");
+//            //values keyword
+//            queryBuilder.append("VALUES(");
+//
+//            //the object values
+//            //the episode foreign key
+//            queryBuilder.append(episodeID).append(", ");
+//            //the transfer time
+//            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+//            queryBuilder.append("\"").append(transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("\", ");
+//            //the start department
+//            //string values so surrounded by quotes
+//            queryBuilder.append("\"").append(transferDTO.getStartDepartment()).append("\", ");
+//            //the start bed
+//            //string values so surrounded by quotes
+//            queryBuilder.append("\"").append(transferDTO.getStartBed()).append("\", ");
+//            //the start medical department
+//            //string values so surrounded by quotes
+//            queryBuilder.append("\"").append(transferDTO.getStartMedicalDepartment()).append("\", ");
+//            //the end department
+//            //string values so surrounded by quotes
+//            queryBuilder.append("\"").append(transferDTO.getEndDepartment()).append("\", ");
+//            //the end bed
+//            //string values so surrounded by quotes
+//            queryBuilder.append("\"").append(transferDTO.getEndBed()).append("\", ");
+//            //the end medical department
+//            //string values so surrounded by quotes
+//            queryBuilder.append("\"").append(transferDTO.getEndMedicalDepartment()).append("\"");
+//
+//            //closing th values tag
+//            queryBuilder.append(")");
+//
+//            Statement statement = databaseController.createStatement();
+//            statement.executeUpdate(queryBuilder.toString());            
+//            ResultSet rs = statement.getGeneratedKeys();
 
-            //the object values
-            //the episode foreign key
-            queryBuilder.append(episodeID).append(", ");
-            //the transfer time
-            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("\"").append(transferDTO.getTransferTimestamp().toString("yy-MM-dd HH:mm:ss")).append("\", ");
-            //the start department
-            //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getStartDepartment()).append("\", ");
-            //the start bed
-            //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getStartBed()).append("\", ");
-            //the start medical department
-            //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getStartMedicalDepartment()).append("\", ");
-            //the end department
-            //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getEndDepartment()).append("\", ");
-            //the end bed
-            //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getEndBed()).append("\", ");
-            //the end medical department
-            //string values so surrounded by quotes
-            queryBuilder.append("\"").append(transferDTO.getEndMedicalDepartment()).append("\"");
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.INSERT);
 
-            //closing th values tag
-            queryBuilder.append(")");
+            statement.setLong(1, transferDTO.getTransferID());
+            statement.setLong(2, episodeID);
+            statement.setString(3, transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+            statement.setString(4, transferDTO.getStartDepartment());
+            statement.setString(5, transferDTO.getStartBed());
+            statement.setString(6, transferDTO.getStartMedicalDepartment());
+            statement.setString(7, transferDTO.getEndDepartment());
+            statement.setString(8, transferDTO.getEndBed());
+            statement.setString(9, transferDTO.getEndMedicalDepartment());
 
-            Statement statement = databaseController.createStatement();
-            statement.executeUpdate(queryBuilder.toString());
+            statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
+
             if (rs.next()) {
                 return find(rs.getLong(1));
             }
@@ -105,22 +143,27 @@ public class TransferDaoImpl implements TransferDAO {
     @Override
     public Transfer find(long transferID) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("SELECT * FROM").append(" ");
-            //table name
-            queryBuilder.append("Transfers").append(" ");
-            //WHERE keyword
-            queryBuilder.append("WHERE 1 = 1").append(" ");
+//            //build the statement SQL string
+//            StringBuilder queryBuilder = new StringBuilder();
+//            //insert new item
+//            queryBuilder.append("SELECT * FROM").append(" ");
+//            //table name
+//            queryBuilder.append("Transfers").append(" ");
+//            //WHERE keyword
+//            queryBuilder.append("WHERE 1 = 1").append(" ");
+//
+//            //the values to filter on
+//            //the episode ID
+//            queryBuilder.append("AND ");
+//            queryBuilder.append("transfer_id").append(" = ").append(transferID);
+//
+//            Statement statement = databaseController.createStatement();
+//            ResultSet rs = statement.executeQuery(queryBuilder.toString());
 
-            //the values to filter on
-            //the episode ID
-            queryBuilder.append("AND ");
-            queryBuilder.append("transfer_id").append(" = ").append(transferID);
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.FIND);
+            statement.setLong(1, transferID);
+            ResultSet rs = statement.executeQuery();
 
-            Statement statement = databaseController.createStatement();
-            ResultSet rs = statement.executeQuery(queryBuilder.toString());
             if (rs.next()) {
                 TransferBuilder transferBuilder = new TransferBuilderImpl();
 
@@ -143,68 +186,92 @@ public class TransferDaoImpl implements TransferDAO {
     }
 
     @Override
-    public Transfer update(TransferDTO transferDTO) throws SQLException {
+    public Transfer update(long episodeID, TransferDTO transferDTO) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("UPDATE").append(" ");
-            //table name
-            queryBuilder.append("Transfers").append(" ");
-            //values keyword
-            queryBuilder.append("SET").append(" ");
+//            //build the statement SQL string
+//            StringBuilder queryBuilder = new StringBuilder();
+//            //insert new item
+//            queryBuilder.append("UPDATE").append(" ");
+//            //table name
+//            queryBuilder.append("Transfers").append(" ");
+//            //values keyword
+//            queryBuilder.append("SET").append(" ");
+//
+//            //the object values
+//            //keep the transferID
+//            queryBuilder.append("transfer_id").append(" = ");
+//            queryBuilder.append(transferDTO.getTransferID()).append(", ");
+//            //the intake time
+//            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
+//            queryBuilder.append("transfer_time").append(" = ");
+//            queryBuilder.append("'").append(transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
+//            //the start department
+//            queryBuilder.append("start_department").append(" = ");
+//            queryBuilder.append("'").append(transferDTO.getStartDepartment()).append("', ");
+//            //the start bed
+//            queryBuilder.append("start_bed").append(" = ");
+//            queryBuilder.append("'").append(transferDTO.getStartBed()).append("', ");
+//            //the start medical department
+//            queryBuilder.append("start_medical_department").append(" = ");
+//            queryBuilder.append("'").append(transferDTO.getStartMedicalDepartment()).append("', ");
+//            //the end bed
+//            queryBuilder.append("end_bed").append(" = ");
+//            queryBuilder.append("'").append(transferDTO.getEndBed()).append("', ");
+//            //the end medical department
+//            queryBuilder.append("end_medical_department").append(" = ");
+//            queryBuilder.append("'").append(transferDTO.getEndMedicalDepartment()).append("' ");
+//
+//            //WEHER keyword
+//            queryBuilder.append("WHERE 1 = 1").append(" ");
+//
+//            //the values to filter on
+//            //the episode ID
+//            //queryBuilder.append("AND ");
+//            //queryBuilder.append("episode_id").append(" = ").append(episodeID).append(" ");
+//            //the transfer ID
+//            queryBuilder.append("AND ");
+//            queryBuilder.append("transfer_id").append(" = ").append(transferDTO.getTransferID());
+//
+//            Statement statement = databaseController.createStatement();
+//            System.out.println(queryBuilder.toString());
+//            statement.executeUpdate(queryBuilder.toString());
 
-            //the object values
-            //the intake time
-            //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-            queryBuilder.append("transfer_time").append(" = ");
-            queryBuilder.append("'").append(transferDTO.getTransferTimestamp().toString("yy-MM-dd HH:mm:ss")).append("', ");
-            //the start department
-            queryBuilder.append("start_department").append(" = ");
-            queryBuilder.append("'").append(transferDTO.getStartDepartment()).append("', ");
-            //the start bed
-            queryBuilder.append("start_bed").append(" = ");
-            queryBuilder.append("'").append(transferDTO.getStartBed()).append("', ");
-            //the start medical department
-            queryBuilder.append("start_medical_department").append(" = ");
-            queryBuilder.append("'").append(transferDTO.getStartMedicalDepartment()).append("', ");
-            //the end bed
-            queryBuilder.append("end_bed").append(" = ");
-            queryBuilder.append("'").append(transferDTO.getEndBed()).append("', ");
-            //the end medical department
-            queryBuilder.append("end_medical_department").append(" = ");
-            queryBuilder.append("'").append(transferDTO.getEndMedicalDepartment()).append("', ");
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.UPDATE);
 
-            //WEHER keyword
-            queryBuilder.append("WHERE 1 = 1").append(" ");
-
-            //the values to filter on
-            //the episode ID
-            queryBuilder.append("AND ");
-            queryBuilder.append("transfer_id").append(" = ").append(transferDTO.getTransferID());
-
-            Statement statement = databaseController.createStatement();
-            statement.executeUpdate(queryBuilder.toString());
+            statement.setLong(1, transferDTO.getTransferID());
+            statement.setString(2, transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+            statement.setString(3, transferDTO.getStartDepartment());
+            statement.setString(4, transferDTO.getStartBed());
+            statement.setString(5, transferDTO.getStartMedicalDepartment());
+            statement.setString(6, transferDTO.getEndDepartment());
+            statement.setString(7, transferDTO.getEndBed());
+            statement.setString(8, transferDTO.getEndMedicalDepartment());
+            //the filter
+            statement.setLong(9, transferDTO.getTransferID());
 
             return find(transferDTO.getTransferID());
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(transferDTO.toString());
             throw ex;
+
         }
     }
 
     @Override
     public Map<Long, Collection<Transfer>> readAll() throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("SELECT * FROM").append(" ");
-            //table name
-            queryBuilder.append("Transfers");
-
-            Statement statement = databaseController.createStatement();
-            ResultSet rs = statement.executeQuery(queryBuilder.toString());
+//            //build the statement SQL string
+//            StringBuilder queryBuilder = new StringBuilder();
+//            //insert new item
+//            queryBuilder.append("SELECT * FROM").append(" ");
+//            //table name
+//            queryBuilder.append("Transfers");
+//
+//            Statement statement = databaseController.createStatement();
+//            ResultSet rs = statement.executeQuery(queryBuilder.toString());
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.FINDALL);
+            ResultSet rs = statement.executeQuery();
             Map<Long, Collection<Transfer>> transfers = new TreeMap<>();
             while (rs.next()) {
                 long episodeID = rs.getLong("episode_id");
@@ -236,22 +303,26 @@ public class TransferDaoImpl implements TransferDAO {
     @Override
     public void delete(long transferID) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("DELETE * FROM").append(" ");
-            //table name
-            queryBuilder.append("Transfers").append(" ");
-            //WHERE keyword
-            queryBuilder.append("WHERE 1 = 1").append(" ");
+//            //build the statement SQL string
+//            StringBuilder queryBuilder = new StringBuilder();
+//            //insert new item
+//            queryBuilder.append("DELETE * FROM").append(" ");
+//            //table name
+//            queryBuilder.append("Transfers").append(" ");
+//            //WHERE keyword
+//            queryBuilder.append("WHERE 1 = 1").append(" ");
+//
+//            //the values to filter on
+//            //the episode ID
+//            queryBuilder.append("AND ");
+//            queryBuilder.append("transfer_id").append(" = ").append(transferID);
+//
+//            Statement statement = databaseController.createStatement();
+//            statement.executeUpdate(queryBuilder.toString());
 
-            //the values to filter on
-            //the episode ID
-            queryBuilder.append("AND ");
-            queryBuilder.append("transfer_id").append(" = ").append(transferID);
-
-            Statement statement = databaseController.createStatement();
-            statement.executeUpdate(queryBuilder.toString());
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.DELETE);
+            statement.setLong(1, transferID);
+            statement.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -261,22 +332,26 @@ public class TransferDaoImpl implements TransferDAO {
     @Override
     public Collection<Transfer> getFromEpisode(long episodeID) throws SQLException {
         try {
-            //build the statement SQL string
-            StringBuilder queryBuilder = new StringBuilder();
-            //insert new item
-            queryBuilder.append("SELECT * FROM").append(" ");
-            //table name
-            queryBuilder.append("Transfers").append(" ");
-            //WHERE keyword
-            queryBuilder.append("WHERE 1 = 1").append(" ");
+//            //build the statement SQL string
+//            StringBuilder queryBuilder = new StringBuilder();
+//            //insert new item
+//            queryBuilder.append("SELECT * FROM").append(" ");
+//            //table name
+//            queryBuilder.append("Transfers").append(" ");
+//            //WHERE keyword
+//            queryBuilder.append("WHERE 1 = 1").append(" ");
+//
+//            //the values to filter on
+//            //the episode ID
+//            queryBuilder.append("AND ");
+//            queryBuilder.append("episode_id").append(" = ").append(episodeID);
+//
+//            Statement statement = databaseController.createStatement();
+//            ResultSet rs = statement.executeQuery(queryBuilder.toString());
 
-            //the values to filter on
-            //the episode ID
-            queryBuilder.append("AND ");
-            queryBuilder.append("episode_id").append(" = ").append(episodeID);
-
-            Statement statement = databaseController.createStatement();
-            ResultSet rs = statement.executeQuery(queryBuilder.toString());
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.FINDFOREPISODE);
+            statement.setLong(1, episodeID);
+            ResultSet rs = statement.executeQuery();
             ArrayList<Transfer> transfers = new ArrayList<>();
             while (rs.next()) {
                 TransferBuilder transferBuilder = new TransferBuilderImpl();
@@ -299,4 +374,50 @@ public class TransferDaoImpl implements TransferDAO {
         }
     }
 
+    @Override
+    public Map<Long, Collection<Transfer>> batchAddEpisodes(Map<Long, Collection<TransferDTO>> transfers) throws SQLException {
+        try {
+            int batchSize = 0;
+            Map<Long, Collection<Transfer>> savedTransfers = new HashMap<>();
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.INSERT);
+            for (Map.Entry<Long, Collection<TransferDTO>> entry : transfers.entrySet()) {
+                Long episodeID = entry.getKey();
+                Collection<TransferDTO> transferCol = entry.getValue();
+                for (TransferDTO transferDTO : transferCol) {
+                    statement.setLong(1, transferDTO.getTransferID());
+                    statement.setLong(2, episodeID);
+                    statement.setString(3, transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                    statement.setString(4, transferDTO.getStartDepartment());
+                    statement.setString(5, transferDTO.getStartBed());
+                    statement.setString(6, transferDTO.getStartMedicalDepartment());
+                    statement.setString(7, transferDTO.getEndDepartment());
+                    statement.setString(8, transferDTO.getEndBed());
+                    statement.setString(9, transferDTO.getEndMedicalDepartment());
+
+                    statement.addBatch();
+                    batchSize++;
+                    if (batchSize>500) {
+                        statement.executeBatch();
+                    }
+                }
+            }
+            statement.executeBatch();
+            ResultSet rs = statement.getGeneratedKeys();
+            
+            return savedTransfers;
+        } catch (SQLException ex) {
+            Logger.getLogger(TransferDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
+    private final class PreparedStatments {
+
+        static final String INSERT = "INSERT INTO Transfers (transfer_id,episode_id,transferTime,start_department,start_bed,start_medical_department,end_bed,end_medical_department) values (?,?,?,?,?,?,?,?,?);";
+        static final String UPDATE = "UPDATE Transfers SET transfer_id = ?,transfer_time = ?,start_department = ?,start_bed = ?,start_medical_department = ?,end_bed = ?,end_department = ?,end_bed = ?,end_medical_department = ? WHERE 1 = 1 AND transfer_id = ?;";
+        static final String DELETE = "DELETE * FROM Transfers WHERE 1 = 1 AND transfer_id = ?;";
+        static final String FIND = "SELECT * FROM Transfers  WHERE transfer_id = ?;";
+        static final String FINDALL = "SELECT * FROM Transfers";
+        static final String FINDFOREPISODE = "SELECT * FROM Transfers WHERE 1 = 1 AND episode_id = ?;";
+    }
 }

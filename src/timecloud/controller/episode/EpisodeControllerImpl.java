@@ -22,18 +22,16 @@
  */
 package timecloud.controller.episode;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Observable;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dto.episode.EpisodeDTO;
 import timecloud.model.episode.Episode;
-import timecloud.util.excelreaders.EmergencyExcelFileReader;
 
 /**
  *
@@ -69,9 +67,12 @@ public final class EpisodeControllerImpl implements EpisodeController {
                 episode = episodeDAO.create(episodeDTO);
             } else {
                 episode = episodeDAO.update(episodeDTO);
+                System.out.println("update an episode");
             }
             if (episode != null) {
                 episodes.put(episode.getEpisodeID(), episode);
+            } else {
+                Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.FINE, null, "episode added was null");
             }
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,17 +126,7 @@ public final class EpisodeControllerImpl implements EpisodeController {
     }
 
     @Override
-    public void addFromFile(File file) throws IOException, SQLException {
-        try {
-            EmergencyExcelFileReader fileReader = new EmergencyExcelFileReader();
-            Collection<EpisodeDTO> episodeDtos = fileReader.getEpisodes(file);
-            
-            for (EpisodeDTO episodeDTO : episodeDtos) {
-                this.save(episodeDTO);
-            }
-        } catch (IOException | SQLException ex) {
-            Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
-        }
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

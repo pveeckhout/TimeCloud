@@ -2,8 +2,10 @@ DROP TABLE IF EXISTS Episodes;
 CREATE TABLE "Episodes" (
     "episode_id" INTEGER PRIMARY KEY NOT NULL UNIQUE,
     "patient_id" TEXT,
-    "intake_time" DATE,
+    "intake_time" DATETIME,
     "meg" BOOLEAN,
-    "triage_time" DATE,
-    "triage_level" INTEGER
+    "triage_time" DATETIME,
+    "triage_level" INTEGER,
+    UNIQUE("episode_id")
+        ON CONFLICT REPLACE
 );

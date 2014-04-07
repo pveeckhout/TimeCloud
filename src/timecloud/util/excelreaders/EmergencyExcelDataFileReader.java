@@ -41,11 +41,11 @@ import timecloud.enums.TriageLevel;
 
 /**
  *
- * Implementation of ExcelFileReader
+ * Implementation of ExcelDataFileReader
  *
  * @author Pieter Van Eeckhout
  */
-public class EmergencyExcelFileReader extends ExcelFileReader {
+public class EmergencyExcelDataFileReader extends ExcelDataFileReader {
 
     public static final Integer PATIENTID_ROW = 0;
     public static final Integer EPISODEID_ROW = 3;
@@ -67,6 +67,7 @@ public class EmergencyExcelFileReader extends ExcelFileReader {
     }
 
     public Collection<EpisodeDTO> getEpisodes(File file) throws IOException {
+        long startTime = System.nanoTime();
         primeData(file);
         Map<Long, EpisodeDTO> episodes = new TreeMap<>();
         for (Row row : sheet) {
@@ -76,6 +77,8 @@ public class EmergencyExcelFileReader extends ExcelFileReader {
             EpisodeDTO episodeDto = getEpisodeData(row);
             episodes.put(episodeDto.getEpisodeID(), episodeDto);
         }
+        
+        System.out.println("getEpisode from file time taken: " +  (System.nanoTime() - startTime));
         return episodes.values();
     }
 
@@ -99,6 +102,7 @@ public class EmergencyExcelFileReader extends ExcelFileReader {
     }
 
     public Map<Long, Collection<TransferDTO>> getTransfers(File file) throws IOException {
+        long startTime = System.nanoTime();
         primeData(file);
         Map<Long, Collection<TransferDTO>> transfers = new TreeMap<>();
         for (Row row : sheet) {
@@ -112,6 +116,7 @@ public class EmergencyExcelFileReader extends ExcelFileReader {
             transfers.get(episodeID).add(getTransfersData(row));
         }
 
+        System.out.println("getTransfers from file time taken: " +  (System.nanoTime() - startTime));
         return transfers;
     }
 

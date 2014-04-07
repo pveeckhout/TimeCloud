@@ -22,10 +22,9 @@
  */
 package timecloud.controller.episode;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Observer;
 import timecloud.dto.episode.EpisodeDTO;
 import timecloud.model.episode.Episode;
 
@@ -35,7 +34,7 @@ import timecloud.model.episode.Episode;
  *
  * @author Pieter Van Eeckhout
  */
-public interface EpisodeController {
+public interface EpisodeController extends Observer {
 
     /**
      *
@@ -88,14 +87,4 @@ public interface EpisodeController {
      */
     void delete(long episodeID) throws SQLException;
     
-    /**
-     * 
-     * Adds the episodes contained in the supplied file
-     * 
-     * @param file the file to be processed
-     * @throws java.io.IOException
-     * @throws java.sql.SQLException
-     * @see file
-     */
-    void addFromFile(File file) throws IOException, SQLException;
 }

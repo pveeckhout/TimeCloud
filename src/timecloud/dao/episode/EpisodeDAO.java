@@ -87,4 +87,14 @@ public interface EpisodeDAO {
      * @throws java.sql.SQLException
      */
     void delete(long episodeID) throws SQLException;
+
+    /**
+     * Add a whole batch of episodes
+     * 
+     * @param episodes the episodes to add
+     * @return a collection of the added episodes
+     * @see EpisodeDTO
+     * @see Episode
+     */
+    public Collection<Episode> batchProcess(Collection<EpisodeDTO> episodes);
 }

@@ -22,13 +22,14 @@
  */
 package timecloud;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
 import timecloud.controller.database.DatabaseControllerSQLiteImpl;
 import timecloud.controller.episode.EpisodeController;
 import timecloud.controller.episode.EpisodeControllerImpl;
+import timecloud.controller.file.data.emergency.EmergencyDataFileController;
+import timecloud.controller.file.data.emergency.EmergencyDataFileControllerImpl;
 import timecloud.controller.transfer.TransferController;
 import timecloud.controller.transfer.TransferControllerImpl;
 import timecloud.dao.episode.EpisodeDAO;
@@ -51,16 +52,19 @@ public class TimeCloud {
      */
     public static void main(String[] args) {
         try {
-            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("D:\\Users\\Pieter Van Eeckhout\\Code\\TimeCloud\\database\\TimeCloud.sqlite");
+            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("C:\\TEMP\\TimeCloud.sqlite");
             EpisodeDAO episodeDao = new EpisodeDaoImpl(databaseController);
             TransferDAO transferDao = new TransferDaoImpl(databaseController);
             EpisodeController episodeController = new EpisodeControllerImpl(episodeDao);
             TransferController transferController = new TransferControllerImpl(transferDao);
+            EmergencyDataFileController emergencyDataFileController = new EmergencyDataFileControllerImpl(episodeDao, transferDao);
+            emergencyDataFileController.addObserver(episodeController);
+            emergencyDataFileController.addObserver(transferController);
             
-            File excelFile = new File("D:\\Users\\Pieter Van Eeckhout\\Downloads\\Opnames op periode 17_02 -03_04.xls");
+            String path = "D:\\Users\\Pieter Van Eeckhout\\Dropbox\\Database voor data masterproef\\Kwantitatief onderzoek masterproef\\Data spoed\\";
+            String files[] = {"Opnames op periode 03.03-10.03.xls","Opnames op periode 10.03 -17.03.xls","Opnames op periode 17.02 -03.04.xls","Opnames op periode 17.03 tot 02.04.xls"};
             
-            episodeController.addFromFile(excelFile);
-            transferController.addFromFile(excelFile);
+            
             
         } catch (Exception ex) {//here we do want to catch the all
             Logger.getLogger(TimeCloud.class.getName()).log(Level.SEVERE, null, ex);

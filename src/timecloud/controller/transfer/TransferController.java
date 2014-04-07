@@ -22,10 +22,9 @@
  */
 package timecloud.controller.transfer;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Observer;
 import timecloud.dto.transfer.TransferDTO;
 import timecloud.model.transfer.Transfer;
 
@@ -35,7 +34,7 @@ import timecloud.model.transfer.Transfer;
  *
  * @author Pieter Van Eeckhout
  */
-public interface TransferController {
+public interface TransferController extends Observer {
 
     /**
      *
@@ -91,14 +90,4 @@ public interface TransferController {
      */
     void delete(long transferID) throws SQLException;
     
-    /**
-     * 
-     * Adds the transfers contained in the supplied file
-     * 
-     * @param file the file to be processed
-     * @throws java.io.IOException
-     * @throws java.sql.SQLException
-     * @see file
-     */
-    void addFromFile(File file) throws IOException, SQLException;
 }

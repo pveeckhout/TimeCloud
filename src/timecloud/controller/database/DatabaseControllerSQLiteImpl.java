@@ -22,8 +22,15 @@
  */
 package timecloud.controller.database;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -36,9 +43,12 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
     private String DB_LOCATION = "";
     private Connection connection = null;
 
-    public DatabaseControllerSQLiteImpl(String DB_LOCATION) throws ClassNotFoundException {
+    public DatabaseControllerSQLiteImpl(String DB_LOCATION) throws ClassNotFoundException, SQLException, IOException {
         Class.forName(DB_DRIVER);
         this.DB_LOCATION = DB_LOCATION;
+        if (Files.notExists(Paths.get(DB_LOCATION))) {
+            createDatabase();
+        }
     }
 
     private Connection getConnection() throws SQLException {
@@ -66,5 +76,49 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
             Logger.getLogger(DatabaseControllerSQLiteImpl.class.getName()).log(Level.SEVERE, null, e);
             throw e;
         }
+    }
+
+    private void createDatabase() throws SQLException, IOException {
+        //create the file
+        File test = new File(DB_LOCATION);
+        test.createNewFile();
+
+        //load the table create sql statements
+        Statement statement = createStatement();
+
+        String line;
+        StringBuilder queryBuilder = new StringBuilder();
+
+        //build the episode table creation query
+        try {
+            //build the episode table creation query
+            FileReader fileReader = new FileReader("./database/CreateEpisodeTable.sql");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while ((line = bufferedReader.readLine()) != null) {
+                queryBuilder.append(line);
+            }
+
+            statement.executeUpdate(queryBuilder.toString());
+
+            //build the transfer table creation query
+            fileReader = new FileReader("./database/CreateTransferTable.sql");
+            bufferedReader = new BufferedReader(fileReader);
+
+            while ((line = bufferedReader.readLine()) != null) {
+                queryBuilder.append(line);
+            }
+
+            statement.executeUpdate(queryBuilder.toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseControllerSQLiteImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public PreparedStatement createPreparedStatement(String query) throws SQLException {
+        PreparedStatement statement = getConnection().prepareStatement(query);
+        statement.setQueryTimeout(30);
+        return statement;
     }
 }

@@ -24,6 +24,7 @@ package timecloud.dto.episode;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observable;
 import org.joda.time.DateTime;
 import timecloud.dto.transfer.TransferDtoImpl;
 import timecloud.enums.TriageLevel;
@@ -100,5 +101,4 @@ public class EpisodeDtoImpl extends EpisodeDTO {
     public void addTransfers(Collection<Transfer> transfers) {
         episode.getTransfers().addAll(transfers);
     }
-
 }

@@ -22,6 +22,7 @@
  */
 package timecloud.controller.database;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -35,4 +36,5 @@ public interface DatabaseController {
     
     void closeConnection() throws SQLException;
 
+    PreparedStatement createPreparedStatement(String query) throws SQLException;
 }

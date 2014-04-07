@@ -24,6 +24,7 @@ package timecloud.model.episode;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Observer;
 import org.joda.time.DateTime;
 import timecloud.enums.TriageLevel;
 import timecloud.model.transfer.Transfer;
