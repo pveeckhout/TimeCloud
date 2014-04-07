@@ -25,9 +25,7 @@ package timecloud.controller.file.data.emergency;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +33,6 @@ import timecloud.controller.episode.EpisodeControllerImpl;
 import timecloud.controller.transfer.TransferControllerImpl;
 import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dao.transfer.TransferDAO;
-import timecloud.model.transfer.Transfer;
 
 /**
  *

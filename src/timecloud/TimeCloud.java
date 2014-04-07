@@ -52,7 +52,7 @@ public class TimeCloud {
      */
     public static void main(String[] args) {
         try {
-            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("C:\\TEMP\\TimeCloud.sqlite");
+            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("./database/TimeCloud.sqlite");
             EpisodeDAO episodeDao = new EpisodeDaoImpl(databaseController);
             TransferDAO transferDao = new TransferDaoImpl(databaseController);
             EpisodeController episodeController = new EpisodeControllerImpl(episodeDao);
@@ -64,6 +64,7 @@ public class TimeCloud {
             String path = "D:\\Users\\Pieter Van Eeckhout\\Dropbox\\Database voor data masterproef\\Kwantitatief onderzoek masterproef\\Data spoed\\";
             String files[] = {"Opnames op periode 03.03-10.03.xls","Opnames op periode 10.03 -17.03.xls","Opnames op periode 17.02 -03.04.xls","Opnames op periode 17.03 tot 02.04.xls"};
             
+            emergencyDataFileController.readEmergencyDataFile(path, files);
             
             
         } catch (Exception ex) {//here we do want to catch the all

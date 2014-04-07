@@ -56,7 +56,7 @@ public abstract class EmergencyDataFileController extends Observable {
         fileReader = new EmergencyExcelDataFileReader();
     }
 
-    void readEmergencyDataFile(String pathToFile, String... files) {
+    public void readEmergencyDataFile(String pathToFile, String... files) {
         for (int i = 0; i < files.length; i++) {
             try {
                 Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.INFO, null, "processing file " + (i + 1) + " of " + files.length);

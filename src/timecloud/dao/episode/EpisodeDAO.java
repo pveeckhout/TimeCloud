@@ -96,5 +96,5 @@ public interface EpisodeDAO {
      * @see EpisodeDTO
      * @see Episode
      */
-    public Collection<Episode> batchProcess(Collection<EpisodeDTO> episodes);
+    public Collection<Episode> batchProcess(Collection<EpisodeDTO> episodes) throws SQLException;
 }

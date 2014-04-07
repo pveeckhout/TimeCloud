@@ -92,7 +92,7 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
         //build the episode table creation query
         try {
             //build the episode table creation query
-            FileReader fileReader = new FileReader("./database/CreateEpisodeTable.sql");
+            FileReader fileReader = new FileReader("./database/table/CreateEpisodeTable.sql");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             while ((line = bufferedReader.readLine()) != null) {
@@ -102,7 +102,7 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
             statement.executeUpdate(queryBuilder.toString());
 
             //build the transfer table creation query
-            fileReader = new FileReader("./database/CreateTransferTable.sql");
+            fileReader = new FileReader("./database/table/CreateTransferTable.sql");
             bufferedReader = new BufferedReader(fileReader);
 
             while ((line = bufferedReader.readLine()) != null) {
