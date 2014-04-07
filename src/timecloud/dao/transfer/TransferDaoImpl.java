@@ -362,25 +362,22 @@ public class TransferDaoImpl implements TransferDAO {
                 Long episodeID = entry.getKey();
                 Collection<TransferDTO> transferCol = entry.getValue();
                 for (TransferDTO transferDTO : transferCol) {
-                    statement.setLong(1, transferDTO.getTransferID());
-                    statement.setLong(2, episodeID);
-                    statement.setString(3, transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
-                    statement.setString(4, transferDTO.getStartDepartment());
-                    statement.setString(5, transferDTO.getStartBed());
-                    statement.setString(6, transferDTO.getStartMedicalDepartment());
-                    statement.setString(7, transferDTO.getEndDepartment());
-                    statement.setString(8, transferDTO.getEndBed());
-                    statement.setString(9, transferDTO.getEndMedicalDepartment());
+                    statement.setLong(1, episodeID);
+                    statement.setString(2, transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                    statement.setString(3, transferDTO.getStartDepartment());
+                    statement.setString(4, transferDTO.getStartBed());
+                    statement.setString(5, transferDTO.getStartMedicalDepartment());
+                    statement.setString(6, transferDTO.getEndDepartment());
+                    statement.setString(7, transferDTO.getEndBed());
+                    statement.setString(8, transferDTO.getEndMedicalDepartment());
 
                     statement.addBatch();
-                    statement.clearParameters();
                 }
             }
             statement.executeBatch();
             ResultSet rs = statement.getGeneratedKeys();
-            throw new UnsupportedOperationException("to be implemented further");
-            
-            //return savedTransfers;
+
+            return savedTransfers;
         } catch (SQLException ex) {
             Logger.getLogger(TransferDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -389,7 +386,7 @@ public class TransferDaoImpl implements TransferDAO {
 
     private final class PreparedStatments {
 
-        static final String INSERT = "INSERT INTO Transfers (transfer_id,episode_id,transferTime,start_department,start_bed,start_medical_department,end_bed,end_medical_department) values (?,?,?,?,?,?,?,?,?);";
+        static final String INSERT = "INSERT INTO Transfers (episode_id,transfer_time,start_department,start_bed,start_medical_department,end_department,end_bed,end_medical_department) values (?,?,?,?,?,?,?,?);";
         static final String UPDATE = "UPDATE Transfers SET transfer_id = ?,transfer_time = ?,start_department = ?,start_bed = ?,start_medical_department = ?,end_bed = ?,end_department = ?,end_bed = ?,end_medical_department = ? WHERE 1 = 1 AND transfer_id = ?;";
         static final String DELETE = "DELETE * FROM Transfers WHERE 1 = 1 AND transfer_id = ?;";
         static final String FIND = "SELECT * FROM Transfers  WHERE transfer_id = ?;";

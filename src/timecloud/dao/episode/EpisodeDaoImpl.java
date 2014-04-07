@@ -221,7 +221,6 @@ public class EpisodeDaoImpl implements EpisodeDAO {
         PreparedStatement findStatement = null;
         try {
             insertStatement = databaseController.createPreparedStatement(PreparedStatements.INSERT);
-            Collection<Episode> savedEpisodes = new ArrayList();
             for (EpisodeDTO episodeDTO : episodes) {
                 insertStatement.setLong(1, episodeDTO.getEpisodeID());
                 insertStatement.setString(2, episodeDTO.getpatientID());
@@ -237,17 +236,15 @@ public class EpisodeDaoImpl implements EpisodeDAO {
                 insertStatement.addBatch();
             }
             insertStatement.executeBatch();
-            ResultSet insertRs = insertStatement.getGeneratedKeys();
+//            ResultSet insertRs = insertStatement.getGeneratedKeys();
             findStatement = databaseController.createPreparedStatement(PreparedStatements.FIND);
-            while (insertRs.next()) {
-                long key = insertRs.getLong(1);
-                System.out.println("key: " + key);
-                findStatement.setLong(1, insertRs.getLong(1));
-                findStatement.addBatch();
-            }
+            Collection<Episode> savedEpisodes = new ArrayList();
+             for (EpisodeDTO episodeDTO : episodes) {
+                 findStatement.setLong(1, episodeDTO.getEpisodeID());
+             }
             findStatement.executeBatch();
             ResultSet findRs = insertStatement.getResultSet();
-            while (findRs.next()) {
+            while (findRs != null && findRs.next()) {
                 EpisodeBuilder episodeBuilder = new EpisodeBuilderImpl();
 
                 episodeBuilder.setEpisodeID(findRs.getLong("episode_id"));

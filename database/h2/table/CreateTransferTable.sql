@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS Transfers;
 CREATE TABLE "Transfers" (
-    "transfer_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    "transfer_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE ON CONFLICT REPLACE,
     "episode_id" INTEGER REFERENCES "Episode" ("episode_id"),
     "transfer_time" DATETIME,
     "start_department" TEXT,

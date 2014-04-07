@@ -32,20 +32,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.dao.episode.EpisodeDaoImpl;
 
-public class DatabaseControllerSQLiteImpl extends DatabaseController {
 
-    public DatabaseControllerSQLiteImpl(String DB_LOCATION) throws ClassNotFoundException, SQLException, IOException {
+public class DatabaseControllerH2Impl extends DatabaseController {
+
+    public DatabaseControllerH2Impl(String DB_LOCATION) throws SQLException, IOException, ClassNotFoundException {
         super(DB_LOCATION);
-        DB_DRIVER = "org.sqlite.JDBC";
-        DB_CONNECTION = "jdbc:sqlite:";
+        DB_DRIVER = "org.h2.Driver";
+        DB_CONNECTION = "jdbc:h2:file:";
         Class.forName(DB_DRIVER);
     }
-
+    
     @Override
      void createDatabase() throws SQLException, IOException {
         long startTime = System.nanoTime();
-        if (!DB_LOCATION.toLowerCase().endsWith(".sqlite")) {
-            DB_LOCATION += ".sqlite";
+        if (!DB_LOCATION.toLowerCase().endsWith(".h2")) {
+            DB_LOCATION += ".h2";
         }
         //create the file
         File test = new File(DB_LOCATION);
@@ -61,7 +62,7 @@ public class DatabaseControllerSQLiteImpl extends DatabaseController {
         try {
             statement = createStatement();
             //build the episode table creation query
-            FileReader fileReader = new FileReader("./database/sqlite/table/CreateEpisodeTable.sql");
+            FileReader fileReader = new FileReader("./database/h2/table/CreateEpisodeTable.sql");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             while ((line = bufferedReader.readLine()) != null) {
@@ -71,7 +72,7 @@ public class DatabaseControllerSQLiteImpl extends DatabaseController {
             statement.executeUpdate(queryBuilder.toString());
 
             //build the transfer table creation query
-            fileReader = new FileReader("./database/sqlite/table/CreateTransferTable.sql");
+            fileReader = new FileReader("./database/h2/table/CreateTransferTable.sql");
             bufferedReader = new BufferedReader(fileReader);
 
             while ((line = bufferedReader.readLine()) != null) {

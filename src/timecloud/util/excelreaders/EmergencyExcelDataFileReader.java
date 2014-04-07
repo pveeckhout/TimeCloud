@@ -78,7 +78,7 @@ public class EmergencyExcelDataFileReader extends ExcelDataFileReader {
             episodes.put(episodeDto.getEpisodeID(), episodeDto);
         }
         
-        System.out.println("getEpisode from file time taken: " +  (System.nanoTime() - startTime));
+        System.out.println("getEpisode from file time taken: " +  (System.nanoTime() - startTime)/1000000000 + " seconds");
         return episodes.values();
     }
 
@@ -116,7 +116,7 @@ public class EmergencyExcelDataFileReader extends ExcelDataFileReader {
             transfers.get(episodeID).add(getTransfersData(row));
         }
 
-        System.out.println("getTransfers from file time taken: " +  (System.nanoTime() - startTime));
+        System.out.println("getTransfers from file time taken: " +  (System.nanoTime() - startTime)/1000000000 + " seconds");
         return transfers;
     }
 

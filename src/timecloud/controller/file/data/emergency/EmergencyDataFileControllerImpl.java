@@ -51,11 +51,11 @@ public class EmergencyDataFileControllerImpl extends EmergencyDataFileController
     @Override
     public void readEpisodesFromFile(File file) throws IOException, SQLException {
         try {
-            episodes = new ArrayList<>();
             long startTime = System.nanoTime();
+            episodes = new ArrayList<>();
             episodes.addAll(episodeDao.batchProcess(fileReader.getEpisodes(file)));
             this.notifyObservers(episodes);
-            System.out.println("Episodes add from file time taken: " + (System.nanoTime() - startTime));
+            System.out.println("Episodes add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
         } catch (IOException ex) {
             Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -65,11 +65,11 @@ public class EmergencyDataFileControllerImpl extends EmergencyDataFileController
     @Override
     public void readTransfersFromFile(File file) throws IOException, SQLException {
         try {
-            transfers = new HashMap<>();
             long startTime = System.nanoTime();
+            transfers = new HashMap<>();
             transfers.putAll(transferDao.batchAddEpisodes(fileReader.getTransfers(file)));
             this.notifyObservers(transfers);
-            System.out.println("Transfers add from file time taken: " + (System.nanoTime() - startTime));
+            System.out.println("Transfers add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
         } catch (IOException ex) {
             Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;

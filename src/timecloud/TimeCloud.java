@@ -25,6 +25,7 @@ package timecloud;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
+import timecloud.controller.database.DatabaseControllerH2Impl;
 import timecloud.controller.database.DatabaseControllerSQLiteImpl;
 import timecloud.controller.episode.EpisodeController;
 import timecloud.controller.episode.EpisodeControllerImpl;
@@ -52,7 +53,7 @@ public class TimeCloud {
      */
     public static void main(String[] args) {
         try {
-            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("./database/TimeCloud.sqlite");
+            DatabaseController databaseController = new DatabaseControllerH2Impl("./database/TimeCloud");
             EpisodeDAO episodeDao = new EpisodeDaoImpl(databaseController);
             TransferDAO transferDao = new TransferDaoImpl(databaseController);
             EpisodeController episodeController = new EpisodeControllerImpl(episodeDao);

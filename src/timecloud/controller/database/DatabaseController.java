@@ -22,19 +22,65 @@
  */
 package timecloud.controller.database;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Pieter Van Eeckhout
  */
-public interface DatabaseController {
-    
-    Statement createStatement() throws SQLException;
-    
-    void closeConnection() throws SQLException;
+public abstract class DatabaseController {
 
-    PreparedStatement createPreparedStatement(String query) throws SQLException;
+    static String DB_DRIVER = "org.sqlite.JDBC";
+    static String DB_CONNECTION = "jdbc:sqlite:";
+    String DB_LOCATION = "";
+    Connection connection = null;
+
+    DatabaseController(String DB_LOCATION) throws SQLException, IOException {
+        this.DB_LOCATION = DB_LOCATION;
+        if (Files.notExists(Paths.get(DB_LOCATION))) {
+            createDatabase();
+        }
+    }
+
+    abstract void createDatabase() throws SQLException, IOException;
+
+    public Statement createStatement() throws SQLException {
+        Statement statement = getConnection().createStatement();
+        statement.setQueryTimeout(30);
+        return statement;
+    }
+
+    Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(DB_CONNECTION + DB_LOCATION);
+        }
+        return connection;
+    }
+
+    public void closeConnection() throws SQLException {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            // connection close failed.
+            Logger.getLogger(DatabaseControllerSQLiteImpl.class.getName()).log(Level.SEVERE, null, e);
+            throw e;
+        }
+    }
+
+    public PreparedStatement createPreparedStatement(String query) throws SQLException {
+        PreparedStatement statement = getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        statement.setQueryTimeout(30);
+        return statement;
+    }
 }
