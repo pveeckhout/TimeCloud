@@ -56,12 +56,9 @@ public class EpisodeDaoImpl implements EpisodeDAO {
 
     @Override
     public Episode create(EpisodeDTO episodeDTO) throws SQLException {
+        PreparedStatement statement = null;
         try {
-//            String query = buildCreateQuery(episodeDTO);
-//            Statement statement = databaseController.createStatement();
-//            statement.executeUpdate(query);
-//            ResultSet rs = statement.getGeneratedKeys();
-            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatements.INSERT);
+            statement = databaseController.createPreparedStatement(PreparedStatements.INSERT);
             statement.setLong(1, episodeDTO.getEpisodeID());
             statement.setString(2, episodeDTO.getpatientID());
             statement.setString(3, episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
@@ -81,29 +78,23 @@ public class EpisodeDaoImpl implements EpisodeDAO {
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                databaseController.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public Episode find(long episodeID) throws SQLException {
+        PreparedStatement statement = null;
         try {
-//            //build the statement SQL string
-//            StringBuilder queryBuilder = new StringBuilder();
-//            //insert new item
-//            queryBuilder.append("SELECT * FROM").append(" ");
-//            //table name
-//            queryBuilder.append("Episodes").append(" ");
-//            //WHERE keyword
-//            queryBuilder.append("WHERE 1 = 1").append(" ");
-//
-//            //the values to filter on
-//            //the episode ID
-//            queryBuilder.append("AND ");
-//            queryBuilder.append("episode_id").append(" = ").append(episodeID);
-//
-//            Statement statement = databaseController.createStatement();
-//            ResultSet rs = statement.executeQuery(queryBuilder.toString());
-            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatements.FIND);
+            statement = databaseController.createPreparedStatement(PreparedStatements.FIND);
             statement.setLong(1, episodeID);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -122,17 +113,23 @@ public class EpisodeDaoImpl implements EpisodeDAO {
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                databaseController.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public Episode update(EpisodeDTO episodeDTO) throws SQLException {
+        PreparedStatement statement = null;
         try {
-//            String query = buildUpdateQuery(episodeDTO);
-//            Statement statement = databaseController.createStatement();
-//            statement.executeUpdate(query);
-
-            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatements.UPDATE);
+            statement = databaseController.createPreparedStatement(PreparedStatements.UPDATE);
             statement.setLong(1, episodeDTO.getEpisodeID());
             statement.setString(2, episodeDTO.getpatientID());
             statement.setString(3, episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
@@ -149,22 +146,23 @@ public class EpisodeDaoImpl implements EpisodeDAO {
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                databaseController.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public Collection<Episode> readAll() throws SQLException {
+        PreparedStatement statement = null;
         try {
-//            //build the statement SQL string
-//            StringBuilder queryBuilder = new StringBuilder();
-//            //insert new item
-//            queryBuilder.append("SELECT * FROM").append(" ");
-//            //table name
-//            queryBuilder.append("Episodes");
-//
-//            Statement statement = databaseController.createStatement();
-//            ResultSet rs = statement.executeQuery(queryBuilder.toString());
-            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatements.FINDALL);
+            statement = databaseController.createPreparedStatement(PreparedStatements.FINDALL);
             ResultSet rs = statement.executeQuery();
             Collection<Episode> episodes = new ArrayList<>();
             while (rs.next()) {
@@ -183,166 +181,109 @@ public class EpisodeDaoImpl implements EpisodeDAO {
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                databaseController.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public void delete(long episodeID) throws SQLException {
+        PreparedStatement statement = null;
         try {
-//            String query = buildDeleteQuery(episodeID);
-//            Statement statement = databaseController.createStatement();
-//            statement.executeUpdate(query);
-            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatements.DELETE);
+            statement = databaseController.createPreparedStatement(PreparedStatements.DELETE);
             statement.setLong(1, episodeID);
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                databaseController.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-//    private String buildCreateQuery(EpisodeDTO episodeDTO) {
-//        //build the statement SQL string
-//        StringBuilder queryBuilder = new StringBuilder();
-//        //insert new item
-//        queryBuilder.append("INSERT INTO").append(" ");
-//        //table name
-//        queryBuilder.append("Episodes").append(" ");
-//        //values keyword
-//        queryBuilder.append("VALUES(");
-//
-//        //the object values
-//        //the episode ID
-//        queryBuilder.append(episodeDTO.getEpisodeID()).append(", ");
-//        //the patient ID
-//        //string values so surrounded by quotes
-//        queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
-//        //the intake time
-//        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-//        queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
-//        //whether or not the MEG was used
-//        if (episodeDTO.getMeg()) {
-//            queryBuilder.append(1).append(", ");
-//        } else {
-//            queryBuilder.append(0).append(", ");
-//        }
-//        //the triage time
-//        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-//        if (episodeDTO.getTriageTimestamp() != null) {
-//            queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
-//        } else {
-//            queryBuilder.append("'', ");
-//        }
-//        //the triage level
-//        queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel());
-//
-//        //closing th values tag
-//        queryBuilder.append(")");
-//
-//        return queryBuilder.toString();
-//    }
-//    private String buildUpdateQuery(EpisodeDTO episodeDTO) {
-//        //build the statement SQL string
-//        StringBuilder queryBuilder = new StringBuilder();
-//        //insert new item
-//        queryBuilder.append("UPDATE").append(" ");
-//        //table name
-//        queryBuilder.append("Episodes").append(" ");
-//        //values keyword
-//        queryBuilder.append("SET").append(" ");
-//
-//        //the object values
-//        //the patient ID
-//        //string values so surrounded by quotes
-//        queryBuilder.append("patient_id").append(" = ");
-//        queryBuilder.append("'").append(episodeDTO.getpatientID()).append("', ");
-//        //the intake time
-//        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-//        queryBuilder.append("intake_time").append(" = ");
-//        queryBuilder.append("'").append(episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
-//        //whether or not the MEG was used
-//        queryBuilder.append("meg").append(" = ");
-//        if (episodeDTO.getMeg()) {
-//            queryBuilder.append(1).append(", ");
-//        } else {
-//            queryBuilder.append(0).append(", ");
-//        }
-//        //the triage time
-//        //string values so surrounded by quotes, formatted like YYYY-MM-DD HH:MM:SS.SSS
-//        queryBuilder.append("triage_time").append(" = ");
-//        if (episodeDTO.getTriageTimestamp() != null) {
-//            queryBuilder.append("'").append(episodeDTO.getTriageTimestamp().toString("yyyy-MM-dd HH:mm:ss")).append("', ");
-//        } else {
-//            queryBuilder.append("'', ");
-//        }
-//        //the triage level
-//        queryBuilder.append("triage_level").append(" = ");
-//        queryBuilder.append(episodeDTO.getTriageLevel().getTriageLevel()).append(" ");
-//
-//        //WEHER keyword
-//        queryBuilder.append("WHERE 1 = 1").append(" ");
-//
-//        //the values to filter on
-//        //the episode ID
-//        queryBuilder.append("AND ");
-//        queryBuilder.append("episode_id").append(" = ").append(episodeDTO.getEpisodeID());
-//
-//        return queryBuilder.toString();
-//    }
-//    private String buildDeleteQuery(long episodeID) {
-//        //build the statement SQL string
-//        StringBuilder queryBuilder = new StringBuilder();
-//        //insert new item
-//        queryBuilder.append("DELETE * FROM").append(" ");
-//        //table name
-//        queryBuilder.append("Episodes").append(" ");
-//        //WHERE keyword
-//        queryBuilder.append("WHERE 1 = 1").append(" ");
-//
-//        //the values to filter on
-//        //the episode ID
-//        queryBuilder.append("AND ");
-//        queryBuilder.append("episode_id").append(" = ").append(episodeID);
-//
-//        return queryBuilder.toString();
-//    }
     @Override
     public Collection<Episode> batchProcess(Collection<EpisodeDTO> episodes) throws SQLException {
+        PreparedStatement insertStatement = null;
+        PreparedStatement findStatement = null;
         try {
-            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatements.INSERT);
+            insertStatement = databaseController.createPreparedStatement(PreparedStatements.INSERT);
             Collection<Episode> savedEpisodes = new ArrayList();
             for (EpisodeDTO episodeDTO : episodes) {
-                statement.setLong(1, episodeDTO.getEpisodeID());
-                statement.setString(2, episodeDTO.getpatientID());
-                statement.setString(3, episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
-                statement.setBoolean(4, episodeDTO.getMeg());
+                insertStatement.setLong(1, episodeDTO.getEpisodeID());
+                insertStatement.setString(2, episodeDTO.getpatientID());
+                insertStatement.setString(3, episodeDTO.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                insertStatement.setBoolean(4, episodeDTO.getMeg());
                 if (episodeDTO.getTriageTimestamp() == null) {
-                    statement.setString(5, "");
+                    insertStatement.setString(5, "");
                 } else {
-                    statement.setString(5, episodeDTO.getTriageTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                    insertStatement.setString(5, episodeDTO.getTriageTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
                 }
-                statement.setInt(6, episodeDTO.getTriageLevel().getTriageLevel());
+                insertStatement.setInt(6, episodeDTO.getTriageLevel().getTriageLevel());
 
-                statement.addBatch();
-                //statement.clearParameters();
+                insertStatement.addBatch();
             }
-            statement.executeBatch();
-            ResultSet rs = statement.getGeneratedKeys();
-            throw new UnsupportedOperationException("to be implemented further");
-            //return savedEpisodes;
+            insertStatement.executeBatch();
+            ResultSet insertRs = insertStatement.getGeneratedKeys();
+            findStatement = databaseController.createPreparedStatement(PreparedStatements.FIND);
+            while (insertRs.next()) {
+                long key = insertRs.getLong(1);
+                System.out.println("key: " + key);
+                findStatement.setLong(1, insertRs.getLong(1));
+                findStatement.addBatch();
+            }
+            findStatement.executeBatch();
+            ResultSet findRs = insertStatement.getResultSet();
+            while (findRs.next()) {
+                EpisodeBuilder episodeBuilder = new EpisodeBuilderImpl();
+
+                episodeBuilder.setEpisodeID(findRs.getLong("episode_id"));
+                episodeBuilder.setPatientID(findRs.getString("patient_id"));
+                episodeBuilder.setIntakeTimestamp(new DateTime(StringDateTimeConverter.stringToDateTime(findRs.getString("intake_time"))));
+                episodeBuilder.setMeg(findRs.getBoolean("meg"));
+                episodeBuilder.setTriageTimestamp(new DateTime(StringDateTimeConverter.stringToDateTime(findRs.getString("triage_time"))));
+                episodeBuilder.setTriageLevel(TriageLevel.fromInteger(findRs.getInt("triage_level")));
+
+                savedEpisodes.add(episodeBuilder.createEpisode());
+            }
+            return savedEpisodes;
         } catch (SQLException ex) {
             Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        } finally {
+            try {
+                if (insertStatement != null) {
+                    insertStatement.close();
+                }
+                if (findStatement != null) {
+                    findStatement.close();
+                }
+                databaseController.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    private final class PreparedStatements {
+    private static final class PreparedStatements {
 
-        static final String INSERT = "INSERT INTO Episodes (episode_id,patient_id,intake_time,meg,triage_time,triage_level) values (?,?,?,?,?,?);";
-        static final String UPDATE = "UPDATE Episodes SET episode_id = ?,patient_id = ?,intake_time = ?,meg = ?,triage_time = ?,triage_level = ? WHERE 1 = 1 AND episode_id = ?;";
+        static final String INSERT = "INSERT OR REPLACE INTO Episodes (episode_id,patient_id,intake_time,meg,triage_time,triage_level) values (?,?,?,?,?,?);";
+        static final String UPDATE = "UPDATE OR ROLBACK Episodes SET episode_id = ?,patient_id = ?,intake_time = ?,meg = ?,triage_time = ?,triage_level = ? WHERE 1 = 1 AND episode_id = ?;";
         static final String DELETE = "DELETE * FROM Episodes WHERE 1 = 1 AND episode_id = ?;";
         static final String FIND = "SELECT * FROM Episodes WHERE 1 = 1 AND episode_id = ?;";
         static final String FINDALL = "SELECT * FROM Episodes;";
-        static final String FINDBATCH = "SELECT * FROM Episodes WHERE 1 = 1 AND episode_id IN (?);";
     }
 }

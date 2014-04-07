@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import timecloud.dao.episode.EpisodeDaoImpl;
 
 public class DatabaseControllerSQLiteImpl implements DatabaseController {
 
@@ -52,7 +53,7 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
     }
 
     private Connection getConnection() throws SQLException {
-        if (connection == null) {
+        if (connection == null||connection.isClosed()) {
             connection = DriverManager.getConnection(DB_CONNECTION + DB_LOCATION);
         }
         return connection;
@@ -84,13 +85,14 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
         test.createNewFile();
 
         //load the table create sql statements
-        Statement statement = createStatement();
+        Statement statement = null;
 
         String line;
         StringBuilder queryBuilder = new StringBuilder();
 
         //build the episode table creation query
         try {
+            statement = createStatement();
             //build the episode table creation query
             FileReader fileReader = new FileReader("./database/table/CreateEpisodeTable.sql");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -112,6 +114,15 @@ public class DatabaseControllerSQLiteImpl implements DatabaseController {
             statement.executeUpdate(queryBuilder.toString());
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseControllerSQLiteImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+            if (statement != null) {
+                statement.close();
+            }
+            closeConnection();
+            } catch  (SQLException ex) {
+                Logger.getLogger(EpisodeDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
