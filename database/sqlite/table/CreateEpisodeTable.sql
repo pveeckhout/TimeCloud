@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS Episodes;
-CREATE TABLE "Episodes" (
-    "episode_id" INTEGER PRIMARY KEY NOT NULL UNIQUE ON CONFLICT REPLACE,
-    "patient_id" TEXT,
-    "intake_time" DATETIME,
-    "meg" BOOLEAN,
-    "triage_time" DATETIME,
-    "triage_level" INTEGER
-);
+DROP TABLE IF EXISTS [Episodes];
+CREATE TABLE [Episodes] (
+  [episode_id] INTEGER NOT NULL ON CONFLICT FAIL PRIMARY KEY ON CONFLICT REPLACE, 
+  [patient_id] TEXT NOT NULL ON CONFLICT FAIL, 
+  [intake_time] DATETIME NOT NULL ON CONFLICT FAIL, 
+  [meg] BOOLEAN, 
+  [triage_time] DATETIME, 
+  [triage_level] INTEGER)
+;

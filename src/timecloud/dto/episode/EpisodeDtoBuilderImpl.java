@@ -22,9 +22,7 @@
  */
 package timecloud.dto.episode;
 
-import java.util.Collection;
 import org.joda.time.DateTime;
-import timecloud.dto.transfer.TransferDTO;
 import timecloud.enums.TriageLevel;
 import timecloud.model.episode.EpisodeBuilder;
 import timecloud.model.episode.EpisodeBuilderImpl;
@@ -38,43 +36,43 @@ public class EpisodeDtoBuilderImpl implements EpisodeDtoBuilder {
     }
 
     @Override
-    public EpisodeDtoBuilderImpl setEpisodeID(long episodeID) {
+    public EpisodeDtoBuilder setEpisodeID(long episodeID) {
         this.episodeBuilder.setEpisodeID(episodeID);
         return this;
     }
 
     @Override
-    public EpisodeDtoBuilderImpl setPatientID(String patientID) {
+    public EpisodeDtoBuilder setPatientID(String patientID) {
         this.episodeBuilder.setPatientID(patientID);
         return this;
     }
 
     @Override
-    public EpisodeDtoBuilderImpl setIntakeTimestamp(DateTime intakeTimestamp) {
+    public EpisodeDtoBuilder setIntakeTimestamp(DateTime intakeTimestamp) {
         this.episodeBuilder.setIntakeTimestamp(intakeTimestamp);
         return this;
     }
 
     @Override
-    public EpisodeDtoBuilderImpl setMeg(boolean meg) {
+    public EpisodeDtoBuilder setMeg(boolean meg) {
         this.episodeBuilder.setMeg(meg);
         return this;
     }
 
     @Override
-    public EpisodeDtoBuilderImpl setTriageTimestamp(DateTime triageTimestamp) {
+    public EpisodeDtoBuilder setTriageTimestamp(DateTime triageTimestamp) {
         this.episodeBuilder.setTriageTimestamp(triageTimestamp);
         return this;
     }
 
     @Override
-    public EpisodeDtoBuilderImpl setTriageLevel(TriageLevel triageLevel) {
+    public EpisodeDtoBuilder setTriageLevel(TriageLevel triageLevel) {
         this.episodeBuilder.setTriageLevel(triageLevel);
         return this;
     }
 
     @Override
-    public EpisodeDtoImpl createEpisodeDto() {
+    public EpisodeDTO createEpisodeDto() {
         return new EpisodeDtoImpl(episodeBuilder.createEpisode());
     }
 

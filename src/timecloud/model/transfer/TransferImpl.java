@@ -83,7 +83,7 @@ public class TransferImpl implements Transfer {
      * Constructor
      *
      * @param transferDTO The data from which this transfer will be made
-     * @see EpisodeDTO
+     * @see TransferDTO
      */
     public TransferImpl(TransferDTO transferDTO) {
         this.transferID = transferDTO.getTransferID();

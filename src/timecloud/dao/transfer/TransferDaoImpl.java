@@ -354,7 +354,7 @@ public class TransferDaoImpl implements TransferDAO {
     }
 
     @Override
-    public Map<Long, Collection<Transfer>> batchAddEpisodes(Map<Long, Collection<TransferDTO>> transfers) throws SQLException {
+    public Map<Long, Collection<Transfer>> batchAddTransfers(Map<Long, Collection<TransferDTO>> transfers) throws SQLException {
         try {
             Map<Long, Collection<Transfer>> savedTransfers = new HashMap<>();
             PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.INSERT);
@@ -386,12 +386,12 @@ public class TransferDaoImpl implements TransferDAO {
 
     private final class PreparedStatments {
 
-        static final String INSERT = "INSERT INTO Transfers (episode_id,transfer_time,start_department,start_bed,start_medical_department,end_department,end_bed,end_medical_department) values (?,?,?,?,?,?,?,?);";
-        static final String UPDATE = "UPDATE Transfers SET transfer_id = ?,transfer_time = ?,start_department = ?,start_bed = ?,start_medical_department = ?,end_bed = ?,end_department = ?,end_bed = ?,end_medical_department = ? WHERE 1 = 1 AND transfer_id = ?;";
-        static final String DELETE = "DELETE * FROM Transfers WHERE 1 = 1 AND transfer_id = ?;";
-        static final String FIND = "SELECT * FROM Transfers  WHERE transfer_id = ?;";
-        static final String FINDALL = "SELECT * FROM Transfers";
-        static final String FINDFOREPISODE = "SELECT * FROM Transfers WHERE 1 = 1 AND episode_id = ?;";
-        static final String FINDBATCH = "SELECT * FROM Transfers WHERE 1 = 1 AND transfer_id IN (?);";
+        static final String INSERT = "INSERT INTO [Transfers] ([episode_id],[transfer_time],start_department,start_bed,start_medical_department,end_department,end_bed,end_medical_department) values (?,?,?,?,?,?,?,?);";
+        static final String UPDATE = "UPDATE [Transfers] SET [transfer_id] = ?,[transfer_time] = ?,start_department = ?,start_bed = ?,start_medical_department = ?,end_bed = ?,end_department = ?,end_bed = ?,end_medical_department = ? WHERE 1 = 1 AND [transfer_id] = ?;";
+        static final String DELETE = "DELETE * FROM [Transfers] WHERE 1 = 1 AND [transfer_id] = ?;";
+        static final String FIND = "SELECT * FROM [Transfers]  WHERE [transfer_id] = ?;";
+        static final String FINDALL = "SELECT * FROM [Transfers]";
+        static final String FINDFOREPISODE = "SELECT * FROM [Transfers] WHERE 1 = 1 AND [episode_id] = ?;";
+        static final String FINDBATCH = "SELECT * FROM [Transfers] WHERE 1 = 1 AND [transfer_id] IN (?);";
     }
 }

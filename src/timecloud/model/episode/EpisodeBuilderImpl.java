@@ -77,7 +77,7 @@ public class EpisodeBuilderImpl implements EpisodeBuilder {
     }
 
     @Override
-    public EpisodeImpl createEpisode() {
+    public Episode createEpisode() {
         return new EpisodeImpl(episodeID, patientID, intakeTimestamp, meg, triageTimestamp, triageLevel);
     }
 

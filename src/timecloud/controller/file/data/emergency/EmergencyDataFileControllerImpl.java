@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import timecloud.controller.episode.EpisodeControllerImpl;
-import timecloud.controller.transfer.TransferControllerImpl;
 import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dao.transfer.TransferDAO;
 
@@ -57,7 +55,7 @@ public class EmergencyDataFileControllerImpl extends EmergencyDataFileController
             this.notifyObservers(episodes);
             System.out.println("Episodes add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
         } catch (IOException ex) {
-            Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmergencyDataFileControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }
@@ -67,11 +65,11 @@ public class EmergencyDataFileControllerImpl extends EmergencyDataFileController
         try {
             long startTime = System.nanoTime();
             transfers = new HashMap<>();
-            transfers.putAll(transferDao.batchAddEpisodes(fileReader.getTransfers(file)));
+            transfers.putAll(transferDao.batchAddTransfers(fileReader.getTransfers(file)));
             this.notifyObservers(transfers);
             System.out.println("Transfers add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
         } catch (IOException ex) {
-            Logger.getLogger(TransferControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmergencyDataFileControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }

@@ -1,5 +1,5 @@
 SELECT *
-FROM Episodes
+FROM [Episodes]
 WHERE 1 = 1
-    AND episode_id = ?
+    AND [episode_id] = ?
 ;

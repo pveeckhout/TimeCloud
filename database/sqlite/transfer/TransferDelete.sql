@@ -1,5 +1,5 @@
 DELETE *
-FROM Transfers
+FROM [Transfers]
 WHERE 1 = 1
-    AND transfer_id = ?
+    AND [transfer_id] = ?
 ;

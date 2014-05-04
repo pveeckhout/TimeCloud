@@ -47,7 +47,7 @@ public abstract class TransferDTO implements Transfer, Immutable {
      * @param transfer The transfer from which to build this DTO
      * @see Transfer
      */
-    public TransferDTO(Transfer transfer) {
+    TransferDTO(Transfer transfer) {
         this.transfer = transfer;
     }
     

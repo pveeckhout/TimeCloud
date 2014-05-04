@@ -1,1 +1,1 @@
-SELECT * FROM Episodes;
+SELECT * FROM [Episodes];

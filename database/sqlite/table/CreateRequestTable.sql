@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS [Transfers];
+CREATE TABLE [Request] (
+  [request_id] INTEGER NOT NULL ON CONFLICT FAIL PRIMARY KEY ON CONFLICT REPLACE AUTOINCREMENT, 
+  [patient_id] TEXT NOT NULL ON CONFLICT FAIL, 
+  [episode_id] INTEGER NOT NULL ON CONFLICT FAIL CONSTRAINT [episode_id] REFERENCES [Episodes]([episode_id]) ON DELETE CASCADE ON UPDATE CASCADE, 
+  [intake_kind] TEXT, 
+  [intake_time] DATETIME NOT NULL ON CONFLICT FAIL, 
+  [start_department] TEXT NOT NULL ON CONFLICT FAIL, 
+  [start_medical_department] TEXT NOT NULL ON CONFLICT FAIL, 
+  [request_time] DATETIME NOT NULL ON CONFLICT FAIL, 
+  [response_time] DATETIME NOT NULL ON CONFLICT FAIL, 
+  [transfer_time] DATETIME NOT NULL ON CONFLICT FAIL, 
+  [intake_date] DATE NOT NULL ON CONFLICT FAIL, 
+  [own_department] TEXT)
+;

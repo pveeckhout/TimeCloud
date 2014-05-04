@@ -28,62 +28,62 @@ import timecloud.model.transfer.TransferBuilderImpl;
 
 public class TransferDtoBuilderImpl implements TransferDtoBuilder {
 
-    private TransferBuilder transferBuilder;
+    private final TransferBuilder transferBuilder;
 
     public TransferDtoBuilderImpl() {
         transferBuilder = new TransferBuilderImpl();
     }
 
     @Override
-    public TransferDtoBuilderImpl setTransferID(long transferID) {
+    public TransferDtoBuilder setTransferID(long transferID) {
         this.transferBuilder.setTransferID(transferID);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setTransferTimestamp(DateTime transferTimestamp) {
+    public TransferDtoBuilder setTransferTimestamp(DateTime transferTimestamp) {
          this.transferBuilder.setTransferTimestamp(transferTimestamp);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setStartDepartment(String startDepartment) {
+    public TransferDtoBuilder setStartDepartment(String startDepartment) {
          this.transferBuilder.setStartDepartment(startDepartment);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setStartBed(String startBed) {
+    public TransferDtoBuilder setStartBed(String startBed) {
          this.transferBuilder.setStartBed(startBed);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment) {
+    public TransferDtoBuilder setStartMedicalDepartment(String StartMedicalDeparment) {
          this.transferBuilder.setStartMedicalDepartment(StartMedicalDeparment);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setEndDepartment(String endDepartment) {
+    public TransferDtoBuilder setEndDepartment(String endDepartment) {
          this.transferBuilder.setEndDepartment(endDepartment);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setEndBed(String endBed) {
+    public TransferDtoBuilder setEndBed(String endBed) {
          this.transferBuilder.setEndBed(endBed);
         return this;
     }
 
     @Override
-    public TransferDtoBuilderImpl setEndMedicalDepartment(String endMedicalDepartment) {
+    public TransferDtoBuilder setEndMedicalDepartment(String endMedicalDepartment) {
          this.transferBuilder.setEndMedicalDepartment(endMedicalDepartment);
         return this;
     }
 
     @Override
-    public TransferDtoImpl createTransferDto() {
+    public TransferDTO createTransferDto() {
         return new TransferDtoImpl(transferBuilder.createTransfer());
     }
 

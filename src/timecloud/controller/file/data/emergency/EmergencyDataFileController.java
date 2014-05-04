@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import timecloud.controller.episode.EpisodeControllerImpl;
 import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dao.transfer.TransferDAO;
 import timecloud.model.episode.Episode;
@@ -59,12 +58,12 @@ public abstract class EmergencyDataFileController extends Observable {
     public void readEmergencyDataFile(String pathToFile, String... files) {
         for (int i = 0; i < files.length; i++) {
             try {
-                Logger.getLogger(EpisodeControllerImpl.class.getName()).log(Level.INFO, null, "processing file " + (i + 1) + " of " + files.length);
+                Logger.getLogger(EmergencyDataFileController.class.getName()).log(Level.INFO, null, "processing file " + (i + 1) + " of " + files.length);
                 File file = new File(pathToFile + files[i]);
                 readEpisodesFromFile(file);
                 readTransfersFromFile(file);
             } catch (IOException | SQLException ex) {
-                Logger.getLogger(EmergencyDataFileControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(EmergencyDataFileController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

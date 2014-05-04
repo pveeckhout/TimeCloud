@@ -23,7 +23,6 @@
 package timecloud.model.transfer;
 
 import java.io.Serializable;
-import java.util.Observer;
 import org.joda.time.DateTime;
 
 /**

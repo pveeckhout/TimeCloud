@@ -44,7 +44,6 @@
 package timecloud.dto.transfer;
 
 import org.joda.time.DateTime;
-import timecloud.model.episode.Episode;
 
 /**
  *
@@ -52,22 +51,22 @@ import timecloud.model.episode.Episode;
  */
 public interface TransferDtoBuilder {
 
-    TransferDtoImpl createTransferDto();
+    TransferDTO createTransferDto();
 
-    TransferDtoBuilderImpl setEndBed(String endBed);
+    TransferDtoBuilder setEndBed(String endBed);
 
-    TransferDtoBuilderImpl setEndDepartment(String endDepartment);
+    TransferDtoBuilder setEndDepartment(String endDepartment);
 
-    TransferDtoBuilderImpl setEndMedicalDepartment(String endMedicalDepartment);
+    TransferDtoBuilder setEndMedicalDepartment(String endMedicalDepartment);
 
-    TransferDtoBuilderImpl setStartBed(String startBed);
+    TransferDtoBuilder setStartBed(String startBed);
 
-    TransferDtoBuilderImpl setStartDepartment(String startDepartment);
+    TransferDtoBuilder setStartDepartment(String startDepartment);
 
-    TransferDtoBuilderImpl setStartMedicalDepartment(String StartMedicalDeparment);
+    TransferDtoBuilder setStartMedicalDepartment(String StartMedicalDeparment);
 
-    TransferDtoBuilderImpl setTransferID(long transferID);
+    TransferDtoBuilder setTransferID(long transferID);
 
-    TransferDtoBuilderImpl setTransferTimestamp(DateTime transferTimestamp);
+    TransferDtoBuilder setTransferTimestamp(DateTime transferTimestamp);
 
 }

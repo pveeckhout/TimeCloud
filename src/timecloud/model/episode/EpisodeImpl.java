@@ -42,14 +42,14 @@ public final class EpisodeImpl implements Episode {
 
     public static final long serialVersionUID = 54154515L;
 
-    long episodeID;
-    String patientID;
-    DateTime intakeTimestamp;
-    boolean meg;
-    DateTime triageTimestamp;
-    TriageLevel triageLevel;
+    private long episodeID;
+    private String patientID;
+    private DateTime intakeTimestamp;
+    private boolean meg;
+    private DateTime triageTimestamp;
+    private TriageLevel triageLevel;
 
-    Collection<Transfer> transfers;
+    private Collection<Transfer> transfers;
 
     /**
      *

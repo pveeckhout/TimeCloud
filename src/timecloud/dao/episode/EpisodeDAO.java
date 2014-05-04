@@ -93,6 +93,7 @@ public interface EpisodeDAO {
      * 
      * @param episodes the episodes to add
      * @return a collection of the added episodes
+     * @throws java.sql.SQLException
      * @see EpisodeDTO
      * @see Episode
      */

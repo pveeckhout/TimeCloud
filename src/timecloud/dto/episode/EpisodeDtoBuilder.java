@@ -31,18 +31,18 @@ import timecloud.enums.TriageLevel;
  */
 public interface EpisodeDtoBuilder {
 
-    EpisodeDtoImpl createEpisodeDto();
+    EpisodeDTO createEpisodeDto();
 
-    EpisodeDtoBuilderImpl setEpisodeID(long episodeID);
+    EpisodeDtoBuilder setEpisodeID(long episodeID);
 
-    EpisodeDtoBuilderImpl setIntakeTimestamp(DateTime intakeTimestamp);
+    EpisodeDtoBuilder setIntakeTimestamp(DateTime intakeTimestamp);
 
-    EpisodeDtoBuilderImpl setMeg(boolean meg);
+    EpisodeDtoBuilder setMeg(boolean meg);
 
-    EpisodeDtoBuilderImpl setPatientID(String patientID);
+    EpisodeDtoBuilder setPatientID(String patientID);
 
-    EpisodeDtoBuilderImpl setTriageLevel(TriageLevel triageLevel);
+    EpisodeDtoBuilder setTriageLevel(TriageLevel triageLevel);
 
-    EpisodeDtoBuilderImpl setTriageTimestamp(DateTime triageTimestamp);
+    EpisodeDtoBuilder setTriageTimestamp(DateTime triageTimestamp);
 
 }

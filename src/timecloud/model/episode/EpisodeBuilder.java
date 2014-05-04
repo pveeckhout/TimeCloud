@@ -22,10 +22,8 @@
  */
 package timecloud.model.episode;
 
-import java.util.Collection;
 import org.joda.time.DateTime;
 import timecloud.enums.TriageLevel;
-import timecloud.model.transfer.Transfer;
 
 /**
  * 
@@ -47,6 +45,6 @@ public interface EpisodeBuilder {
 
     EpisodeBuilderImpl setTriageLevel(TriageLevel triageLevel);
 
-    EpisodeImpl createEpisode();
+    Episode createEpisode();
     
 }
