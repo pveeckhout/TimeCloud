@@ -27,11 +27,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
+import timecloud.dao.transfer.TransferDaoImpl;
 import timecloud.dto.request.RequestDTO;
 import timecloud.model.request.Request;
 import timecloud.model.request.RequestBuilder;
@@ -51,12 +53,10 @@ public class RequestDaoImpl implements RequestDAO {
             PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.INSERT);
 
             //TODO: build prepared Statement
-            
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
             //statement.executeUpdate();
             //ResultSet rs = statement.getGeneratedKeys();
-
             //if (rs.next()) {
             //    return find(rs.getLong(1));
             //}
@@ -78,7 +78,6 @@ public class RequestDaoImpl implements RequestDAO {
                 RequestBuilder requestBuilder = new RequestBuilderImpl();
 
                 //TODO: request builder invocation
-                
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
                 //return requestBuilder.createRequest();
@@ -123,7 +122,6 @@ public class RequestDaoImpl implements RequestDAO {
                 RequestBuilder requestBuilder = new RequestBuilderImpl();
 
                 //TODO: request builder invocation
-                
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
                 //requests.get(requestID).add(requestBuilder.createRequest());
@@ -158,7 +156,6 @@ public class RequestDaoImpl implements RequestDAO {
                 RequestBuilder requestBuilder = new RequestBuilderImpl();
 
                 //TODO: request builder invocation
-                
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
                 //requests.add(requestBuilder.createRequest());
@@ -172,16 +169,42 @@ public class RequestDaoImpl implements RequestDAO {
 
     @Override
     public Map<Long, Request> batchAddRequests(Map<Long, RequestDTO> requests) throws SQLException {
-        //TODO
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
+        try {
+            Map<Long, Request> savedRequests = new HashMap<>();
+            PreparedStatement statement = databaseController.createPreparedStatement(PreparedStatments.INSERT);
+            for (Map.Entry<Long, RequestDTO> entry : requests.entrySet()) {
+                Long episodeID = entry.getKey();
+                RequestDTO requestDto = entry.getValue();
+                statement.setString(1, requestDto.getPatientID());
+                statement.setLong(2, episodeID);
+                statement.setString(3, requestDto.getIntakeKind());
+                statement.setString(4, requestDto.getIntakeTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                statement.setString(5, requestDto.getEndDepartment());
+                statement.setString(6, requestDto.getEndMedicalDeparment());
+                statement.setString(7, requestDto.getRequestTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                statement.setString(8, requestDto.getResponseTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                statement.setString(9, requestDto.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                statement.setString(10, requestDto.getIntakeDate().toString("yyyy-MM-dd"));
+                statement.setString(11, requestDto.getOwnDepartment());
+
+                statement.addBatch();
+            }
+
+            statement.executeBatch();
+            ResultSet rs = statement.getGeneratedKeys();
+
+            return savedRequests;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequestDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+
     }
 
     private final class PreparedStatments {
 
-        static final String INSERT = "INSERT INTO [Requests] ([request_id], [patient_id], [episode_id], [intake_kind], [intake_time], [start_department], [start_medical_department], [request_time], [response_time], [transfer_time], [intake_date], [own_department]) values (?,?,?,?,?,?,?,?,?,?,?,?);";
-        static final String UPDATE = "UPDATE [Requests] SET [request_id] = ?, [patient_id] = ?, [episode_id] = ?, [intake_kind] = ?, [intake_time] = ?, [start_department] = ?, [start_medical_department] = ?, [request_time] = ?, [response_time] = ?, [transfer_time] = ?, [intake_date] = ?, [own_department] = ? WHERE 1 = 1 AND [request_id] = ?";
+        static final String INSERT = "INSERT INTO [Requests] ([patient_id], [episode_id], [intake_kind], [intake_time], [end_department], [end_medical_department], [request_time], [response_time], [transfer_time], [intake_date], [own_department]) values (?,?,?,?,?,?,?,?,?,?,?);";
+        static final String UPDATE = "UPDATE [Requests] SET [request_id] = ?, [patient_id] = ?, [episode_id] = ?, [intake_kind] = ?, [intake_time] = ?, [end_department] = ?, [end_medical_department] = ?, [request_time] = ?, [response_time] = ?, [transfer_time] = ?, [intake_date] = ?, [own_department] = ? WHERE 1 = 1 AND [request_id] = ?";
         static final String DELETE = "DELETE * FROM [Requests] WHERE 1 = 1 AND [request_id] = ?;";
         static final String FIND = "SELECT * FROM [Requests]  WHERE [request_id] = ?;";
         static final String FINDALL = "SELECT * FROM [Requests]";

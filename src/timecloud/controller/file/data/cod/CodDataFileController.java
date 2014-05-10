@@ -50,7 +50,7 @@ public abstract class CodDataFileController extends Observable {
         fileReader = new CodExcelDataFileReader();
     }
     
-    public void readEmergencyDataFile(String pathToFile, String... files) {
+    public void readCodDataFile(String pathToFile, String... files) {
         for (int i = 0; i < files.length; i++) {
             try {
                 Logger.getLogger(CodDataFileController.class.getName()).log(Level.INFO, null, "processing file " + (i + 1) + " of " + files.length);

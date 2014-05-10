@@ -15,8 +15,8 @@ public class RequestBuilderImpl implements RequestBuilder {
     private long episodeID;
     private String intakeKind;
     private DateTime intakeTimestamp;
-    private String startDepartment;
-    private String StartMedicalDeparment;
+    private String endDepartment;
+    private String endMedicalDeparment;
     private DateTime requestTimestamp;
     private DateTime responseTimestamp;
     private DateTime transferTimestamp;
@@ -57,14 +57,14 @@ public class RequestBuilderImpl implements RequestBuilder {
     }
 
     @Override
-    public RequestBuilderImpl setStartDepartment(String startDepartment) {
-        this.startDepartment = startDepartment;
+    public RequestBuilderImpl setEndDepartment(String endDepartment) {
+        this.endDepartment = endDepartment;
         return this;
     }
 
     @Override
-    public RequestBuilderImpl setStartMedicalDeparment(String StartMedicalDeparment) {
-        this.StartMedicalDeparment = StartMedicalDeparment;
+    public RequestBuilderImpl setEndMedicalDeparment(String endMedicalDeparment) {
+        this.endMedicalDeparment = endMedicalDeparment;
         return this;
     }
 
@@ -100,7 +100,7 @@ public class RequestBuilderImpl implements RequestBuilder {
 
     @Override
     public Request createRequest() {
-        return new RequestImpl(requestID, patientID, episodeID, intakeKind, intakeTimestamp, startDepartment, StartMedicalDeparment, requestTimestamp, responseTimestamp, transferTimestamp, intakeDate, ownDepartment);
+        return new RequestImpl(requestID, patientID, episodeID, intakeKind, intakeTimestamp, endDepartment, endMedicalDeparment, requestTimestamp, responseTimestamp, transferTimestamp, intakeDate, ownDepartment);
     }
     
 }

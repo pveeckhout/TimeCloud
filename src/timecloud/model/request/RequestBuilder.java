@@ -34,9 +34,9 @@ public interface RequestBuilder {
 
     RequestBuilderImpl setResponseTimestamp(DateTime responseTimestamp);
 
-    RequestBuilderImpl setStartDepartment(String startDepartment);
+    RequestBuilderImpl setEndDepartment(String endDepartment);
 
-    RequestBuilderImpl setStartMedicalDeparment(String StartMedicalDeparment);
+    RequestBuilderImpl setEndMedicalDeparment(String endMedicalDeparment);
 
     RequestBuilderImpl setTransferTimestamp(DateTime transferTimestamp);
     

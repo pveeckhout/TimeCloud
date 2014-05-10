@@ -94,14 +94,14 @@ public class RequestDtOBuilderImpl implements RequestDtoBuilder {
     }
 
     @Override
-    public RequestDtoBuilder setStartDepartment(String startDepartment) {
-        this.requestBuilder.setStartDepartment(startDepartment);
+    public RequestDtoBuilder setEndDepartment(String startDepartment) {
+        this.requestBuilder.setEndDepartment(startDepartment);
         return this;
     }
 
     @Override
-    public RequestDtoBuilder setStartMedicalDeparment(String StartMedicalDeparment) {
-        this.requestBuilder.setStartMedicalDeparment(StartMedicalDeparment);
+    public RequestDtoBuilder setEndMedicalDeparment(String StartMedicalDeparment) {
+        this.requestBuilder.setEndMedicalDeparment(StartMedicalDeparment);
         return this;
     }
 

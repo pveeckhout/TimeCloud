@@ -43,7 +43,7 @@ public class CodDataFileControllerImpl extends CodDataFileController {
             requests = new HashMap<>();
             requests.putAll(requestDao.batchAddRequests(fileReader.getRequests(file)));
             this.notifyObservers(requests);
-            System.out.println("Requests add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
+            System.out.println("Requests add from file time taken: " + (System.nanoTime() - startTime)/1000000 + " miliseconds");
         } catch (IOException ex) {
             Logger.getLogger(CodDataFileControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;

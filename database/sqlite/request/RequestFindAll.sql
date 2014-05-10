@@ -1,1 +1,1 @@
-SELECT * FROM Transfers;
+SELECT * FROM [Requests];

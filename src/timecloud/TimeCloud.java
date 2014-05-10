@@ -25,16 +25,21 @@ package timecloud;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import timecloud.controller.database.DatabaseController;
-import timecloud.controller.database.DatabaseControllerH2Impl;
 import timecloud.controller.database.DatabaseControllerSQLiteImpl;
 import timecloud.controller.episode.EpisodeController;
 import timecloud.controller.episode.EpisodeControllerImpl;
+import timecloud.controller.file.data.cod.CodDataFileController;
+import timecloud.controller.file.data.cod.CodDataFileControllerImpl;
 import timecloud.controller.file.data.emergency.EmergencyDataFileController;
 import timecloud.controller.file.data.emergency.EmergencyDataFileControllerImpl;
+import timecloud.controller.request.RequestController;
+import timecloud.controller.request.RequestControllerImpl;
 import timecloud.controller.transfer.TransferController;
 import timecloud.controller.transfer.TransferControllerImpl;
 import timecloud.dao.episode.EpisodeDAO;
 import timecloud.dao.episode.EpisodeDaoImpl;
+import timecloud.dao.request.RequestDAO;
+import timecloud.dao.request.RequestDaoImpl;
 import timecloud.dao.transfer.TransferDAO;
 import timecloud.dao.transfer.TransferDaoImpl;
 
@@ -53,20 +58,26 @@ public class TimeCloud {
      */
     public static void main(String[] args) {
         try {
-            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("C:\\TEMP\\TimeCloud");
+            DatabaseController databaseController = new DatabaseControllerSQLiteImpl("C:\\TEMP\\TimeCloud2");
             EpisodeDAO episodeDao = new EpisodeDaoImpl(databaseController);
             TransferDAO transferDao = new TransferDaoImpl(databaseController);
+            RequestDAO requestDao = new RequestDaoImpl(databaseController);
             EpisodeController episodeController = new EpisodeControllerImpl(episodeDao);
             TransferController transferController = new TransferControllerImpl(transferDao);
+            RequestController requestController = new RequestControllerImpl(requestDao);
             EmergencyDataFileController emergencyDataFileController = new EmergencyDataFileControllerImpl(episodeDao, transferDao);
+            CodDataFileController codDataFileController = new CodDataFileControllerImpl(requestDao);
             emergencyDataFileController.addObserver(episodeController);
             emergencyDataFileController.addObserver(transferController);
-            
+            codDataFileController.addObserver(requestController);
+                        
             String path = "D:\\Pieter Van Eechout\\Dropbox\\Database voor data masterproef\\Kwantitatief onderzoek masterproef\\Data spoed\\";
-            String files[] = {"Opnames op periode 03.03-10.03.xls","Opnames op periode 10.03 -17.03.xls","Opnames op periode 17.02 -03.04.xls","Opnames op periode 17.03 tot 02.04.xls","Opnames op periode 07.03 -22.04.xls"};
+            String emergencyFiles[] = {"Opnames op periode 03.03-10.03.xls","Opnames op periode 10.03 -17.03.xls","Opnames op periode 17.02 -03.04.xls","Opnames op periode 17.03 tot 02.04.xls","Opnames op periode 07.03 -22.04.xls"};
+            String codFiles[] = {"spoedwachtenopCOD20141versie ACMM-2.xls"};
             
-            //temporarely don't read files. they habe been read already
-            emergencyDataFileController.readEmergencyDataFile(path, files);
+            emergencyDataFileController.readEmergencyDataFile(path, emergencyFiles);
+            codDataFileController.readCodDataFile(path, codFiles);
+            
             
             
         } catch (Exception ex) {//here we do want to catch the all

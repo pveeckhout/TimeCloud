@@ -52,9 +52,9 @@ public interface Request extends Serializable {
 
     DateTime getResponseTimestamp();
 
-    String getStartDepartment();
+    String getEndDepartment();
 
-    String getStartMedicalDeparment();
+    String getEndMedicalDeparment();
 
     DateTime getTransferTimestamp();
 
@@ -76,9 +76,9 @@ public interface Request extends Serializable {
 
     void setResponseTimestamp(DateTime responseTimestamp);
 
-    void setStartDepartment(String startDepartment);
+    void setEndDepartment(String startDepartment);
 
-    void setStartMedicalDeparment(String StartMedicalDeparment);
+    void setEndMedicalDeparment(String StartMedicalDeparment);
 
     void setTransferTimestamp(DateTime transferTimestamp);
 }

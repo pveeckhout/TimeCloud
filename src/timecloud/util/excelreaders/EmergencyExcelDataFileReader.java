@@ -47,19 +47,19 @@ import timecloud.enums.TriageLevel;
  */
 public class EmergencyExcelDataFileReader extends ExcelDataFileReader {
 
-    public static final Integer PATIENTID_ROW = 0;
-    public static final Integer EPISODEID_ROW = 3;
-    public static final Integer INTAKETIME_ROW = 8;
-    public static final Integer MEG_ROW = 10;
-    public static final Integer TRIAGETIME_ROW = 14;
-    public static final Integer TRIAGELEVEL_ROW = 16;
-    public static final Integer TRANSFERTIME_ROW = 17;
-    public static final Integer STARTDEPARTMENT_ROW = 18;
-    public static final Integer STARTBED_ROW = 19;
-    public static final Integer STARTMEDICALDEPARTMENT_ROW = 20;
-    public static final Integer ENDDEPARTMENT_ROW = 21;
-    public static final Integer ENDBED_ROW = 22;
-    public static final Integer ENDMEDICALDEPARTMENT_ROW = 23;
+    public static final Integer PATIENTID_COL = 0;
+    public static final Integer EPISODEID_COL = 3;
+    public static final Integer INTAKETIME_COL = 8;
+    public static final Integer MEG_COL = 10;
+    public static final Integer TRIAGETIME_COL = 14;
+    public static final Integer TRIAGELEVEL_COL = 16;
+    public static final Integer TRANSFERTIME_COL = 17;
+    public static final Integer STARTDEPARTMENT_COL = 18;
+    public static final Integer STARTBED_COL = 19;
+    public static final Integer STARTMEDICALDEPARTMENT_COL = 20;
+    public static final Integer ENDDEPARTMENT_COL = 21;
+    public static final Integer ENDBED_COL = 22;
+    public static final Integer ENDMEDICALDEPARTMENT_COL = 23;
 
     private void primeData(File file) throws IOException {
         setExcelFile(file);
@@ -71,31 +71,31 @@ public class EmergencyExcelDataFileReader extends ExcelDataFileReader {
         primeData(file);
         Map<Long, EpisodeDTO> episodes = new TreeMap<>();
         for (Row row : sheet) {
-            if (row.getCell(EPISODEID_ROW).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
+            if (row.getCell(EPISODEID_COL).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
                 continue;
             }
             EpisodeDTO episodeDto = getEpisodeData(row);
             episodes.put(episodeDto.getEpisodeID(), episodeDto);
         }
         
-        System.out.println("getEpisode from file time taken: " +  (System.nanoTime() - startTime)/1000000000 + " seconds");
+        System.out.println("getEpisode from file time taken: " +  (System.nanoTime() - startTime)/1000000 + " miliseconds");
         return episodes.values();
     }
 
     private EpisodeDTO getEpisodeData(Row row) {
         EpisodeDtoBuilder episodeDtoBuilder = new EpisodeDtoBuilderImpl();
-        episodeDtoBuilder.setEpisodeID((long) row.getCell(EPISODEID_ROW).getNumericCellValue()); //casting simply truncates, which is what we want.
-        episodeDtoBuilder.setPatientID(row.getCell(PATIENTID_ROW).getStringCellValue());
-        episodeDtoBuilder.setIntakeTimestamp(new DateTime(row.getCell(INTAKETIME_ROW).getDateCellValue().getTime()));
+        episodeDtoBuilder.setEpisodeID((long) row.getCell(EPISODEID_COL).getNumericCellValue()); //casting simply truncates, which is what we want.
+        episodeDtoBuilder.setPatientID(row.getCell(PATIENTID_COL).getStringCellValue());
+        episodeDtoBuilder.setIntakeTimestamp(new DateTime(row.getCell(INTAKETIME_COL).getDateCellValue().getTime()));
         //this can be empty or null
-        if (row.getCell(MEG_ROW) != null) {
-            episodeDtoBuilder.setMeg(row.getCell(MEG_ROW).getStringCellValue().equalsIgnoreCase("ja"));
+        if (row.getCell(MEG_COL) != null) {
+            episodeDtoBuilder.setMeg(row.getCell(MEG_COL).getStringCellValue().equalsIgnoreCase("ja"));
         }
         //this can be empty or null
-        if (row.getCell(TRIAGETIME_ROW) != null) {
-            episodeDtoBuilder.setTriageTimestamp(new DateTime(row.getCell(TRIAGETIME_ROW).getDateCellValue().getTime()));
+        if (row.getCell(TRIAGETIME_COL) != null) {
+            episodeDtoBuilder.setTriageTimestamp(new DateTime(row.getCell(TRIAGETIME_COL).getDateCellValue().getTime()));
         }
-        TriageLevel triageLevel = (row.getCell(TRIAGELEVEL_ROW) == null || row.getCell(TRIAGELEVEL_ROW).getCellType() == HSSFCell.CELL_TYPE_BLANK) ? TriageLevel.UNDEFINED : TriageLevel.fromString(row.getCell(TRIAGELEVEL_ROW).getStringCellValue());
+        TriageLevel triageLevel = (row.getCell(TRIAGELEVEL_COL) == null || row.getCell(TRIAGELEVEL_COL).getCellType() == HSSFCell.CELL_TYPE_BLANK) ? TriageLevel.UNDEFINED : TriageLevel.fromString(row.getCell(TRIAGELEVEL_COL).getStringCellValue());
         episodeDtoBuilder.setTriageLevel(triageLevel);
 
         return episodeDtoBuilder.createEpisodeDto();
@@ -106,37 +106,37 @@ public class EmergencyExcelDataFileReader extends ExcelDataFileReader {
         primeData(file);
         Map<Long, Collection<TransferDTO>> transfers = new TreeMap<>();
         for (Row row : sheet) {
-            if (row.getCell(EPISODEID_ROW).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
+            if (row.getCell(EPISODEID_COL).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
                 continue;
             }
-            long episodeID = (long) row.getCell(EPISODEID_ROW).getNumericCellValue();
+            long episodeID = (long) row.getCell(EPISODEID_COL).getNumericCellValue();
             if (transfers.get(episodeID) == null) {
                 transfers.put(episodeID, new ArrayList<TransferDTO>());
             }
             transfers.get(episodeID).add(getTransfersData(row));
         }
 
-        System.out.println("getTransfers from file time taken: " +  (System.nanoTime() - startTime)/1000000000 + " seconds");
+        System.out.println("getTransfers from file time taken: " +  (System.nanoTime() - startTime)/1000000 + " miliseconds");
         return transfers;
     }
 
     private TransferDTO getTransfersData(Row row) {
         TransferDtoBuilder transferDtoBuilder = new TransferDtoBuilderImpl();
-        transferDtoBuilder.setTransferTimestamp(new DateTime(row.getCell(TRANSFERTIME_ROW).getDateCellValue().getTime()));
-        transferDtoBuilder.setStartDepartment(row.getCell(STARTDEPARTMENT_ROW).getStringCellValue());
-        if (row.getCell(STARTBED_ROW).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-            transferDtoBuilder.setStartBed(row.getCell(STARTBED_ROW).getNumericCellValue() + "");
+        transferDtoBuilder.setTransferTimestamp(new DateTime(row.getCell(TRANSFERTIME_COL).getDateCellValue().getTime()));
+        transferDtoBuilder.setStartDepartment(row.getCell(STARTDEPARTMENT_COL).getStringCellValue());
+        if (row.getCell(STARTBED_COL).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+            transferDtoBuilder.setStartBed(row.getCell(STARTBED_COL).getNumericCellValue() + "");
         } else {
-            transferDtoBuilder.setStartBed(row.getCell(STARTBED_ROW).getStringCellValue());
+            transferDtoBuilder.setStartBed(row.getCell(STARTBED_COL).getStringCellValue());
         }
-        transferDtoBuilder.setStartMedicalDepartment(row.getCell(STARTMEDICALDEPARTMENT_ROW).getStringCellValue());
-        transferDtoBuilder.setEndDepartment(row.getCell(ENDDEPARTMENT_ROW).getStringCellValue());
-        if (row.getCell(ENDBED_ROW).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-            transferDtoBuilder.setEndBed(row.getCell(ENDBED_ROW).getNumericCellValue() + "");
+        transferDtoBuilder.setStartMedicalDepartment(row.getCell(STARTMEDICALDEPARTMENT_COL).getStringCellValue());
+        transferDtoBuilder.setEndDepartment(row.getCell(ENDDEPARTMENT_COL).getStringCellValue());
+        if (row.getCell(ENDBED_COL).getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+            transferDtoBuilder.setEndBed(row.getCell(ENDBED_COL).getNumericCellValue() + "");
         } else {
-            transferDtoBuilder.setEndBed(row.getCell(ENDBED_ROW).getStringCellValue());
+            transferDtoBuilder.setEndBed(row.getCell(ENDBED_COL).getStringCellValue());
         }
-        transferDtoBuilder.setEndMedicalDepartment(row.getCell(ENDMEDICALDEPARTMENT_ROW).getStringCellValue());
+        transferDtoBuilder.setEndMedicalDepartment(row.getCell(ENDMEDICALDEPARTMENT_COL).getStringCellValue());
 
         return transferDtoBuilder.createTransferDto();
     }

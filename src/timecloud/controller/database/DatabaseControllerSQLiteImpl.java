@@ -79,7 +79,18 @@ public class DatabaseControllerSQLiteImpl extends DatabaseController {
             }
 
             statement.executeUpdate(queryBuilder.toString());
-            System.out.println("Database created in " + (System.nanoTime() - startTime) / 1000000000 + " seconds");
+            
+            //build the request table creation query
+            fileReader = new FileReader("./database/sqlite/table/CreateRequestTable.sql");
+            bufferedReader = new BufferedReader(fileReader);
+
+            while ((line = bufferedReader.readLine()) != null) {
+                queryBuilder.append(line);
+            }
+
+            statement.executeUpdate(queryBuilder.toString());
+            
+            System.out.println("Database created in " + (System.nanoTime() - startTime) / 1000000 + " miliseconds");
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseControllerSQLiteImpl.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

@@ -50,9 +50,9 @@ public interface RequestDtoBuilder {
 
     RequestDtoBuilder setResponseTimestamp(DateTime responseTimestamp);
 
-    RequestDtoBuilder setStartDepartment(String startDepartment);
+    RequestDtoBuilder setEndDepartment(String startDepartment);
 
-    RequestDtoBuilder setStartMedicalDeparment(String StartMedicalDeparment);
+    RequestDtoBuilder setEndMedicalDeparment(String StartMedicalDeparment);
 
     RequestDtoBuilder setTransferTimestamp(DateTime transferTimestamp);
 

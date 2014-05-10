@@ -43,8 +43,8 @@ public class RequestImpl implements Request {
     private long episodeID;
     private String intakeKind;
     private DateTime intakeTimestamp;
-    private String startDepartment;
-    private String StartMedicalDeparment;
+    private String endDepartment;
+    private String endMedicalDeparment;
     private DateTime requestTimestamp;
     private DateTime responseTimestamp;
     private DateTime transferTimestamp;
@@ -82,8 +82,8 @@ public class RequestImpl implements Request {
         this.episodeID = episodeID;
         this.intakeKind = intakeKind;
         this.intakeTimestamp = intakeTimestamp;
-        this.startDepartment = startDepartment;
-        this.StartMedicalDeparment = StartMedicalDeparment;
+        this.endDepartment = startDepartment;
+        this.endMedicalDeparment = StartMedicalDeparment;
         this.requestTimestamp = requestTimestamp;
         this.responseTimestamp = responseTimestamp;
         this.transferTimestamp = transferTimestamp;
@@ -104,8 +104,8 @@ public class RequestImpl implements Request {
         this.episodeID = requestDTO.getEpisodeID();
         this.intakeKind = requestDTO.getIntakeKind();
         this.intakeTimestamp = requestDTO.getIntakeTimestamp();
-        this.startDepartment = requestDTO.getStartDepartment();
-        this.StartMedicalDeparment = requestDTO.getStartMedicalDeparment();
+        this.endDepartment = requestDTO.getEndDepartment();
+        this.endMedicalDeparment = requestDTO.getEndMedicalDeparment();
         this.requestTimestamp = requestDTO.getRequestTimestamp();
         this.responseTimestamp = requestDTO.getResponseTimestamp();
         this.transferTimestamp = requestDTO.getTransferTimestamp();
@@ -164,23 +164,23 @@ public class RequestImpl implements Request {
     }
 
     @Override
-    public String getStartDepartment() {
-        return startDepartment;
+    public String getEndDepartment() {
+        return endDepartment;
     }
 
     @Override
-    public void setStartDepartment(String startDepartment) {
-        this.startDepartment = startDepartment;
+    public void setEndDepartment(String endDepartment) {
+        this.endDepartment = endDepartment;
     }
 
     @Override
-    public String getStartMedicalDeparment() {
-        return StartMedicalDeparment;
+    public String getEndMedicalDeparment() {
+        return endMedicalDeparment;
     }
 
     @Override
-    public void setStartMedicalDeparment(String StartMedicalDeparment) {
-        this.StartMedicalDeparment = StartMedicalDeparment;
+    public void setEndMedicalDeparment(String endMedicalDeparment) {
+        this.endMedicalDeparment = endMedicalDeparment;
     }
 
     @Override
@@ -240,8 +240,8 @@ public class RequestImpl implements Request {
         hash = 83 * hash + (int) (this.episodeID ^ (this.episodeID >>> 32));
         hash = 83 * hash + Objects.hashCode(this.intakeKind);
         hash = 83 * hash + Objects.hashCode(this.intakeTimestamp);
-        hash = 83 * hash + Objects.hashCode(this.startDepartment);
-        hash = 83 * hash + Objects.hashCode(this.StartMedicalDeparment);
+        hash = 83 * hash + Objects.hashCode(this.endDepartment);
+        hash = 83 * hash + Objects.hashCode(this.endMedicalDeparment);
         hash = 83 * hash + Objects.hashCode(this.requestTimestamp);
         hash = 83 * hash + Objects.hashCode(this.responseTimestamp);
         hash = 83 * hash + Objects.hashCode(this.transferTimestamp);
@@ -271,10 +271,10 @@ public class RequestImpl implements Request {
         if (!Objects.equals(this.intakeTimestamp, other.intakeTimestamp)) {
             return false;
         }
-        if (!Objects.equals(this.startDepartment, other.startDepartment)) {
+        if (!Objects.equals(this.endDepartment, other.endDepartment)) {
             return false;
         }
-        if (!Objects.equals(this.StartMedicalDeparment, other.StartMedicalDeparment)) {
+        if (!Objects.equals(this.endMedicalDeparment, other.endMedicalDeparment)) {
             return false;
         }
         if (!Objects.equals(this.requestTimestamp, other.requestTimestamp)) {

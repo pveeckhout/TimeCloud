@@ -361,15 +361,15 @@ public class TransferDaoImpl implements TransferDAO {
             for (Map.Entry<Long, Collection<TransferDTO>> entry : transfers.entrySet()) {
                 Long episodeID = entry.getKey();
                 Collection<TransferDTO> transferCol = entry.getValue();
-                for (TransferDTO transferDTO : transferCol) {
+                for (TransferDTO transferDto : transferCol) {
                     statement.setLong(1, episodeID);
-                    statement.setString(2, transferDTO.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
-                    statement.setString(3, transferDTO.getStartDepartment());
-                    statement.setString(4, transferDTO.getStartBed());
-                    statement.setString(5, transferDTO.getStartMedicalDepartment());
-                    statement.setString(6, transferDTO.getEndDepartment());
-                    statement.setString(7, transferDTO.getEndBed());
-                    statement.setString(8, transferDTO.getEndMedicalDepartment());
+                    statement.setString(2, transferDto.getTransferTimestamp().toString("yyyy-MM-dd HH:mm:ss"));
+                    statement.setString(3, transferDto.getStartDepartment());
+                    statement.setString(4, transferDto.getStartBed());
+                    statement.setString(5, transferDto.getStartMedicalDepartment());
+                    statement.setString(6, transferDto.getEndDepartment());
+                    statement.setString(7, transferDto.getEndBed());
+                    statement.setString(8, transferDto.getEndMedicalDepartment());
 
                     statement.addBatch();
                 }
@@ -379,7 +379,7 @@ public class TransferDaoImpl implements TransferDAO {
 
             return savedTransfers;
         } catch (SQLException ex) {
-            Logger.getLogger(TransferDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TransferDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }

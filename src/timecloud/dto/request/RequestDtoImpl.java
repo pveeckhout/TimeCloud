@@ -84,13 +84,13 @@ public class RequestDtoImpl extends RequestDTO {
     }
 
     @Override
-    public String getStartDepartment() {
-        return request.getStartDepartment();
+    public String getEndDepartment() {
+        return request.getEndDepartment();
     }
 
     @Override
-    public String getStartMedicalDeparment() {
-        return request.getStartMedicalDeparment();
+    public String getEndMedicalDeparment() {
+        return request.getEndMedicalDeparment();
     }
 
     @Override

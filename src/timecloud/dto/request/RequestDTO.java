@@ -145,7 +145,7 @@ public abstract class RequestDTO implements Request, Immutable {
     /**
      * DO NOT USE, setters are disabled in the DTO paradigm
      */
-    public void setStartDepartment(String startDepartment) {
+    public void setEndDepartment(String startDepartment) {
         UnsupportedOperationException ex = new UnsupportedOperationException("Immutable Object. Setter setStartDepartment is disabled");
         Logger.getLogger(RequestDTO.class.getName()).log(Level.SEVERE, null, ex);
         throw ex;
@@ -155,7 +155,7 @@ public abstract class RequestDTO implements Request, Immutable {
     /**
      * DO NOT USE, setters are disabled in the DTO paradigm
      */
-    public void setStartMedicalDeparment(String StartMedicalDeparment) {
+    public void setEndMedicalDeparment(String StartMedicalDeparment) {
         UnsupportedOperationException ex = new UnsupportedOperationException("Immutable Object. Setter setStartMedicalDeparment is disabled");
         Logger.getLogger(RequestDTO.class.getName()).log(Level.SEVERE, null, ex);
         throw ex;

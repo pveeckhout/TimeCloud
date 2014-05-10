@@ -53,7 +53,7 @@ public class EmergencyDataFileControllerImpl extends EmergencyDataFileController
             episodes = new ArrayList<>();
             episodes.addAll(episodeDao.batchProcess(fileReader.getEpisodes(file)));
             this.notifyObservers(episodes);
-            System.out.println("Episodes add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
+            System.out.println("Episodes add from file time taken: " + (System.nanoTime() - startTime)/1000000 + " miliseconds");
         } catch (IOException ex) {
             Logger.getLogger(EmergencyDataFileControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
@@ -67,7 +67,7 @@ public class EmergencyDataFileControllerImpl extends EmergencyDataFileController
             transfers = new HashMap<>();
             transfers.putAll(transferDao.batchAddTransfers(fileReader.getTransfers(file)));
             this.notifyObservers(transfers);
-            System.out.println("Transfers add from file time taken: " + (System.nanoTime() - startTime)/1000000000 + " seconds");
+            System.out.println("Transfers add from file time taken: " + (System.nanoTime() - startTime)/1000000 + " miliseconds");
         } catch (IOException ex) {
             Logger.getLogger(EmergencyDataFileControllerImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
