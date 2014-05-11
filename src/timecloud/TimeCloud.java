@@ -73,7 +73,7 @@ public class TimeCloud {
                         
             String path = "D:\\Pieter Van Eechout\\Dropbox\\Database voor data masterproef\\Kwantitatief onderzoek masterproef\\Data spoed\\";
             String emergencyFiles[] = {"Opnames op periode 03.03-10.03.xls","Opnames op periode 10.03 -17.03.xls","Opnames op periode 17.02 -03.04.xls","Opnames op periode 17.03 tot 02.04.xls","Opnames op periode 07.03 -22.04.xls"};
-            String codFiles[] = {"spoedwachtenopCOD20141versie ACMM-2.xls"};
+            String codFiles[] = {"Spoed wachten op COD versie ACMM_2014jantotapril.xls"};
             
             emergencyDataFileController.readEmergencyDataFile(path, emergencyFiles);
             codDataFileController.readCodDataFile(path, codFiles);

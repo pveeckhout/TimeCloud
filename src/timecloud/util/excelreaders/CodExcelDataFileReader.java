@@ -35,6 +35,7 @@ import timecloud.dto.request.RequestDtOBuilderImpl;
 import timecloud.dto.request.RequestDtoBuilder;
 
 public class CodExcelDataFileReader extends ExcelDataFileReader {
+
     public static final Integer PATIENTID_COL = 0;
     public static final Integer EPISODEID_COL = 1;
     public static final Integer EPISODEKIND_COL = 2;
@@ -51,20 +52,20 @@ public class CodExcelDataFileReader extends ExcelDataFileReader {
         setExcelFile(file);
         processStoredData();
     }
-    
+
     public Map<Long, RequestDTO> getRequests(File file) throws IOException {
         long startTime = System.nanoTime();
         primeData(file);
         Map<Long, RequestDTO> requests = new TreeMap<>();
         for (Row row : sheet) {
             if (row.getCell(EPISODEID_COL).getCellType() != HSSFCell.CELL_TYPE_NUMERIC) {
-                    continue;
+                continue;
             }
             RequestDTO requestDTO = getRequestData(row);
             requests.put(requestDTO.getEpisodeID(), requestDTO);
         }
-        
-        System.out.println("getRequests from file time taken: " +  (System.nanoTime() - startTime)/1000000 + " miliseconds");
+
+        System.out.println("getRequests from file time taken: " + (System.nanoTime() - startTime) / 1000000 + " miliseconds");
         return requests;
     }
 
@@ -80,14 +81,19 @@ public class CodExcelDataFileReader extends ExcelDataFileReader {
         requestDtoBuilder.setResponseTimestamp(new DateTime(row.getCell(RESPONSETIME_COL).getDateCellValue().getTime()));
         requestDtoBuilder.setTransferTimestamp(new DateTime(row.getCell(TRANSFERTIME_COL).getDateCellValue().getTime()));
 
-        String dateSt = row.getCell(INTAKERDATE_COL).getStringCellValue();
-        String date[] = dateSt.split("-");
-        int year = Integer.parseInt(date[0]);
-        int month = Integer.parseInt(date[1]);
-        int day = Integer.parseInt(date[2]);
-        requestDtoBuilder.setIntakeDate(new DateTime(year, month, day, 0 ,0));
-        requestDtoBuilder.setOwnDepartment(row.getCell(OWNDEPARTMENT_COL).getStringCellValue());
-        
+//        String dateSt = row.getCell(INTAKERDATE_COL).getStringCellValue();
+//        String date[] = dateSt.split("-");
+//        int year = Integer.parseInt(date[0]);
+//        int month = Integer.parseInt(date[1]);
+//        int day = Integer.parseInt(date[2]);
+        Date date = row.getCell(INTAKERDATE_COL).getDateCellValue();
+        requestDtoBuilder.setIntakeDate(new DateTime(date.getTime()));
+        if (row.getCell(OWNDEPARTMENT_COL) != null) {
+            requestDtoBuilder.setOwnDepartment(row.getCell(OWNDEPARTMENT_COL).getStringCellValue());
+        } else {
+            requestDtoBuilder.setOwnDepartment("");
+        }
+
         return requestDtoBuilder.createRequestDto();
     }
 }
